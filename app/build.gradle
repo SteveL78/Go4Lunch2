@@ -1,6 +1,5 @@
-plugins {
-    id 'com.android.application'
-}
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdk 30
@@ -52,5 +51,3 @@ dependencies {
     // FIREBASE UI
     implementation 'com.firebaseui:firebase-ui-auth:6.4.0'
 }
-
-apply plugin: 'com.google.gms.google-services'
