@@ -2,7 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_authentification_coordinator_layout"
+    android:id="@+id/activity_sign_in_coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SignInActivity">
@@ -26,8 +26,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/default_large_margin"
             android:layout_gravity="center"
+            android:layout_marginTop="@dimen/default_xlarge_margin"
             android:layout_weight="1">
 
             <LinearLayout
@@ -46,18 +46,18 @@
 
                 <!-- APP LOGO -->
                 <ImageView
-                    android:layout_weight="1"
                     android:id="@+id/app_logo"
                     android:layout_width="@dimen/default_logo_size"
                     android:layout_height="@dimen/default_logo_size"
+                    android:layout_weight="1"
                     android:background="@drawable/ic_logo_go4lunch" />
 
                 <!-- TITLE GO4LUNCH -->
                 <TextView
-                    android:layout_weight="1"
                     android:id="@+id/app_name"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="51dp"
+                    android:layout_weight="1"
                     android:text="@string/app_name"
                     android:textColor="@android:color/white"
                     android:textSize="57sp"
@@ -68,6 +68,7 @@
                     android:id="@+id/app_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="@string/main_activity_description"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/default_text_size"
@@ -103,9 +104,9 @@
 
                 <Button
                     android:id="@+id/facebook_login_button"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="?android:attr/borderlessButtonStyle"
                     android:background="@drawable/button_radius_fb_color"
                     android:drawableStart="@drawable/ic_facebook_24"
                     android:paddingStart="10dp"
@@ -116,14 +117,14 @@
 
                 <Button
                     android:id="@+id/google_login_button"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/default_large_margin"
-                    style="?android:attr/borderlessButtonStyle"
                     android:background="@drawable/button_radius_google_color"
                     android:drawableStart="@drawable/ic_google_plus_24"
                     android:paddingStart="10dp"
-                    android:text="@string/loginFb"
+                    android:text="@string/loginGoogle"
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"
                     tools:ignore="RtlSymmetry" />

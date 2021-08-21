@@ -6,6 +6,7 @@
         <entry key="app/src/main/res/drawable/button_radius_fb_color.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/button_radius_google_color.xml" value="0.24444444444444444" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_signin.xml" value="0.25" />
       </map>
     </option>
   </component>
