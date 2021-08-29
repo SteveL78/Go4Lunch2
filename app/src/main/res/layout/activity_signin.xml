@@ -5,11 +5,11 @@
     android:id="@+id/activity_sign_in_coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignInActivity">
+    tools:context=".signin.SignInActivity">
 
     <!-- BACKGROUND IMAGE -->
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/activity_signin_imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
@@ -46,7 +46,7 @@
 
                 <!-- APP LOGO -->
                 <ImageView
-                    android:id="@+id/app_logo"
+                    android:id="@+id/activity_signin_app_logo"
                     android:layout_width="@dimen/default_logo_size"
                     android:layout_height="@dimen/default_logo_size"
                     android:layout_weight="1"
@@ -54,7 +54,7 @@
 
                 <!-- TITLE GO4LUNCH -->
                 <TextView
-                    android:id="@+id/app_name"
+                    android:id="@+id/activity_signin_app_name"
                     android:layout_width="wrap_content"
                     android:layout_height="51dp"
                     android:layout_weight="1"
@@ -65,10 +65,9 @@
 
                 <!-- DESCRIPTION GO4LUNCH  -->
                 <TextView
-                    android:id="@+id/app_description"
+                    android:id="@+id/activity_signin_app_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="@string/main_activity_description"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/default_text_size"
@@ -88,7 +87,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
-                android:id="@+id/button_container"
+                android:id="@+id/activity_signin_buttons_container"
                 android:layout_width="260dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/default_margin"
@@ -102,21 +101,15 @@
                 app:layout_constraintTop_toTopOf="parent">
 
 
-                <Button
-                    android:id="@+id/facebook_login_button"
+                <com.facebook.login.widget.LoginButton
+                    android:id="@+id/activity_signin_fb_login_button"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/button_radius_fb_color"
-                    android:drawableStart="@drawable/ic_facebook_24"
-                    android:paddingStart="10dp"
-                    android:text="@string/loginFb"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/white"
-                    tools:ignore="RtlSymmetry" />
+                    android:textAllCaps="false"/>
 
                 <Button
-                    android:id="@+id/google_login_button"
+                    android:id="@+id/activity_signin_google_login_button"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
