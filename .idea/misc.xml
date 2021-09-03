@@ -3,11 +3,34 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-v24/ic_black_list_view_bottom_nav.xml" value="0.2388888888888889" />
+        <entry key="app/src/main/res/drawable-v24/ic_black_map_bottom_nav.xml" value="0.2388888888888889" />
+        <entry key="app/src/main/res/drawable-v24/ic_black_person_bottom_nav.xml" value="0.2388888888888889" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2388888888888889" />
+        <entry key="app/src/main/res/drawable-v24/ic_person_outline_24.xml" value="0.2388888888888889" />
+        <entry key="app/src/main/res/drawable-v24/ic_power_24.xml" value="0.2388888888888889" />
+        <entry key="app/src/main/res/drawable-v24/ic_settings_24.xml" value="0.2388888888888889" />
+        <entry key="app/src/main/res/drawable-v24/ic_star_black_outline_24.xml" value="0.2388888888888889" />
+        <entry key="app/src/main/res/drawable-v24/ic_your_lunch_24.xml" value="0.2388888888888889" />
         <entry key="app/src/main/res/drawable/button_radius_fb_color.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/button_radius_google_color.xml" value="0.24444444444444444" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/drawable/ic_baseline_power_settings_new_24.xml" value="0.2388888888888889" />
+        <entry key="app/src/main/res/drawable/ic_black_map_bottom_nav.xml" value="0.2388888888888889" />
+        <entry key="app/src/main/res/drawable/ic_map_bottom_nav.xml" value="0.2388888888888889" />
+        <entry key="app/src/main/res/drawable/ic_your_lunch_24.xml" value="0.2388888888888889" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_main_nav_header.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_signin.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_user_profile.xml" value="0.2037037037037037" />
+        <entry key="app/src/main/res/layout/fragment_list_view.xml" value="0.2989583333333333" />
+        <entry key="app/src/main/res/layout/fragment_list_view_item.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_map.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_workmates.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_workmates_item.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/activity_main_bottom_navigation_menu.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/activity_main_navigation_menu_drawer.xml" value="0.49846153846153846" />
+        <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/navigation_menu_drawer.xml" value="0.2989583333333333" />
       </map>
     </option>
   </component>

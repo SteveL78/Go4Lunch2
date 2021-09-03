@@ -1,12 +1,10 @@
 <resources>
     <string name="app_name">Go4Lunch</string>
 
+    <!-- SIGN IN ACTIVITY -->
     <string name="main_activity_description">Find a nice restaurant and invite your co-workers for lunch !</string>
-
-
     <string name="loginFb">Sign in with Facebook</string>
     <string name="loginGoogle">Sign in with Google</string>
-    <string name="chat_with_mentor">Discute avec un mentor</string>
 
     <!-- NOTIFICATION SERVICE -->
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
@@ -20,6 +18,12 @@
     <string name="connection_succeed">Authentification réussie !</string>
     <string name="button_login_text_logged">Afficher le profil</string>
     <string name="button_login_text_not_logged">Connexion</string>
+
+    <!-- MAIN ACTIVITY ITEMS -->
+    <string name="workmates_item">Workmates</string>
+    <string name="list_view_item">List View</string>
+    <string name="map_view_item">Map View</string>
+
 
     <!-- LOGIN ACTIVITY -->
     <string name="toolbar_title_login_activity">Votre Profil</string>
@@ -46,5 +50,14 @@
     <!-- FACEBOOK APPLICATION ID -->
     <string name="facebook_application_id" translatable="false">487698642501182</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb487698642501182</string>
+
+    <!-- Used in NavigationDrawer -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="drawer_your_lunch_item">YOUR LUNCH</string>
+    <string name="drawer_settings_item">SETTINGS</string>
+    <string name="drawer_logout_item">LOGOUT</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

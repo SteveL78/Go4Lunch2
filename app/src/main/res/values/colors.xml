@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- APP BASE -->
     <color name="colorPrimary">#039BE5</color>
     <color name="colorPrimaryDark">#0288D1</color>
     <color name="colorAccent">#FFA000</color>
+    <color name="colorAccentDark">#202122</color>
     <color name="colorError">#FF5252</color>
     <color name="colorGreyFilter">#E6757575</color>
 
-    <color name="colorFb">#5b7cbb</color>
-    <color name="colorGoogle">#cc543b</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="lightGrey">#989CA0</color>
+    <color name="darkGrey">#202122</color>
+    <color name="black">#FF000000</color>
+    <color name="lightOrange">#e96337</color>
+    <color name="darkBlue">#303F9F</color>
 
-    <color name="colorGreen">#6BB18C</color>
+
+    <!-- BUTTONS -->
+    <color name="color_fb_btn">#5b7cbb</color>
+    <color name="color_google_btn">#cc543b</color>
+
+    <!-- TEXTVIEW -->
+    <color name="text_normal_dark">#202122</color>
     <color name="colorSandLight">#ECDAAF</color>
     <color name="colorSand">#EBCB94</color>
 </resources>
