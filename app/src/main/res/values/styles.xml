@@ -10,16 +10,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <!-- STYLE FOR MAIN ACTIVITY -->
-    <style name="AppTheme.NoTitle" parent="AppTheme">
-        <item name="windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
-        <item name="actionBarTheme">@null</item>
-    </style>
-
     <!-- Toolbar theme. -->
-    <style name="ToolBarStyle" parent="AppTheme">
+    <style name="ToolBarStyle" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="colorControlNormal">@android:color/white</item>
     </style>
+
+
 </resources>

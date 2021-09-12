@@ -4,8 +4,11 @@
     tools:ignore="LockedOrientationActivity"
     package="fr.steve.leroy.go4lunch">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
 
     <application
@@ -16,6 +19,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!--
+     The API key for Google Maps-based APIs is defined as a string resource.
+     (See the file "res/values/google_maps_api.xml").
+     Note that the API key is linked to the encryption key used to sign the APK.
+     You need a different API key for each encryption key, including the release key that is used to
+     sign the APK for publishing.
+     You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_API_key" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+
+
+
 
         <activity
             android:name=".UserProfileActivity"
@@ -24,18 +46,18 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
-            android:exported="true" />
+            android:exported="true"/>
         <activity
-            android:name=".SignInActivity"
+            android:name=".authentication.SignInActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoTitle"> <!-- DISABLE TOOLBAR IN MAIN ACTIVITY -->
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+        <!-- DATA FOR FACEBOOK -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_application_id"/>
