@@ -1,4 +1,4 @@
-package fr.steve.leroy.go4lunch;
+package fr.steve.leroy.go4lunch.workmates;
 
 import android.os.Bundle;
 
@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import fr.steve.leroy.go4lunch.R;
 
 /**
  * A simple {@link Fragment} subclass.

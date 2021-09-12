@@ -8,7 +8,7 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    tools:context=".WorkmatesFragment"
+    tools:context=".workmates.WorkmatesFragment"
     tools:listitem="@layout/list_view_item">
 
 </androidx.recyclerview.widget.RecyclerView>

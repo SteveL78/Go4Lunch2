@@ -12,12 +12,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 import fr.steve.leroy.go4lunch.databinding.ActivityMainBinding;
+import fr.steve.leroy.go4lunch.list.ListViewFragment;
+import fr.steve.leroy.go4lunch.maps.MapFragment;
+import fr.steve.leroy.go4lunch.workmates.WorkmatesFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
