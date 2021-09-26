@@ -18,7 +18,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import fr.steve.leroy.go4lunch.databinding.ActivityMainBinding;
 import fr.steve.leroy.go4lunch.list.ListViewFragment;
-import fr.steve.leroy.go4lunch.maps.MapFragment;
+import fr.steve.leroy.go4lunch.map.MapFragment;
 import fr.steve.leroy.go4lunch.workmates.WorkmatesFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace( R.id.activity_main_frame_layout, new MapFragment() )
+//                .addToBackStack( null )
                 .commit();
 
     }

@@ -32,7 +32,9 @@
         <entry key="app/src/main/res/layout/fragment_workmates.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_workmates_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/list_view_item.xml" value="0.2989583333333333" />
+        <entry key="app/src/main/res/layout/workmates_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/workmates_joining_cell.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/workmates_joining_item.xml" value="0.2989583333333333" />
         <entry key="app/src/main/res/layout/workmates_undecided_item.xml" value="0.335" />
         <entry key="app/src/main/res/menu/activity_main_bottom_navigation_menu.xml" value="0.1" />
         <entry key="app/src/main/res/menu/activity_main_navigation_menu_drawer.xml" value="0.49846153846153846" />

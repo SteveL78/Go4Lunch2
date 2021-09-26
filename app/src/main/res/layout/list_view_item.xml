@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:padding="5dp">
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/restaurant_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/restaurant_address_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/restaurant_name_tv" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/opening_time_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/restaurant_address_tv" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/distance_restaurant_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
             app:layout_constraintTop_toTopOf="@id/restaurant_name_tv" />
 
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/person_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
             app:layout_constraintTop_toTopOf="@id/restaurant_address_tv" />
 
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/item_restaurant_list_number_workmates_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
             app:layout_constraintTop_toTopOf="@id/restaurant_address_tv" />
 
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/item_restaurant_list_first_star_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
             app:layout_constraintTop_toTopOf="@id/opening_time_tv" />
 
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/item_restaurant_list_second_star_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
             app:layout_constraintRight_toLeftOf="@id/item_restaurant_list_first_star_img"
             app:layout_constraintTop_toTopOf="@id/opening_time_tv" />
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/item_restaurant_list_third_star_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -106,7 +106,7 @@
             app:layout_constraintRight_toLeftOf="@id/item_restaurant_list_second_star_img"
             app:layout_constraintTop_toTopOf="@id/opening_time_tv" />
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/restaurant_img"
             android:layout_width="75dp"
             android:layout_height="75dp"

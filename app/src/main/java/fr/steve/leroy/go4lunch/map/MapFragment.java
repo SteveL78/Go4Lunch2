@@ -1,4 +1,4 @@
-package fr.steve.leroy.go4lunch.maps;
+package fr.steve.leroy.go4lunch.map;
 
 import android.Manifest;
 import android.app.Dialog;
@@ -35,33 +35,35 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.maps.model.PlacesSearchResult;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
+import fr.steve.leroy.go4lunch.NearbySearch;
 import fr.steve.leroy.go4lunch.R;
 import fr.steve.leroy.go4lunch.databinding.FragmentMapBinding;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link MapFragment#newInstance} factory method to
+ * Use the {@link MapFragment} factory method to
  * create an instance of this fragment.
  */
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
-
-    FragmentMapBinding binding;
-
     private static final String TAG = "MapFragment";
     private static final int ERROR_DIALOG_REQUEST = 9001;
-
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private static final float DEFAULT_ZOOM = 15f;
-
+    FragmentMapBinding binding;
+    private Executor executor = Executors.newSingleThreadExecutor();
+    private Executor mainExecutor = null;
     //widgets
     private EditText mSearchText;
 
@@ -72,21 +74,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate( savedInstanceState );
-
-        isServicesOK();
-
-        getLocationPermission();
-    }
-
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentMapBinding.inflate( inflater, container, false );
         return binding.getRoot();
+    }
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate( savedInstanceState );
+
+        isServicesOK();
+
     }
 
 
@@ -100,6 +101,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mapFragment.getMapAsync( this );
 
         mSearchText = binding.inputSearch;
+
+        getLocationPermission();
+
+        mainExecutor = ContextCompat.getMainExecutor( requireContext() );
 
         init();
     }
@@ -119,7 +124,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     // execute our method for searching
                     geoLocate();
                 }
-
                 return false;
             }
         } );
@@ -152,8 +156,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-
-
     public boolean isServicesOK() {
         Log.d( TAG, "isServicesOK: checking google services version" );
 
@@ -175,7 +177,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-
     private void getDeviceLocation() {
         Log.d( TAG, "getDevicelocation: getting the devices current location" );
 
@@ -190,10 +191,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         Log.d( TAG, "onComplete: found location" );
                         Location currentLocation = (Location) task.getResult();
 
-                        if(currentLocation != null){
-                        moveCamera( new LatLng( currentLocation.getLatitude(), currentLocation.getLongitude() ),
-                                DEFAULT_ZOOM,
-                                "My location" );
+                        if (currentLocation != null) {
+                            moveCamera( new LatLng( currentLocation.getLatitude(), currentLocation.getLongitude() ),
+                                    DEFAULT_ZOOM,
+                                    "My location" );
                         }
                     } else {
                         Log.d( TAG, "onComplete: current location is null" );
@@ -205,7 +206,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             Log.e( TAG, "getDeviceLocation : SecurityException: " + e.getMessage() );
         }
     }
-
 
 
     private void moveCamera(LatLng latLng, float zoom, String title) {
@@ -228,21 +228,52 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         Log.d( TAG, "onMapReady: map is ready" );
         mMap = googleMap;
 
+        googleMap.addMarker( new MarkerOptions()
+                .position( new LatLng( 48.858370, 2.294481 ) )
+                .title( "Marker" ) );
+
         if (mLocationPermissionsGranted) {
-            getDeviceLocation();
-
-            if (ActivityCompat.checkSelfPermission( getActivity(), Manifest.permission.ACCESS_FINE_LOCATION )
-                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission( getActivity(),
-                    Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-            mMap.setMyLocationEnabled( true );
-            mMap.getUiSettings().setMyLocationButtonEnabled( false );
-
-            init();
+            initLocation();
         }
     }
 
+
+    private void initLocation() {
+
+        getDeviceLocation();
+
+        if (ActivityCompat.checkSelfPermission( getActivity(), Manifest.permission.ACCESS_FINE_LOCATION )
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission( getActivity(),
+                Manifest.permission.ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        mMap.setMyLocationEnabled( true );
+        mMap.getUiSettings().setMyLocationButtonEnabled( false );
+
+        init();
+
+        executor.execute( (() -> {
+            PlacesSearchResult[] placesSearchResults = new NearbySearch().run().results;
+            mainExecutor.execute( (() -> {
+                Log.e( "response1Tag", placesSearchResults[0].toString() );
+                Log.e( "response2Tag", placesSearchResults[1].toString() );
+
+                double lat1 = placesSearchResults[0].geometry.location.lat;
+                double lng1 = placesSearchResults[0].geometry.location.lng;
+
+                double lat2 = placesSearchResults[1].geometry.location.lat;
+                double lng2 = placesSearchResults[1].geometry.location.lng;
+
+                mMap.addMarker( new MarkerOptions().position( new LatLng( lat1, lng1 ) ) );
+                mMap.addMarker( new MarkerOptions().position( new LatLng( lat2, lng2 ) ) );
+
+                mMap.setMinZoomPreference( 14.0f );
+                mMap.moveCamera( CameraUpdateFactory.newLatLng( new LatLng( lat1, lng1 ) ) );
+
+            }));
+        }));
+    }
 
     private void getLocationPermission() {
         Log.d( TAG, "getLocationPermission: getting location permissions" );
@@ -255,12 +286,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     COARSE_LOCATION ) == PackageManager.PERMISSION_GRANTED) {
                 mLocationPermissionsGranted = true;
             } else {
-                ActivityCompat.requestPermissions( getActivity(),
+                requestPermissions(
                         permissions,
                         LOCATION_PERMISSION_REQUEST_CODE );
             }
         } else {
-            ActivityCompat.requestPermissions( getActivity(),
+            requestPermissions(
                     permissions,
                     LOCATION_PERMISSION_REQUEST_CODE );
         }
@@ -285,6 +316,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     Log.d( TAG, "onRequestPermissionsResult: permission granted" );
                     mLocationPermissionsGranted = true;
                     //Initialize our map
+                    initLocation();
+
                 }
             }
         }
