@@ -10,7 +10,7 @@ public class Restaurant {
     private double latitude, longitude;
     private boolean liked;
 
-    public Restaurant(String restaurantId, String name, String speciality, String address, String openingHour, String openingHours, String websiteUrl, String phoneNumber, int distance,double latitude, double longitude, boolean liked){
+    public Restaurant(String restaurantId, String name, String speciality, String address, String openingHour, String openingHours, String websiteUrl, String phoneNumber, int distance, double latitude, double longitude, boolean liked) {
         this.restaurantId = restaurantId;
         this.name = name;
         this.speciality = speciality;
@@ -26,7 +26,6 @@ public class Restaurant {
 
 
     // ------- GETTERS -------
-
     public String getRestaurantId() {
         return restaurantId;
     }
@@ -73,7 +72,6 @@ public class Restaurant {
 
 
     // ------- SETTERS -------
-
     public void setRestaurantId(String restaurantId) {
         this.restaurantId = restaurantId;
     }

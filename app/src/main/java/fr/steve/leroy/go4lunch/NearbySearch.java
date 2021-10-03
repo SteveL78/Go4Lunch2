@@ -23,15 +23,15 @@ import java.util.logging.LogRecord;
  */
 public class NearbySearch {
 
-    public PlacesSearchResponse run(){
+    public PlacesSearchResponse run(LatLng latLng){
         PlacesSearchResponse request = new PlacesSearchResponse();
         GeoApiContext context = new GeoApiContext.Builder()
                 .apiKey("AIzaSyDZVL23At9zWQeYZsUd2sx7A3GaqPhkZEw")
                 .build();
-        LatLng location = new LatLng(-33.8670522, 151.1957362);
+       // LatLng location = new LatLng(48.8566, 2.3522);
 
         try {
-            request = PlacesApi.nearbySearchQuery(context, location)
+            request = PlacesApi.nearbySearchQuery(context, latLng)
                     .radius(5000)
                     .rankby(RankBy.PROMINENCE)
                     .type(PlaceType.RESTAURANT)

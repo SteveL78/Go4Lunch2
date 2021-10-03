@@ -40,13 +40,13 @@ import com.google.maps.model.PlacesSearchResult;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import fr.steve.leroy.go4lunch.NearbySearch;
 import fr.steve.leroy.go4lunch.R;
 import fr.steve.leroy.go4lunch.databinding.FragmentMapBinding;
+import fr.steve.leroy.go4lunch.model.Restaurant;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -195,6 +195,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                             moveCamera( new LatLng( currentLocation.getLatitude(), currentLocation.getLongitude() ),
                                     DEFAULT_ZOOM,
                                     "My location" );
+
+                            initLocation(currentLocation);
+
                         }
                     } else {
                         Log.d( TAG, "onComplete: current location is null" );
@@ -229,18 +232,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mMap = googleMap;
 
         googleMap.addMarker( new MarkerOptions()
-                .position( new LatLng( 48.858370, 2.294481 ) )
+                .position( new LatLng( 48.8566, 2.3522 ) )
                 .title( "Marker" ) );
 
         if (mLocationPermissionsGranted) {
-            initLocation();
+            getDeviceLocation();
         }
     }
 
 
-    private void initLocation() {
-
-        getDeviceLocation();
+    private void initLocation(Location currentLocation) {
 
         if (ActivityCompat.checkSelfPermission( getActivity(), Manifest.permission.ACCESS_FINE_LOCATION )
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission( getActivity(),
@@ -254,8 +255,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         init();
 
         executor.execute( (() -> {
-            PlacesSearchResult[] placesSearchResults = new NearbySearch().run().results;
+            com.google.maps.model.LatLng latLng = new com.google.maps.model.LatLng( currentLocation.getLatitude(), currentLocation.getLongitude());
+            PlacesSearchResult[] placesSearchResults = new NearbySearch().run(latLng).results;
             mainExecutor.execute( (() -> {
+
+                for (int i = 0; i < placesSearchResults.length; i++) {
+                    double lat = placesSearchResults[i].geometry.location.lat;
+                    double lng = placesSearchResults[i].geometry.location.lng;
+
+                    mMap.addMarker( new MarkerOptions().position( new LatLng( lat, lng ) ) );
+
+                  //  mMap.setMinZoomPreference( 15.0f );
+                 //   mMap.moveCamera( CameraUpdateFactory.newLatLng( new LatLng( lat, lng ) ) );
+
+/*
                 Log.e( "response1Tag", placesSearchResults[0].toString() );
                 Log.e( "response2Tag", placesSearchResults[1].toString() );
 
@@ -270,9 +283,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 mMap.setMinZoomPreference( 14.0f );
                 mMap.moveCamera( CameraUpdateFactory.newLatLng( new LatLng( lat1, lng1 ) ) );
-
-            }));
-        }));
+*/
+                }
+            }) );
+        }) );
     }
 
     private void getLocationPermission() {
@@ -316,8 +330,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     Log.d( TAG, "onRequestPermissionsResult: permission granted" );
                     mLocationPermissionsGranted = true;
                     //Initialize our map
-                    initLocation();
-
+                    getDeviceLocation();
                 }
             }
         }

@@ -19,7 +19,7 @@ import com.google.android.material.navigation.NavigationView;
 import fr.steve.leroy.go4lunch.databinding.ActivityMainBinding;
 import fr.steve.leroy.go4lunch.list.ListViewFragment;
 import fr.steve.leroy.go4lunch.map.MapFragment;
-import fr.steve.leroy.go4lunch.workmates.WorkmatesFragment;
+import fr.steve.leroy.go4lunch.workmates.WorkmateFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     break;
 
                 case R.id.workmates_item:
-                    selectedFragment = new WorkmatesFragment();
+                    selectedFragment = new WorkmateFragment();
                     break;
             }
 
