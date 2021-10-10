@@ -16,7 +16,7 @@ import java.util.List;
 
 import fr.steve.leroy.go4lunch.R;
 import fr.steve.leroy.go4lunch.databinding.FragmentWorkmateBinding;
-import fr.steve.leroy.go4lunch.model.User;
+import fr.steve.leroy.go4lunch.model.Workmate;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,7 +26,7 @@ import fr.steve.leroy.go4lunch.model.User;
 public class WorkmateFragment extends Fragment {
 
     private FragmentWorkmateBinding binding;
-    private List<User> mUserList;
+    private List<Workmate> mUserList;
     private WorkmateListAdapter adapter;
     private WorkmateViewModel viewModel;
 
@@ -56,7 +56,7 @@ public class WorkmateFragment extends Fragment {
     }
 
     private void setUpUserList() {
-        viewModel.getUsers().observe(getViewLifecycleOwner(), this::initUserList);
+        viewModel.getWorkmates().observe(getViewLifecycleOwner(), this::initUserList);
     }
 
     private void configureRecycleView() {
@@ -66,15 +66,15 @@ public class WorkmateFragment extends Fragment {
         binding.fragmentWorkmatesListRv.setAdapter(adapter);
     }
 
-    private void initUserList(List<User> userList) {
+    private void initUserList(List<Workmate> userList) {
         if (!userList.isEmpty()) {
             this.mUserList = userList;
         } else {
-            List<User> noFriendsList= new ArrayList<>();
-            User user = new User();
+            List<Workmate> noFriendsList= new ArrayList<>();
+            Workmate user = new Workmate();
             // TODO ProfileUrl
             user.setProfileUrl("");
-            user.setUserName(getString(R.string.no_friends));
+            user.setFirstName(getString(R.string.no_friends));
             noFriendsList.add(user);
             this.mUserList = noFriendsList;
         }

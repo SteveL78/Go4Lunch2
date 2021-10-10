@@ -44,16 +44,16 @@
             android:src="@drawable/ic_magnify" />
 
         <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/input_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_toEndOf="@id/ic_magnify"
             android:layout_centerVertical="true"
-            android:textSize="15sp"
-            android:textColor="#000"
-            android:id="@+id/input_search"
+            android:layout_toEndOf="@id/ic_magnify"
             android:background="@null"
             android:hint="Enter your search"
-            android:imeOptions="actionSearch"/>
+            android:imeOptions="actionSearch"
+            android:textColor="#000"
+            android:textSize="15sp" />
 
 
     </RelativeLayout>

@@ -61,7 +61,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private static final float DEFAULT_ZOOM = 15f;
-    FragmentMapBinding binding;
+    private FragmentMapBinding binding;
     private Executor executor = Executors.newSingleThreadExecutor();
     private Executor mainExecutor = null;
     //widgets
@@ -79,6 +79,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // Inflate the layout for this fragment
         binding = FragmentMapBinding.inflate( inflater, container, false );
         return binding.getRoot();
+
+
     }
 
 
@@ -265,25 +267,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                     mMap.addMarker( new MarkerOptions().position( new LatLng( lat, lng ) ) );
 
-                  //  mMap.setMinZoomPreference( 15.0f );
-                 //   mMap.moveCamera( CameraUpdateFactory.newLatLng( new LatLng( lat, lng ) ) );
-
-/*
-                Log.e( "response1Tag", placesSearchResults[0].toString() );
-                Log.e( "response2Tag", placesSearchResults[1].toString() );
-
-                double lat1 = placesSearchResults[0].geometry.location.lat;
-                double lng1 = placesSearchResults[0].geometry.location.lng;
-
-                double lat2 = placesSearchResults[1].geometry.location.lat;
-                double lng2 = placesSearchResults[1].geometry.location.lng;
-
-                mMap.addMarker( new MarkerOptions().position( new LatLng( lat1, lng1 ) ) );
-                mMap.addMarker( new MarkerOptions().position( new LatLng( lat2, lng2 ) ) );
-
-                mMap.setMinZoomPreference( 14.0f );
-                mMap.moveCamera( CameraUpdateFactory.newLatLng( new LatLng( lat1, lng1 ) ) );
-*/
                 }
             }) );
         }) );

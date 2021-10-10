@@ -12,7 +12,7 @@ import java.util.Objects;
 
 import fr.steve.leroy.go4lunch.R;
 import fr.steve.leroy.go4lunch.databinding.WorkmatesItemBinding;
-import fr.steve.leroy.go4lunch.model.User;
+import fr.steve.leroy.go4lunch.model.Workmate;
 
 /**
  * Created by Steve LEROY on 25/09/2021.
@@ -29,7 +29,7 @@ public class WorkmateListViewHolder extends RecyclerView.ViewHolder {
     }
 
     @SuppressLint("StringFormatInvalid")
-    public void updateWorkmatesInfo(User user) {
+    public void updateWorkmatesInfo(Workmate user) {
         String textUser;
         if (user != null) {
             Glide.with( context )
@@ -43,10 +43,10 @@ public class WorkmateListViewHolder extends RecyclerView.ViewHolder {
                 textUser = context.getString( R.string.no_friends );
             } else if (Objects.equals( user.getRestaurantName(), "" )) {
                 String message = context.getString( R.string.workmates_not_place );
-                textUser = String.format( message, user.getUserName() );
+                textUser = String.format( message, user.getFirstName() );
             } else {
                 String message = context.getString( R.string.place_workmates_eating );
-                textUser = String.format( message, user.getUserName(), user.getRestaurantName() );
+                textUser = String.format( message, user.getFirstName(), user.getRestaurantName() );
             }
             binding.fragmentWorkmatesSelectedRestaurantTv.setText( textUser );
         } else {

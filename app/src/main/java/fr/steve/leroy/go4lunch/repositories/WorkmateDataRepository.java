@@ -1,4 +1,4 @@
-package fr.steve.leroy.go4lunch.workmates;
+package fr.steve.leroy.go4lunch.repositories;
 
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
@@ -9,19 +9,19 @@ import java.util.Objects;
 /**
  * Created by Steve LEROY on 01/10/2021.
  */
-public class UserDataRepository {
+public class WorkmateDataRepository {
 
-    private static UserDataRepository sUserRepository;
+    private static WorkmateDataRepository newInstance;
 
-    public static UserDataRepository getInstance() {
-        if (sUserRepository == null){
-            sUserRepository = new UserDataRepository();
+    public static WorkmateDataRepository getInstance(){
+        if(newInstance == null){
+            newInstance = new WorkmateDataRepository();
         }
-        return sUserRepository;
+        return newInstance;
     }
 
     public String getCurrentUserId() {
-        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             return user.getUid();
         }

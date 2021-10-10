@@ -9,19 +9,19 @@ import com.google.firebase.firestore.QuerySnapshot;
 /**
  * Created by Steve LEROY on 03/10/2021.
  */
-public class UserHelper {
+public class WorkmateHelper {
 
-    private static final String COLLECTION_NAME = "allUsers";
+    private static final String COLLECTION_NAME = "workmate";
 
 
     // ----- COLLECTION REFERENCE -----
-    public static CollectionReference getUsersCollection() {
+    public static CollectionReference getWorkmatesCollection() {
         return FirebaseFirestore.getInstance().collection( COLLECTION_NAME );
     }
 
     // ----- GET -----
-    public static Task<QuerySnapshot> getAllUser() {
-        return UserHelper.getUsersCollection().orderBy( "userName" ).get();
+    public static Task<QuerySnapshot> getAllWorkmates() {
+        return WorkmateHelper.getWorkmatesCollection().get();
     }
 
 }

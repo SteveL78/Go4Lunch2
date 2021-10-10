@@ -11,16 +11,16 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 import fr.steve.leroy.go4lunch.databinding.WorkmatesItemBinding;
-import fr.steve.leroy.go4lunch.model.User;
+import fr.steve.leroy.go4lunch.model.Workmate;
 
 /**
  * Created by Steve LEROY on 02/10/2021.
  */
 public class WorkmateListAdapter extends RecyclerView.Adapter<WorkmateListViewHolder> {
 
-    private List<User> userList;
+    private List<Workmate> userList;
 
-    public WorkmateListAdapter(List<User> users) {
+    public WorkmateListAdapter(List<Workmate> users) {
         this.userList = users;
     }
 
@@ -43,7 +43,7 @@ public class WorkmateListAdapter extends RecyclerView.Adapter<WorkmateListViewHo
         return this.userList.size();
     }
 
-    public void update(List<User> users) {
+    public void update(List<Workmate> users) {
         this.userList = users;
         notifyDataSetChanged();
     }

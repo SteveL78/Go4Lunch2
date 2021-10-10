@@ -6,17 +6,17 @@ import android.os.Parcelable;
 /**
  * Created by Steve LEROY on 24/09/2021.
  */
-public class User implements Parcelable {
+public class Workmate implements Parcelable {
 
-    private String userId, userName, placeId, profileUrl, restaurantId, restaurantName;
+    private String workmateId,firstName, placeId, profileUrl, restaurantId, restaurantName;
 
-    public User() {
+    public Workmate() {
         // Empty constructor
     }
 
-    public User(String userId, String userName, String placeId, String profileUrl, String restaurantId, String restaurantName) {
-        this.userId = userId;
-        this.userName = userName;
+    public Workmate(String workmateId, String firstName, String placeId, String profileUrl, String restaurantId, String restaurantName) {
+        this.workmateId = workmateId;
+        this.firstName = firstName;
         this.placeId = placeId;
         this.profileUrl = profileUrl;
         this.restaurantId = restaurantId;
@@ -25,12 +25,12 @@ public class User implements Parcelable {
 
 
     // ------- GETTERS -------
-    public String getUserId() {
-        return userId;
+    public String getWorkmateId() {
+        return workmateId;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getFirstName() {
+        return firstName;
     }
 
     public String getPlaceId() {
@@ -51,12 +51,12 @@ public class User implements Parcelable {
 
 
     // ------- SETTERS -------
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setWorkmateId(String workmateId) {
+        this.workmateId = workmateId;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setFirstName(String workmateName) {
+        this.firstName = workmateName;
     }
 
     public void setPlaceId(String placeId) {
@@ -76,22 +76,22 @@ public class User implements Parcelable {
     }
 
     // PARCELABLE
-    protected User(Parcel in) {
-        userId = in.readString();
-        userName = in.readString();
+    protected Workmate(Parcel in) {
+        workmateId = in.readString();
+        firstName = in.readString();
         placeId = in.readString();
         profileUrl = in.readString();
     }
 
-    public static final Creator<User> CREATOR = new Creator<User>() {
+    public static final Creator<Workmate> CREATOR = new Creator<Workmate>() {
         @Override
-        public User createFromParcel(Parcel in) {
-            return new User( in );
+        public Workmate createFromParcel(Parcel in) {
+            return new Workmate( in );
         }
 
         @Override
-        public User[] newArray(int size) {
-            return new User[size];
+        public Workmate[] newArray(int size) {
+            return new Workmate[size];
         }
     };
 
@@ -102,8 +102,8 @@ public class User implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString( userId );
-        dest.writeString( userName );
+        dest.writeString( workmateId );
+        dest.writeString( firstName );
         dest.writeString( placeId );
         dest.writeString( profileUrl );
     }
