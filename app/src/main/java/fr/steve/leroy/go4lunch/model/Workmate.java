@@ -3,25 +3,54 @@ package fr.steve.leroy.go4lunch.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.firestore.IgnoreExtraProperties;
+import com.google.firebase.firestore.ServerTimestamp;
+
+import java.util.Date;
+
 /**
  * Created by Steve LEROY on 24/09/2021.
  */
+@IgnoreExtraProperties
 public class Workmate implements Parcelable {
 
     private String workmateId,firstName, placeId, profileUrl, restaurantId, restaurantName;
+    private @ServerTimestamp Date timestamp;
 
-    public Workmate() {
-        // Empty constructor
-    }
-
-    public Workmate(String workmateId, String firstName, String placeId, String profileUrl, String restaurantId, String restaurantName) {
+    public Workmate(String workmateId, String firstName, String placeId, String profileUrl, String restaurantId, String restaurantName, Date timestamp) {
         this.workmateId = workmateId;
         this.firstName = firstName;
         this.placeId = placeId;
         this.profileUrl = profileUrl;
         this.restaurantId = restaurantId;
         this.restaurantName = restaurantName;
+        this.timestamp = timestamp;
     }
+
+    public Workmate(){
+        //empty constructor needed
+    }
+
+    protected Workmate(Parcel in) {
+        workmateId = in.readString();
+        firstName = in.readString();
+        placeId = in.readString();
+        profileUrl = in.readString();
+        restaurantId = in.readString();
+        restaurantName = in.readString();
+    }
+
+    public static final Creator<Workmate> CREATOR = new Creator<Workmate>() {
+        @Override
+        public Workmate createFromParcel(Parcel in) {
+            return new Workmate(in);
+        }
+
+        @Override
+        public Workmate[] newArray(int size) {
+            return new Workmate[size];
+        }
+    };
 
 
     // ------- GETTERS -------
@@ -49,6 +78,9 @@ public class Workmate implements Parcelable {
         return restaurantName;
     }
 
+    public Date getTimestamp() {
+        return timestamp;
+    }
 
     // ------- SETTERS -------
     public void setWorkmateId(String workmateId) {
@@ -75,25 +107,9 @@ public class Workmate implements Parcelable {
         this.restaurantName = restaurantName;
     }
 
-    // PARCELABLE
-    protected Workmate(Parcel in) {
-        workmateId = in.readString();
-        firstName = in.readString();
-        placeId = in.readString();
-        profileUrl = in.readString();
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
     }
-
-    public static final Creator<Workmate> CREATOR = new Creator<Workmate>() {
-        @Override
-        public Workmate createFromParcel(Parcel in) {
-            return new Workmate( in );
-        }
-
-        @Override
-        public Workmate[] newArray(int size) {
-            return new Workmate[size];
-        }
-    };
 
     @Override
     public int describeContents() {
@@ -101,10 +117,12 @@ public class Workmate implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString( workmateId );
-        dest.writeString( firstName );
-        dest.writeString( placeId );
-        dest.writeString( profileUrl );
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(workmateId);
+        parcel.writeString(firstName);
+        parcel.writeString(placeId);
+        parcel.writeString(profileUrl);
+        parcel.writeString(restaurantId);
+        parcel.writeString(restaurantName);
     }
 }

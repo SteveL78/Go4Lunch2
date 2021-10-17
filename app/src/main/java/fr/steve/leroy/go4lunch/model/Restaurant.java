@@ -5,19 +5,20 @@ package fr.steve.leroy.go4lunch.model;
  */
 public class Restaurant {
 
-    private String restaurantId, name, speciality, address, openingHours, websiteUrl, phoneNumber;
+    private String restaurantId, restaurantName, speciality, address, openingHours, websiteUrl, phoneNumber, profileUrl;
     private int distance;
     private double latitude, longitude;
     private boolean liked;
 
-    public Restaurant(String restaurantId, String name, String speciality, String address, String openingHour, String openingHours, String websiteUrl, String phoneNumber, int distance, double latitude, double longitude, boolean liked) {
+    public Restaurant(String restaurantId, String name, String speciality, String address, String openingHour, String openingHours, String websiteUrl, String phoneNumber, String profileUrl, int distance, double latitude, double longitude, boolean liked) {
         this.restaurantId = restaurantId;
-        this.name = name;
+        this.restaurantName = name;
         this.speciality = speciality;
         this.address = address;
         this.openingHours = openingHours;
         this.websiteUrl = websiteUrl;
         this.phoneNumber = phoneNumber;
+        this.profileUrl = profileUrl;
         this.distance = distance;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -30,8 +31,8 @@ public class Restaurant {
         return restaurantId;
     }
 
-    public String getName() {
-        return name;
+    public String getRestaurantName() {
+        return restaurantName;
     }
 
     public String getSpeciality() {
@@ -54,6 +55,10 @@ public class Restaurant {
         return phoneNumber;
     }
 
+    public String getProfileUrl() {
+        return profileUrl;
+    }
+
     public int getDistance() {
         return distance;
     }
@@ -70,14 +75,13 @@ public class Restaurant {
         return liked;
     }
 
-
     // ------- SETTERS -------
     public void setRestaurantId(String restaurantId) {
         this.restaurantId = restaurantId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
     }
 
     public void setSpeciality(String speciality) {
@@ -98,6 +102,10 @@ public class Restaurant {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public void setProfileUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
     }
 
     public void setDistance(int distance) {

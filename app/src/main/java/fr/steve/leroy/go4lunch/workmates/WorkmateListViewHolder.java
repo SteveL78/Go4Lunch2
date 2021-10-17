@@ -21,6 +21,7 @@ public class WorkmateListViewHolder extends RecyclerView.ViewHolder {
 
     private WorkmatesItemBinding binding;
     private Context context;
+    private Workmate mWorkmate;
 
     WorkmateListViewHolder(@NonNull WorkmatesItemBinding binding, Context context) {
         super( binding.getRoot() );
@@ -29,24 +30,25 @@ public class WorkmateListViewHolder extends RecyclerView.ViewHolder {
     }
 
     @SuppressLint("StringFormatInvalid")
-    public void updateWorkmatesInfo(Workmate user) {
+    public void updateWorkmatesInfo(Workmate workmate) {
         String textUser;
-        if (user != null) {
+        if (workmate != null) {
             Glide.with( context )
-                    .load( user.getProfileUrl() )
+                    .load( workmate.getProfileUrl() )
                     .override( 500, 500 )
                     .centerCrop()
                     .circleCrop()
                     .into( binding.fragmentWorkmatesUserPhoto );
 
-            if (Objects.equals( user.getRestaurantName(), null )) {
-                textUser = context.getString( R.string.no_friends );
-            } else if (Objects.equals( user.getRestaurantName(), "" )) {
+            if (Objects.equals( workmate.getRestaurantName(), null )) {
                 String message = context.getString( R.string.workmates_not_place );
-                textUser = String.format( message, user.getFirstName() );
+                textUser = String.format( workmate.getFirstName() + message );
+            } else if (Objects.equals( workmate.getRestaurantName(), "" )) {
+                String message = context.getString( R.string.workmates_not_place );
+                textUser = String.format( workmate.getFirstName() + message );
             } else {
                 String message = context.getString( R.string.place_workmates_eating );
-                textUser = String.format( message, user.getFirstName(), user.getRestaurantName() );
+                textUser = String.format( workmate.getFirstName() + message + workmate.getRestaurantName() );
             }
             binding.fragmentWorkmatesSelectedRestaurantTv.setText( textUser );
         } else {

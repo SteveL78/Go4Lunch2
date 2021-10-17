@@ -22,8 +22,8 @@ public class WorkmateDataRepository {
 
     public String getCurrentUserId() {
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            return user.getUid();
+            FirebaseUser workmate = FirebaseAuth.getInstance().getCurrentUser();
+            return workmate.getUid();
         }
         return null;
     }

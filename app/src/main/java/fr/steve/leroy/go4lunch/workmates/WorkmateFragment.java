@@ -52,10 +52,10 @@ public class WorkmateFragment extends Fragment {
     private void initViewModel() {
         viewModel = new ViewModelProvider(this).get(WorkmateViewModel.class);
         viewModel.init();
-        setUpUserList();
+        setUpWorkmateList();
     }
 
-    private void setUpUserList() {
+    private void setUpWorkmateList() {
         viewModel.getWorkmates().observe(getViewLifecycleOwner(), this::initUserList);
     }
 
@@ -66,9 +66,9 @@ public class WorkmateFragment extends Fragment {
         binding.fragmentWorkmatesListRv.setAdapter(adapter);
     }
 
-    private void initUserList(List<Workmate> userList) {
-        if (!userList.isEmpty()) {
-            this.mUserList = userList;
+    private void initUserList(List<Workmate> workmateList) {
+        if (!workmateList.isEmpty()) {
+            this.mUserList = workmateList;
         } else {
             List<Workmate> noFriendsList= new ArrayList<>();
             Workmate user = new Workmate();

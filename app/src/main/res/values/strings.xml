@@ -75,8 +75,8 @@
     <string name="option_get_place">Get place</string>
     <string name="pick_place">Choose a place</string>
     <string name="no_friends">No one eats in this restaurant !</string>
-    <string name="workmates_not_place">hasn\'t decided yet</string>
-    <string name="place_workmates_eating">is eating at</string>
+    <string name="workmates_not_place">\u0020hasn\'t decided yet</string>
+    <string name="place_workmates_eating">\u0020is eating at\u0020 </string>
 
 
 </resources>

@@ -28,8 +28,8 @@ public class WorkmateViewModel extends ViewModel {
     private String workmateId;
 
     public void init() {
-        WorkmateDataRepository userRepository = WorkmateDataRepository.getInstance();
-        workmateId = userRepository.getCurrentUserId();
+        WorkmateDataRepository workmateRepository = WorkmateDataRepository.getInstance();
+        workmateId = workmateRepository.getCurrentUserId();
     }
 
     public void getAllUsers() {
@@ -37,9 +37,9 @@ public class WorkmateViewModel extends ViewModel {
                 .addOnSuccessListener( queryDocumentSnapshots -> {
                     List<Workmate> workmateList = new ArrayList<>();
                     for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
-                        Workmate userFetched = documentSnapshot.toObject( Workmate.class );
-                        if (!Objects.requireNonNull( userFetched ).getWorkmateId().equals( workmateId )) {
-                            workmateList.add( userFetched );
+                        Workmate workmateFetched = documentSnapshot.toObject( Workmate.class );
+                        if (!Objects.requireNonNull( workmateFetched ).getWorkmateId().equals( workmateId )) {
+                            workmateList.add( workmateFetched );
                         }
                     }
                     this.workmates.setValue( workmateList );
