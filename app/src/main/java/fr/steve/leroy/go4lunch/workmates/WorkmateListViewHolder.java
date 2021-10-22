@@ -53,7 +53,6 @@ public class WorkmateListViewHolder extends RecyclerView.ViewHolder {
             binding.fragmentWorkmatesSelectedRestaurantTv.setText( textUser );
         } else {
             binding.fragmentWorkmatesUserPhoto.setImageResource( R.drawable.ic_anon_user );
-            binding.fragmentWorkmatesSelectedRestaurantTv.setText( R.string.no_friends );
         }
 
     }

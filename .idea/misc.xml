@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../layout/custom_preview.xml" value="0.2777777777777778" />
         <entry key="app/src/main/res/drawable-v24/ic_black_list_view_bottom_nav.xml" value="0.2388888888888889" />
         <entry key="app/src/main/res/drawable-v24/ic_black_map_bottom_nav.xml" value="0.2388888888888889" />
         <entry key="app/src/main/res/drawable-v24/ic_black_person_bottom_nav.xml" value="0.2388888888888889" />
@@ -29,14 +30,14 @@
         <entry key="app/src/main/res/layout/custom_info_contents.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_list_view.xml" value="0.2989583333333333" />
         <entry key="app/src/main/res/layout/fragment_list_view_item.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_map.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_workmate.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_map.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_workmate.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_workmates.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_workmates_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/list_view_item.xml" value="0.2989583333333333" />
         <entry key="app/src/main/res/layout/workmates_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/workmates_joining_cell.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/workmates_joining_item.xml" value="0.2989583333333333" />
+        <entry key="app/src/main/res/layout/workmates_joining_item.xml" value="0.12704918032786885" />
         <entry key="app/src/main/res/layout/workmates_undecided_item.xml" value="0.335" />
         <entry key="app/src/main/res/menu/activity_main_bottom_navigation_menu.xml" value="0.1" />
         <entry key="app/src/main/res/menu/activity_main_navigation_menu_drawer.xml" value="0.49846153846153846" />

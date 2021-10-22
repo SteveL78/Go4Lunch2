@@ -22,10 +22,10 @@
     <string name="button_login_text_logged">Afficher le profil</string>
     <string name="button_login_text_not_logged">Connexion</string>
 
-    <!-- MAIN ACTIVITY ITEMS -->
-    <string name="workmates_item">Workmates</string>
-    <string name="list_view_item">List View</string>
-    <string name="map_view_item">Map View</string>
+    <!-- BOTTOM NAVIGATION VIEW -->
+    <string name="bottom_navigation_menu_workmates">Workmates</string>
+    <string name="bottom_navigation_menu_list_view">List View</string>
+    <string name="bottom_navigation_menu_map_view">Map View</string>
 
     <!-- TOOLBAR -->
     <string name="search_btn_title">Search</string>
