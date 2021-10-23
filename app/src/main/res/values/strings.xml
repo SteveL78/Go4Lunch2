@@ -29,7 +29,7 @@
 
     <!-- TOOLBAR -->
     <string name="search_btn_title">Search</string>
-    <string name="i_am_hungry">I\'m hungry</string>
+    <string name="i_am_hungry">I\'m Hungry!</string>
 
     <!-- GOOGLE MAPS FRAGMENT -->
     <string name="current_location">Current location button</string>

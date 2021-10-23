@@ -79,8 +79,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // Inflate the layout for this fragment
         binding = FragmentMapBinding.inflate( inflater, container, false );
         return binding.getRoot();
-
-
     }
 
 
