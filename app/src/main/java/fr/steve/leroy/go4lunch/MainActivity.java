@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements
         this.configureDrawerLayout();
         this.configureNavigationView();
 
+        updateMainFragment( R.id.map_view_item );
+
     }
 
 
