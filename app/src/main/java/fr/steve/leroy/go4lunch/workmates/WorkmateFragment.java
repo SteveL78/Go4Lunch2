@@ -62,8 +62,8 @@ public class WorkmateFragment extends Fragment {
     private void configureRecycleView() {
         mUserList = new ArrayList<>();
         adapter = new WorkmateListAdapter(mUserList);
-        binding.fragmentWorkmatesListRv.setLayoutManager(new LinearLayoutManager(getActivity()));
-        binding.fragmentWorkmatesListRv.setAdapter(adapter);
+        binding.fragmentWorkmatesRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.fragmentWorkmatesRecyclerview.setAdapter(adapter);
     }
 
     private void initUserList(List<Workmate> workmateList) {

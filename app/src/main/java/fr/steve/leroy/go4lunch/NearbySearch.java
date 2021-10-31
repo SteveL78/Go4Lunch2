@@ -40,6 +40,13 @@ public class NearbySearch {
             e.printStackTrace();
         } finally {
             return request;
+
+                     /*   List<Restaurant> restaurantList = new ArrayList<Restaurant>();
+for (PlacesSearchResult result: request.results) {
+    Restaurant restaurant = new Restaurant( result.placeId, result.name, result.formattedAddress, result.openingHours);
+    restaurantList.add(restaurant);
+}
+return restaurantList;*/
         }
     }
 }

@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements
 
 
     private void configureDrawerLayout() {
-        this.drawerLayout = (DrawerLayout) findViewById( R.id.activity_main_drawer_layout );
+        this.drawerLayout = binding.activityMainDrawerLayout;
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle( this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close );
         drawerLayout.addDrawerListener( toggle );
         toggle.syncState();
@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements
 
 
     private void configureNavigationView() {
-        this.navigationView = (NavigationView) findViewById( R.id.activity_main_nav_view );
+        this.navigationView = binding.activityMainNavView;
         navigationView.setNavigationItemSelectedListener( this );
     }
 
