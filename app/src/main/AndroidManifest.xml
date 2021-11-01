@@ -8,7 +8,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.SETTINGS" />
 
     <application
         android:allowBackup="true"
@@ -18,8 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".authentication.SignInActivity"
+            android:exported="false" />
+        <activity
             android:name=".RestaurantDetailActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <!--
      The API key for Google Maps-based APIs is defined as a string resource.
      (See the file "res/values/google_maps_api.xml").
@@ -44,7 +47,7 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".authentication.SignInActivity"
+            android:name=".authentication.SplashScreenActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
