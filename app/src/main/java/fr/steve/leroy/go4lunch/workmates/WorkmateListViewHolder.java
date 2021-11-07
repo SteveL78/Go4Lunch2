@@ -21,7 +21,6 @@ public class WorkmateListViewHolder extends RecyclerView.ViewHolder {
 
     private WorkmatesItemBinding binding;
     private Context context;
-    private Workmate mWorkmate;
 
     WorkmateListViewHolder(@NonNull WorkmatesItemBinding binding, Context context) {
         super( binding.getRoot() );
