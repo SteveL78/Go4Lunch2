@@ -29,7 +29,7 @@ import fr.steve.leroy.go4lunch.workmates.WorkmateFragment;
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener {
 
-    ActivityMainBinding binding;
+    private ActivityMainBinding binding;
     private FirebaseAuth mAuth;
 
     //FOR DESIGN
@@ -41,8 +41,6 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-
-
 
         binding = ActivityMainBinding.inflate( getLayoutInflater() );
         setContentView( binding.getRoot() );
@@ -62,19 +60,19 @@ public class MainActivity extends AppCompatActivity implements
     // TOOLBAR
     // ------------------------------------
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // 2 - Inflate the menu and add it to the Toolbar
-        getMenuInflater().inflate( R.menu.toolbar_search_menu, menu );
-        return true;
-    }
-
-
     // 1 - Configure Toolbar
     private void configureToolbar() {
         toolbar = binding.toolbar.mainToolbar;
         toolbar.setTitle( getString( R.string.i_am_hungry ) );
         setSupportActionBar( binding.toolbar.mainToolbar );
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // 2 - Inflate the menu and add it to the Toolbar
+        getMenuInflater().inflate( R.menu.toolbar_search_menu, menu );
+        return true;
     }
 
 
@@ -147,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private void configureNavigationView() {
         this.navigationView = binding.activityMainNavView;
-        navigationView.setNavigationItemSelectedListener( this );
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
 

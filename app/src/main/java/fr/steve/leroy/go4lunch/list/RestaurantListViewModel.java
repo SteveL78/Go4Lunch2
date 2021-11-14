@@ -18,7 +18,6 @@ import fr.steve.leroy.go4lunch.NearbySearch;
  */
 public class RestaurantListViewModel extends ViewModel {
 
-
     private Executor executor = Executors.newSingleThreadExecutor();
     private Executor mainExecutor = null;
 
@@ -28,20 +27,20 @@ public class RestaurantListViewModel extends ViewModel {
         return placesSearchResult;
     }
 
+    public void init(Executor mainExecutor) {
+        this.mainExecutor = mainExecutor;
 
+    }
 
-    public void getAllRestaurants( com.google.maps.model.LatLng latLng ) {
+    public void getAllRestaurants(com.google.maps.model.LatLng latLng) {
 
         executor.execute( (() -> {
-            PlacesSearchResult[] placesSearchResults = new NearbySearch().run(latLng).results;
+            PlacesSearchResult[] placesSearchResults = new NearbySearch().run( latLng ).results;
             mainExecutor.execute( (() -> {
 
                 this.placesSearchResult.setValue( Arrays.asList( placesSearchResults ) );
 
-
             }) );
         }) );
-
-
     }
 }

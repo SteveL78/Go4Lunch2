@@ -46,7 +46,6 @@ import java.util.concurrent.Executors;
 import fr.steve.leroy.go4lunch.NearbySearch;
 import fr.steve.leroy.go4lunch.R;
 import fr.steve.leroy.go4lunch.databinding.FragmentMapBinding;
-import fr.steve.leroy.go4lunch.model.Restaurant;
 
 /**
  * A simple {@link Fragment} subclass.
