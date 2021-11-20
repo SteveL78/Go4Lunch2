@@ -32,19 +32,19 @@ public class RestaurantListViewHolder extends RecyclerView.ViewHolder {
 
         displayOpeningHours( placesSearchResult );
 
-        
+
 
     }
 
 
     private void displayOpeningHours(PlacesSearchResult placesSearchResult) {
-        Boolean result = Boolean.valueOf( placesSearchResult.openingHours.openNow.toString() );
-
-        if (result == true) {
+        boolean result = Boolean.parseBoolean( placesSearchResult.openingHours.openNow.toString() );
+        if (result) {
             binding.openingTimeTv.setText( "Open" );
         } else {
             binding.openingTimeTv.setText( "Closed" );
         }
+
     }
 
 }
