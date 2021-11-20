@@ -69,7 +69,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     //vars
     private Boolean mLocationPermissionsGranted = false;
     private GoogleMap mMap;
-    private FusedLocationProviderClient mFusedLocationProviderClient;
+    private FusedLocationProviderClient fusedLocationClient;
+    //private LatLng currentLocation;
 
 
     @Override
@@ -179,12 +180,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void getDeviceLocation() {
         Log.d( TAG, "getDevicelocation: getting the devices current location" );
 
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient( getActivity() );
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient( getActivity() );
 
         try {
             if (mLocationPermissionsGranted) {
 
-                Task location = mFusedLocationProviderClient.getLastLocation();
+                Task location = fusedLocationClient.getLastLocation();
                 location.addOnCompleteListener( task -> {
                     if (task.isSuccessful()) {
                         Log.d( TAG, "onComplete: found location" );
@@ -195,7 +196,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                     DEFAULT_ZOOM,
                                     "My location" );
 
-                            initLocation(currentLocation);
+                            initLocation( currentLocation );
 
                         }
                     } else {
@@ -207,6 +208,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         } catch (SecurityException e) {
             Log.e( TAG, "getDeviceLocation : SecurityException: " + e.getMessage() );
         }
+
     }
 
 
@@ -254,8 +256,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         init();
 
         executor.execute( (() -> {
-            com.google.maps.model.LatLng latLng = new com.google.maps.model.LatLng( currentLocation.getLatitude(), currentLocation.getLongitude());
-            PlacesSearchResult[] placesSearchResults = new NearbySearch().run(latLng).results;
+            com.google.maps.model.LatLng latLng = new com.google.maps.model.LatLng( currentLocation.getLatitude(), currentLocation.getLongitude() );
+            PlacesSearchResult[] placesSearchResults = new NearbySearch().run( latLng ).results;
             mainExecutor.execute( (() -> {
 
                 for (int i = 0; i < placesSearchResults.length; i++) {

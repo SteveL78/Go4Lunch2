@@ -4,53 +4,53 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/restaurant_cell_cardView"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    android:padding="5dp">
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp">
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">
 
         <TextView
             android:id="@+id/restaurant_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Le Zinc"
-            android:paddingEnd="5dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/distance_restaurant_tv"
+            tools:text="Le Zinc" />
 
         <TextView
             android:id="@+id/restaurant_address_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            tools:text="12 rue du Faubourg Poissonnière"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintHorizontal_bias="0.50"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/restaurant_name_tv" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="12 rue du Faubourg Poissonnière" />
 
         <TextView
             android:id="@+id/opening_time_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            tools:text="Open until 7pm"
+            android:layout_marginTop="4dp"
             android:textStyle="italic"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/restaurant_address_tv" />
+            app:layout_constraintTop_toBottomOf="@id/restaurant_address_tv"
+            tools:text="Open until 7pm" />
 
         <TextView
             android:id="@+id/distance_restaurant_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            tools:text="120m"
-            android:paddingRight="12dp"
-            app:layout_constraintEnd_toStartOf="@id/restaurant_img"
-            app:layout_constraintTop_toTopOf="@id/restaurant_name_tv" />
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/restaurant_img"
+            app:layout_constraintTop_toTopOf="@+id/restaurant_img"
+            tools:text="120m" />
 
 
         <ImageView
@@ -59,61 +59,51 @@
             android:layout_height="wrap_content"
             android:background="@drawable/ic_person_outline_24"
             android:contentDescription="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/item_restaurant_list_number_workmates_tv"
-            app:layout_constraintTop_toTopOf="@id/restaurant_address_tv" />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <TextView
             android:id="@+id/item_restaurant_list_number_workmates_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            tools:text="(0)"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/restaurant_img"
-            app:layout_constraintTop_toTopOf="@id/restaurant_address_tv" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/distance_restaurant_tv"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="(0)" />
 
 
-        <ImageView
-            android:id="@+id/item_restaurant_list_first_star_img"
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/item_restaurant_list_ratingbar"
+            style="@style/Widget.AppCompat.RatingBar.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/ic_star_black_outline_24"
-            android:contentDescription="@null"
-            app:layout_constraintEnd_toEndOf="@+id/opening_time_tv"
-            app:layout_constraintEnd_toStartOf="@+id/restaurant_img"
-            app:layout_constraintTop_toTopOf="@id/opening_time_tv" />
-
-
-        <ImageView
-            android:id="@+id/item_restaurant_list_second_star_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="3dp"
-            android:background="@drawable/ic_star_black_outline_24"
-            android:contentDescription="@null"
-            app:layout_constraintRight_toLeftOf="@id/item_restaurant_list_first_star_img"
-            app:layout_constraintTop_toTopOf="@id/opening_time_tv" />
-
-        <ImageView
-            android:id="@+id/item_restaurant_list_third_star_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="3dp"
-            android:background="@drawable/ic_star_black_outline_24"
-            android:contentDescription="@null"
-            app:layout_constraintRight_toLeftOf="@id/item_restaurant_list_second_star_img"
-            app:layout_constraintTop_toTopOf="@id/opening_time_tv" />
+            android:numStars="3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/item_restaurant_list_number_workmates_tv"
+            app:layout_constraintTop_toBottomOf="@+id/item_restaurant_list_number_workmates_tv" />
 
         <ImageView
             android:id="@+id/restaurant_img"
             android:layout_width="75dp"
             android:layout_height="75dp"
-            android:contentDescription="@null"
             android:background="@color/colorAccent"
+            android:contentDescription="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/lightGrey"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/restaurant_img" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
