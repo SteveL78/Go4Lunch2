@@ -29,7 +29,22 @@ public class RestaurantListViewHolder extends RecyclerView.ViewHolder {
     public void updateRestaurantInfo(PlacesSearchResult placesSearchResult) {
         binding.restaurantNameTv.setText( placesSearchResult.name );
         binding.restaurantAddressTv.setText( placesSearchResult.vicinity );
-        binding.openingTimeTv.setText( placesSearchResult.openingHours.toString() );
+
+        displayOpeningHours( placesSearchResult );
+
+        
 
     }
+
+
+    private void displayOpeningHours(PlacesSearchResult placesSearchResult) {
+        Boolean result = Boolean.valueOf( placesSearchResult.openingHours.openNow.toString() );
+
+        if (result == true) {
+            binding.openingTimeTv.setText( "Open" );
+        } else {
+            binding.openingTimeTv.setText( "Closed" );
+        }
+    }
+
 }
