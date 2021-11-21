@@ -90,7 +90,6 @@
             android:id="@+id/restaurant_img"
             android:layout_width="75dp"
             android:layout_height="75dp"
-            android:background="@color/colorAccent"
             android:contentDescription="@null"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

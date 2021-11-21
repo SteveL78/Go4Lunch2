@@ -72,8 +72,6 @@ public class WorkmateFragment extends Fragment {
         } else {
             List<Workmate> noFriendsList= new ArrayList<>();
             Workmate user = new Workmate();
-            // TODO ProfileUrl
-            user.setProfileUrl("");
             user.setFirstName(getString(R.string.no_friends));
             noFriendsList.add(user);
             this.mUserList = noFriendsList;

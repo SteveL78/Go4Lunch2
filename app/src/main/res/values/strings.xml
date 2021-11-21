@@ -78,5 +78,9 @@
     <string name="workmates_not_place">\u0020hasn\'t decided yet</string>
     <string name="place_workmates_eating">\u0020is eating at\u0020 </string>
 
+    <!-- Used in ListViewHolder -->
+    <string name="open_restaurant">Open</string>
+    <string name="closed_restaurant">Closed</string>
+
 
 </resources>

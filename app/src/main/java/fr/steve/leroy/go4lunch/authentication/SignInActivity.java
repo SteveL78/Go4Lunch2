@@ -1,15 +1,14 @@
 package fr.steve.leroy.go4lunch.authentication;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -80,7 +79,6 @@ public class SignInActivity extends AppCompatActivity {
         binding = ActivitySigninBinding.inflate( getLayoutInflater() );
         setContentView( binding.getRoot() );
     }
-
 
 
     // ------------------------------------------------------------------------
@@ -183,7 +181,7 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult( requestCode, resultCode, data );
-        this.handleResponseAfterSignIn(requestCode, resultCode, data);
+        this.handleResponseAfterSignIn( requestCode, resultCode, data );
 
         mCallbackManager.onActivityResult( requestCode, resultCode, data );
 
@@ -245,34 +243,33 @@ public class SignInActivity extends AppCompatActivity {
     // ------------------------------------------------------------------------
 
     // Show Snack Bar with a message
-    private void showSnackBar( String message){
-        Snackbar.make(binding.activitySignInCoordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
+    private void showSnackBar(String message) {
+        Snackbar.make( binding.activitySignInCoordinatorLayout, message, Snackbar.LENGTH_SHORT ).show();
     }
 
     // Method that handles response after SignIn Activity close
-    private void handleResponseAfterSignIn(int requestCode, int resultCode, Intent data){
+    private void handleResponseAfterSignIn(int requestCode, int resultCode, Intent data) {
 
-        IdpResponse response = IdpResponse.fromResultIntent(data);
+        IdpResponse response = IdpResponse.fromResultIntent( data );
 
         if (requestCode == RC_SIGN_IN) {
             // SUCCESS
             if (resultCode == RESULT_OK) {
                 // userManager.createUser();
-                showSnackBar(getString(R.string.connection_succeed));
+                showSnackBar( getString( R.string.connection_succeed ) );
             } else {
                 // ERRORS
                 if (response == null) {
-                    showSnackBar(getString(R.string.error_authentication_canceled));
-                } else if (response.getError()!= null) {
-                    if(response.getError().getErrorCode() == ErrorCodes.NO_NETWORK){
-                        showSnackBar(getString(R.string.error_no_internet));
+                    showSnackBar( getString( R.string.error_authentication_canceled ) );
+                } else if (response.getError() != null) {
+                    if (response.getError().getErrorCode() == ErrorCodes.NO_NETWORK) {
+                        showSnackBar( getString( R.string.error_no_internet ) );
                     } else if (response.getError().getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
-                        showSnackBar(getString(R.string.error_unknown_error));
+                        showSnackBar( getString( R.string.error_unknown_error ) );
                     }
                 }
             }
         }
     }
-
 
 }

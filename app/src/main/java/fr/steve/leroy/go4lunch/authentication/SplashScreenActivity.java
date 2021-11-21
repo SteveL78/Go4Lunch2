@@ -1,11 +1,10 @@
 package fr.steve.leroy.go4lunch.authentication;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import fr.steve.leroy.go4lunch.R;
 
@@ -21,14 +20,14 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
 
         final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        handler.postDelayed( new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent( getApplicationContext() , SignInActivity.class );
-                startActivity(intent);
+                Intent intent = new Intent( getApplicationContext(), SignInActivity.class );
+                startActivity( intent );
                 finish();
             }
-        }, 1000);
+        }, 1000 );
     }
 
 }

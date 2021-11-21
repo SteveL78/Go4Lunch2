@@ -7,10 +7,10 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.core.widget.TextViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.google.maps.model.PlacesSearchResult;
 
 import fr.steve.leroy.go4lunch.R;
@@ -77,7 +77,6 @@ public class RestaurantListViewHolder extends RecyclerView.ViewHolder {
             selectedRestaurantLocation.setLatitude( placesSearchResult.geometry.location.lat );
             selectedRestaurantLocation.setLongitude( placesSearchResult.geometry.location.lng );
 
-            //TODO : afficher la notion de metre
             String distanceResult = String.valueOf( Math.round( userLocation.distanceTo( selectedRestaurantLocation ) ));
             distanceResult = String.format( "%sm", distanceResult );
 
@@ -104,10 +103,12 @@ public class RestaurantListViewHolder extends RecyclerView.ViewHolder {
 
     private void displayOpeningHours(PlacesSearchResult placesSearchResult) {
         boolean result = Boolean.parseBoolean( placesSearchResult.openingHours.openNow.toString() );
+
         if (result) {
-            binding.openingTimeTv.setText( "Open" );
+            binding.openingTimeTv.setText( R.string.open_restaurant );
         } else {
-            binding.openingTimeTv.setText( "Closed" );
+            binding.openingTimeTv.setText( R.string.closed_restaurant );
+            TextViewCompat.setTextAppearance( binding.openingTimeTv, R.style.closedRestaurant );
         }
 
         /*
