@@ -70,7 +70,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private Boolean mLocationPermissionsGranted = false;
     private GoogleMap mMap;
     private FusedLocationProviderClient fusedLocationClient;
-    //private LatLng currentLocation;
 
 
     @Override
@@ -223,6 +222,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             mMap.addMarker( options );
         }
         hideSoftKeyboard();
+
     }
 
 

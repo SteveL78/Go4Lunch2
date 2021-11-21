@@ -1,6 +1,7 @@
 package fr.steve.leroy.go4lunch.list;
 
 import android.content.Context;
+import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -20,6 +21,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListVi
 
 
     private List<PlacesSearchResult> placesSearchResults;
+    private Location currentLocation = null;
 
     public RestaurantListAdapter(List<PlacesSearchResult> placesSearchResults, Context context) {
         this.placesSearchResults = placesSearchResults;
@@ -35,7 +37,8 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListVi
 
     @Override
     public void onBindViewHolder(@NonNull RestaurantListViewHolder holder, int position) {
-        holder.updateRestaurantInfo( placesSearchResults.get( position ) );
+
+        holder.updateRestaurantInfo( placesSearchResults.get( position ), currentLocation );
     }
 
     @Override
@@ -43,8 +46,9 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListVi
         return this.placesSearchResults.size();
     }
 
-    public void update(List<PlacesSearchResult> restaurantList) {
+    public void update(List<PlacesSearchResult> restaurantList, Location currentLocation) {
         this.placesSearchResults = restaurantList;
+        this.currentLocation = currentLocation;
         notifyDataSetChanged();
     }
 }

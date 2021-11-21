@@ -41,7 +41,7 @@
         android:contentDescription="Profile picture"
         app:layout_constraintBottom_toBottomOf="@+id/main_activity_nav_header_lunch_img"
         app:layout_constraintStart_toStartOf="@+id/main_activity_nav_header_lunch_img"
-        tools:src="@drawable/avatar" />
+        tools:src="@drawable/image_not_avalaible" />
 
     <TextView
         android:id="@+id/main_activity_nav_header_user_name"
