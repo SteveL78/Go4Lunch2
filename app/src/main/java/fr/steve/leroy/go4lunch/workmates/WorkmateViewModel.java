@@ -34,7 +34,7 @@ public class WorkmateViewModel extends ViewModel {
 
     public void getAllUsers() {
         WorkmateHelper.getAllWorkmates()
-                .addOnSuccessListener( queryDocumentSnapshots -> {
+                .addOnSuccessListener( queryDocumentSnapshots -> {  //Callback
                     List<Workmate> workmateList = new ArrayList<>();
                     for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
                         Workmate workmateFetched = documentSnapshot.toObject( Workmate.class );

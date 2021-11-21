@@ -79,8 +79,9 @@ public class RestaurantListViewHolder extends RecyclerView.ViewHolder {
 
             //TODO : afficher la notion de metre
             String distanceResult = String.valueOf( Math.round( userLocation.distanceTo( selectedRestaurantLocation ) ));
+            distanceResult = String.format( "%sm", distanceResult );
 
-            binding.distanceRestaurantTv.setText( distanceResult );
+            binding.distanceRestaurantTv.setText( distanceResult);
     }
 
     private void restaurantRating(PlacesSearchResult placesSearchResult) {
