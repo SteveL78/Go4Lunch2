@@ -2,6 +2,7 @@ package fr.steve.leroy.go4lunch.list;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,8 +33,24 @@ public class RestaurantListViewHolder extends RecyclerView.ViewHolder {
 
         displayOpeningHours( placesSearchResult );
 
+        restaurantRating( placesSearchResult );
 
 
+    }
+
+    private void restaurantRating(PlacesSearchResult placesSearchResult) {
+        float restaurantRating = placesSearchResult.rating;
+        float rating = (restaurantRating / 5) * 3;
+
+        if (rating > 1 && rating < 2) {
+            binding.itemRestaurantListRatingbar.setRating( (float) rating );
+            binding.itemRestaurantListRatingbar.setVisibility( View.VISIBLE );
+        } else if (rating > 2 && rating < 3) {
+            binding.itemRestaurantListRatingbar.setRating( (float) rating );
+            binding.itemRestaurantListRatingbar.setVisibility( View.VISIBLE );
+        } else {
+            // binding.itemRestaurantListRatingbar.setVisibility( View.GONE );
+        }
     }
 
 
@@ -44,6 +61,26 @@ public class RestaurantListViewHolder extends RecyclerView.ViewHolder {
         } else {
             binding.openingTimeTv.setText( "Closed" );
         }
+
+        /*
+        boolean result, result2;
+        result = Boolean.parseBoolean( placesSearchResult.openingHours.openNow.toString() );
+        result2 = Boolean.parseBoolean( placesSearchResult.openingHours.permanentlyClosed.toString() );
+
+        switch (result + "-" + result2) {
+            case "false-false":
+                binding.openingTimeTv.setText( "Closed" );
+            case "false-true":
+                binding.openingTimeTv.setText( "Permanently closed" );
+            case "true-false":
+                binding.openingTimeTv.setText( "Open" );
+            case "true-true":
+                binding.openingTimeTv.setText( "Please call the restaurant" );
+            default:
+                throw new RuntimeException(
+                        "something strange happening here, open: " + result + ",closed: " + result2);
+        }
+         */
 
     }
 
