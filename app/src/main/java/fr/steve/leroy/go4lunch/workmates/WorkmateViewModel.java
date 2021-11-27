@@ -26,6 +26,7 @@ public class WorkmateViewModel extends ViewModel {
     }
 
     private String workmateId;
+    private String placeId;
 
     public void init() {
         WorkmateDataRepository workmateRepository = WorkmateDataRepository.getInstance();
@@ -39,6 +40,20 @@ public class WorkmateViewModel extends ViewModel {
                     for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
                         Workmate workmateFetched = documentSnapshot.toObject( Workmate.class );
                         if (!Objects.requireNonNull( workmateFetched ).getWorkmateId().equals( workmateId )) {
+                            workmateList.add( workmateFetched );
+                        }
+                    }
+                    this.workmates.setValue( workmateList );
+                } );
+    }
+
+    public void getWorkmatesForRestaurant() {
+        WorkmateHelper.getAllWorkmates()
+                .addOnSuccessListener( queryDocumentSnapshots -> {  //Callback
+                    List<Workmate> workmateList = new ArrayList<>();
+                    for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
+                        Workmate workmateFetched = documentSnapshot.toObject( Workmate.class );
+                        if (!Objects.requireNonNull( workmateFetched ).getPlaceId().equals( placeId )) {
                             workmateList.add( workmateFetched );
                         }
                     }

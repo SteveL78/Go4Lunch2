@@ -1,4 +1,4 @@
-package fr.steve.leroy.go4lunch;
+package fr.steve.leroy.go4lunch.detail;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,7 +9,8 @@ import fr.steve.leroy.go4lunch.databinding.ActivityRestaurantDetailBinding;
 
 public class RestaurantDetailActivity extends AppCompatActivity {
 
-    ActivityRestaurantDetailBinding binding;
+    private ActivityRestaurantDetailBinding binding;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -119,6 +119,8 @@ public class ListViewFragment extends Fragment {
     }
 
     private void configureOnClickRecyclerView() {
+
+
 /*
         Intent intentDetailActivity = new Intent( getActivity(), RestaurantDetailActivity.class );
         intentDetailActivity.putExtra( mPlacesSearchResults. )

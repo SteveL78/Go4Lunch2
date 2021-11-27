@@ -1,6 +1,5 @@
 package fr.steve.leroy.go4lunch;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -22,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import fr.steve.leroy.go4lunch.authentication.SignInActivity;
 import fr.steve.leroy.go4lunch.databinding.ActivityMainBinding;
+import fr.steve.leroy.go4lunch.detail.RestaurantDetailActivity;
 import fr.steve.leroy.go4lunch.list.ListViewFragment;
 import fr.steve.leroy.go4lunch.map.MapFragment;
 import fr.steve.leroy.go4lunch.workmates.WorkmateFragment;
@@ -119,7 +119,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
-
     // ------------------------------------
     // DRAWER
     // ------------------------------------
@@ -145,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private void configureNavigationView() {
         this.navigationView = binding.activityMainNavView;
-        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener( this );
     }
 
 
@@ -154,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements
         // Intent intent = null;
         switch (item.getItemId()) {
             case R.id.drawer_menu_your_lunch_btn:
-                Intent intent = new Intent(this, RestaurantDetailActivity.class);
+                Intent intent = new Intent( this, RestaurantDetailActivity.class );
                 startActivity( intent );
                 break;
 
@@ -166,22 +165,14 @@ public class MainActivity extends AppCompatActivity implements
                 AlertDialog.Builder builder = new AlertDialog.Builder( this );
                 builder.setTitle( "Logout" );
                 builder.setMessage( "Are you sure you want to logout?" );
-                builder.setPositiveButton( "YES", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mAuth = FirebaseAuth.getInstance();
-                        FirebaseAuth.getInstance().signOut();
-                        Intent intent = new Intent( getApplicationContext(), SignInActivity.class );
-                        intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
-                        startActivity( intent );
-                    }
+                builder.setPositiveButton( "YES", (dialog, which) -> {
+                    mAuth = FirebaseAuth.getInstance();
+                    FirebaseAuth.getInstance().signOut();
+                    Intent intent1 = new Intent( getApplicationContext(), SignInActivity.class );
+                    intent1.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
+                    startActivity( intent1 );
                 } );
-                builder.setNegativeButton( "NO", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                } );
+                builder.setNegativeButton( "NO", (dialog, which) -> dialog.dismiss() );
                 builder.show();
                 break;
 

@@ -20,7 +20,7 @@
             android:name=".authentication.SignInActivity"
             android:exported="false" />
         <activity
-            android:name=".RestaurantDetailActivity"
+            android:name=".detail.RestaurantDetailActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <!--

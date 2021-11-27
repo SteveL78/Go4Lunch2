@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
+    tools:context=".MainActivity">
 
 
     <ImageView
@@ -32,10 +32,23 @@
         android:layout_margin="15dp"
         android:singleLine="true"
         android:textAppearance="?attr/textAppearanceHeadline5"
-        android:textColorHint="@color/white"
+        android:textColor="@color/white"
         app:layout_constraintLeft_toLeftOf="@id/activity_detail_restaurant_detail_container"
         app:layout_constraintTop_toTopOf="@id/activity_detail_restaurant_detail_container"
-        tools:hint="Le Zinc" />
+        tools:text="Le Zinc" />
+
+
+    <androidx.appcompat.widget.AppCompatRatingBar
+        android:id="@+id/item_restaurant_list_ratingbar"
+        style="@style/Widget.AppCompat.RatingBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:numStars="3"
+        app:layout_constraintBottom_toBottomOf="@+id/activity_detail_restaurant_name"
+        app:layout_constraintLeft_toLeftOf="@id/activity_detail_restaurant_detail_container"
+        app:layout_constraintStart_toEndOf="@+id/activity_detail_restaurant_name"
+        app:layout_constraintTop_toTopOf="@+id/activity_detail_restaurant_name" />
 
 
     <TextView
@@ -43,10 +56,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxLines="2"
-        android:textColorHint="@color/white"
+        android:textColor="@color/white"
         app:layout_constraintLeft_toLeftOf="@id/activity_detail_restaurant_name"
         app:layout_constraintTop_toBottomOf="@id/activity_detail_restaurant_name"
-        tools:hint="French restaurant - 12 rue du Faubourg Poissonnière" />
+        tools:text="French restaurant - 12 rue du Faubourg Poissonnière" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
