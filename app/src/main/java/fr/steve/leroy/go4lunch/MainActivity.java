@@ -1,10 +1,14 @@
 package fr.steve.leroy.go4lunch;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,6 +20,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -145,6 +150,33 @@ public class MainActivity extends AppCompatActivity implements
     private void configureNavigationView() {
         this.navigationView = binding.activityMainNavView;
         navigationView.setNavigationItemSelectedListener( this );
+
+        updateNavigationHeader();
+    }
+
+    private void updateNavigationHeader() {
+
+        mAuth = FirebaseAuth.getInstance();
+
+        SharedPreferences preferences = getSharedPreferences( "MyPrefs", MODE_PRIVATE );
+
+        String userName = preferences.getString( "userName", "" );
+        String userEmail = preferences.getString( "userEmail", "" );
+        String userPhotoUrl = preferences.getString( "userPhoto", "" );
+
+        View headerView = binding.activityMainNavView.getHeaderView( 0 );
+        TextView userNameHeader = headerView.findViewById( R.id.main_activity_nav_header_user_name );
+        userNameHeader.setText( userName );
+
+        TextView userMailHeader = headerView.findViewById( R.id.main_activity_nav_header_user_email );
+        userMailHeader.setText( userEmail );
+
+        Glide.with( this )
+                .load( userPhotoUrl )
+                .centerCrop()
+                .circleCrop()
+                .into( (ImageView) headerView.findViewById( R.id.main_activity_nav_header_user_picture ) );
+
     }
 
 
