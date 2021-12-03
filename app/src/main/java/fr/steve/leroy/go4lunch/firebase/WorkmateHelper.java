@@ -26,10 +26,10 @@ public class WorkmateHelper {
         return WorkmateHelper.getWorkmatesCollection().document(id).get();
     }
 
-    public static Task<QuerySnapshot> getWorkmatesForRestaurant(String placeId){
+    public static Task<DocumentSnapshot> getWorkmatesForRestaurant(String placeId){
         //TODO : filtrer les workmates et vérifier lequel mange à ce restaurant
-        return WorkmateHelper.getWorkmatesCollection().whereEqualTo( "restaurantId", placeId ).get();
-       // return WorkmateHelper.getWorkmatesCollection().document(placeId).get();
+        //return WorkmateHelper.getWorkmatesCollection().whereEqualTo( "restaurantId", placeId ).get();
+       return WorkmateHelper.getWorkmatesCollection().document(placeId).get();
     }
 
 

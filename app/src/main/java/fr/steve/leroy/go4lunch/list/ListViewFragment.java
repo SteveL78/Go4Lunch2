@@ -1,8 +1,10 @@
 package fr.steve.leroy.go4lunch.list;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,8 @@ import java.util.List;
 
 import fr.steve.leroy.go4lunch.R;
 import fr.steve.leroy.go4lunch.databinding.FragmentListViewBinding;
+import fr.steve.leroy.go4lunch.detail.RestaurantDetailActivity;
+import fr.steve.leroy.go4lunch.model.Workmate;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,6 +46,7 @@ public class ListViewFragment extends Fragment {
     private RestaurantListViewModel viewModel;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private Location currentLocation;
+    private List<Workmate> workmateList;
 
 
     @Override
@@ -111,19 +116,19 @@ public class ListViewFragment extends Fragment {
     }
 
 
-    private void initRestaurantList(List<PlacesSearchResult> placesSearchResults) {
-        this.mPlacesSearchResults = placesSearchResults;
-        adapter.update( this.mPlacesSearchResults, this.currentLocation );
+    private void initRestaurantList(Pair<List<Workmate>,List<PlacesSearchResult>> result) {
+        this.workmateList = result.first;
+        this.mPlacesSearchResults = result.second;
+        adapter.update( this.workmateList, this.mPlacesSearchResults, this.currentLocation );
         configureOnClickRecyclerView();
-
     }
 
     private void configureOnClickRecyclerView() {
-
-
 /*
-        Intent intentDetailActivity = new Intent( getActivity(), RestaurantDetailActivity.class );
-        intentDetailActivity.putExtra( mPlacesSearchResults. )
-        startActivity( intentDetailActivity );*/
+        Intent intentDetailActivity = new Intent( getContext(), RestaurantDetailActivity.class );
+        intentDetailActivity.putExtra( mPlacesSearchResults. );
+        startActivity( intentDetailActivity );
+*/
+
     }
 }

@@ -48,7 +48,8 @@ public class WorkmateViewModel extends ViewModel {
     }
 
     public void getWorkmatesForRestaurant() {
-        WorkmateHelper.getAllWorkmates()
+      /*
+        WorkmateHelper.getWorkmatesForRestaurant(restaurantId)
                 .addOnSuccessListener( queryDocumentSnapshots -> {  //Callback
                     List<Workmate> workmateList = new ArrayList<>();
                     for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
@@ -58,7 +59,7 @@ public class WorkmateViewModel extends ViewModel {
                         }
                     }
                     this.workmates.setValue( workmateList );
-                } );
+                } );*/
     }
 
 }

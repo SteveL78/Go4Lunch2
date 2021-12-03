@@ -13,7 +13,7 @@ import com.google.maps.model.PlacesSearchResult;
 import java.util.List;
 
 import fr.steve.leroy.go4lunch.databinding.RestaurantItemBinding;
-import fr.steve.leroy.go4lunch.entities.Result;
+import fr.steve.leroy.go4lunch.model.Workmate;
 
 /**
  * Created by Steve LEROY on 26/09/2021.
@@ -22,10 +22,11 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListVi
 
 
     private List<PlacesSearchResult> placesSearchResults;
+    private List<Workmate> workmateList;
     private Location currentLocation = null;
     private OnRestaurantClickListener listener;
 
-    public interface OnRestaurantClickListener{
+    public interface OnRestaurantClickListener {
         void onRestaurantClick(PlacesSearchResult result);
     }
 
@@ -50,8 +51,6 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListVi
             PlacesSearchResult result = placesSearchResults.get( position );
             listener.onRestaurantClick( result );
         } );
-
-
     }
 
     @Override
@@ -59,7 +58,8 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListVi
         return this.placesSearchResults.size();
     }
 
-    public void update(List<PlacesSearchResult> restaurantList, Location currentLocation) {
+    public void update(List<Workmate> workmateList, List<PlacesSearchResult> restaurantList, Location currentLocation) {
+        this.workmateList = workmateList;
         this.placesSearchResults = restaurantList;
         this.currentLocation = currentLocation;
         notifyDataSetChanged();

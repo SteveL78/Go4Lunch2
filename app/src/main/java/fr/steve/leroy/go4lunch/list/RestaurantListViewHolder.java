@@ -11,10 +11,18 @@ import androidx.core.widget.TextViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.maps.model.PlacesSearchResult;
+
+import java.util.List;
+import java.util.Objects;
 
 import fr.steve.leroy.go4lunch.R;
 import fr.steve.leroy.go4lunch.databinding.RestaurantItemBinding;
+import fr.steve.leroy.go4lunch.firebase.WorkmateHelper;
+import fr.steve.leroy.go4lunch.model.Workmate;
 
 /**
  * Created by Steve LEROY on 02/10/2021.
@@ -24,6 +32,9 @@ public class RestaurantListViewHolder extends RecyclerView.ViewHolder {
     private RestaurantItemBinding binding;
     private Context context;
     private Resources resources;
+    private FirebaseAuth mAuth;
+    private int numberWorkmateEatingHere = 0;
+
 
     public RestaurantListViewHolder(@NonNull RestaurantItemBinding binding, Context context) {
         super( binding.getRoot() );
@@ -45,7 +56,35 @@ public class RestaurantListViewHolder extends RecyclerView.ViewHolder {
 
         displayRestaurantPhoto( placesSearchResult );
 
+        updateWorkmateNumber( placesSearchResult );
+
     }
+
+
+    private void updateWorkmateNumber(PlacesSearchResult placesSearchResult) {
+
+        WorkmateHelper.getWorkmatesCollection()
+                .whereEqualTo( "restaurantId", placesSearchResult.placeId )
+                .get()
+                .addOnCompleteListener( task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : Objects.requireNonNull( task.getResult() )) {
+                            numberWorkmateEatingHere++;
+                        }
+                        if (numberWorkmateEatingHere > 0) {
+                            binding.personIcon.setVisibility( View.VISIBLE );
+                            binding.itemRestaurantListNumberWorkmatesTv.setVisibility( View.VISIBLE );
+                            String numberOfUsers = "(" + numberWorkmateEatingHere + ")";
+                            binding.itemRestaurantListNumberWorkmatesTv.setText(numberOfUsers);
+                        } else {
+                            this.binding.personIcon.setVisibility( View.INVISIBLE );
+                        }
+                    } else {
+                        Log.d( "manager", "Error getting documents: ", task.getException() );
+                    }
+                } );
+    }
+
 
     private void displayRestaurantPhoto(PlacesSearchResult placesSearchResult) {
 
@@ -64,72 +103,52 @@ public class RestaurantListViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
+
     private void restaurantDistance(PlacesSearchResult placesSearchResult, Location currentLocation) {
 
-            double userLocationLat = currentLocation.getLatitude();
-            double userLocationLng = currentLocation.getLongitude();
+        double userLocationLat = currentLocation.getLatitude();
+        double userLocationLng = currentLocation.getLongitude();
 
-            Location userLocation = new Location( "Starting point" );
-            userLocation.setLatitude( userLocationLat );
-            userLocation.setLongitude( userLocationLng );
+        Location userLocation = new Location( "Starting point" );
+        userLocation.setLatitude( userLocationLat );
+        userLocation.setLongitude( userLocationLng );
 
-            Location selectedRestaurantLocation = new Location( "Arrival point" );
-            selectedRestaurantLocation.setLatitude( placesSearchResult.geometry.location.lat );
-            selectedRestaurantLocation.setLongitude( placesSearchResult.geometry.location.lng );
+        Location selectedRestaurantLocation = new Location( "Arrival point" );
+        selectedRestaurantLocation.setLatitude( placesSearchResult.geometry.location.lat );
+        selectedRestaurantLocation.setLongitude( placesSearchResult.geometry.location.lng );
 
-            String distanceResult = String.valueOf( Math.round( userLocation.distanceTo( selectedRestaurantLocation ) ));
-            distanceResult = String.format( "%sm", distanceResult );
+        String distanceResult = String.valueOf( Math.round( userLocation.distanceTo( selectedRestaurantLocation ) ) );
+        distanceResult = String.format( "%sm", distanceResult );
 
-            binding.distanceRestaurantTv.setText( distanceResult);
+        binding.distanceRestaurantTv.setText( distanceResult );
     }
 
     private void restaurantRating(PlacesSearchResult placesSearchResult) {
         float restaurantRating = placesSearchResult.rating;
         float rating = (restaurantRating / 5) * 3;
 
-        if (rating > 1 && rating < 2) {
-            binding.itemRestaurantListRatingbar.setRating( (float) rating );
-            binding.itemRestaurantListRatingbar.setVisibility( View.VISIBLE );
-        } else if (rating > 2 && rating < 3) {
+        if (rating > 0) {
             binding.itemRestaurantListRatingbar.setRating( (float) rating );
             binding.itemRestaurantListRatingbar.setVisibility( View.VISIBLE );
         } else {
-            binding.itemRestaurantListRatingbar.setRating( (float) rating );
-            binding.itemRestaurantListRatingbar.setVisibility( View.VISIBLE );
-            // binding.itemRestaurantListRatingbar.setVisibility( View.GONE );
+            binding.itemRestaurantListRatingbar.setVisibility( View.GONE );
         }
     }
 
 
     private void displayOpeningHours(PlacesSearchResult placesSearchResult) {
         boolean result = Boolean.parseBoolean( placesSearchResult.openingHours.openNow.toString() );
+        boolean result2 = Boolean.parseBoolean( String.valueOf( placesSearchResult.permanentlyClosed ) );
 
-        if (result) {
+        if (result2) {
+            binding.openingTimeTv.setText( "Permanently closed" );
+            TextViewCompat.setTextAppearance( binding.openingTimeTv, R.style.closedRestaurant );
+        } else if (result) {
             binding.openingTimeTv.setText( R.string.open_restaurant );
         } else {
             binding.openingTimeTv.setText( R.string.closed_restaurant );
             TextViewCompat.setTextAppearance( binding.openingTimeTv, R.style.closedRestaurant );
         }
-
-        /*
-        boolean result, result2;
-        result = Boolean.parseBoolean( placesSearchResult.openingHours.openNow.toString() );
-        result2 = Boolean.parseBoolean( placesSearchResult.openingHours.permanentlyClosed.toString() );
-
-        switch (result + "-" + result2) {
-            case "false-false":
-                binding.openingTimeTv.setText( "Closed" );
-            case "false-true":
-                binding.openingTimeTv.setText( "Permanently closed" );
-            case "true-false":
-                binding.openingTimeTv.setText( "Open" );
-            case "true-true":
-                binding.openingTimeTv.setText( "Please call the restaurant" );
-            default:
-                throw new RuntimeException(
-                        "something strange happening here, open: " + result + ",closed: " + result2);
-        }
-         */
 
     }
 
