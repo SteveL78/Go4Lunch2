@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ImageView
+            android:id="@+id/activity_detail_restaurant_img"
+            android:layout_width="0dp"
+            android:layout_height="280dp"
+            android:contentDescription="Photo of the selected restaurant"
+            android:scaleType="centerCrop"
+            android:src="@drawable/lunch_meals"
+            tools:ignore="MissingConstraints" />
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/activity_detail_restaurant_detail_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="?attr/colorPrimary"
+            app:layout_constraintHeight_percent=".140"
+            app:layout_constraintTop_toBottomOf="@id/activity_detail_restaurant_img" />
+
+
+        <TextView
+            android:id="@+id/activity_detail_restaurant_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:singleLine="true"
+            android:textAppearance="?attr/textAppearanceHeadline5"
+            android:textColor="@color/white"
+            app:layout_constraintLeft_toLeftOf="@id/activity_detail_restaurant_detail_container"
+            app:layout_constraintTop_toTopOf="@id/activity_detail_restaurant_detail_container"
+            tools:text="Le Zinc" />
+
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/item_restaurant_list_ratingbar"
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:numStars="3"
+            app:layout_constraintBottom_toBottomOf="@+id/activity_detail_restaurant_name"
+            app:layout_constraintLeft_toLeftOf="@id/activity_detail_restaurant_detail_container"
+            app:layout_constraintStart_toEndOf="@+id/activity_detail_restaurant_name"
+            app:layout_constraintTop_toTopOf="@+id/activity_detail_restaurant_name" />
+
+
+        <TextView
+            android:id="@+id/activity_detail_restaurant_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:textColor="@color/white"
+            app:layout_constraintLeft_toLeftOf="@id/activity_detail_restaurant_name"
+            app:layout_constraintTop_toBottomOf="@id/activity_detail_restaurant_name"
+            tools:text="French restaurant - 12 rue du Faubourg Poissonnière" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:clickable="true"
+            android:contentDescription="Button to select this restaurant"
+            android:focusable="true"
+            android:src="@drawable/ic_baseline_check_circle_24"
+            app:backgroundTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/activity_detail_restaurant_img"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/activity_detail_restaurant_img" />
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/activity_detail_restaurant_detail_btn_container"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            app:layout_constraintHeight_percent=".160"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/activity_detail_restaurant_detail_container" />
+
+        <TextView
+            android:id="@+id/activity_detail_restaurant_call_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:clickable="true"
+            android:drawablePadding="20dp"
+            android:focusable="true"
+            android:gravity="center_horizontal"
+            android:paddingVertical="20dp"
+            android:text="CALL"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textColor="@color/lightOrange"
+            app:backgroundTint="@color/white"
+            app:drawableTint="@color/lightOrange"
+            app:drawableTopCompat="@drawable/ic_baseline_call_24"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/activity_detail_restaurant_detail_container" />
+
+        <TextView
+            android:id="@+id/activity_detail_restaurant_like_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:drawablePadding="20dp"
+            android:focusable="true"
+            android:gravity="center_horizontal"
+            android:paddingVertical="20dp"
+            android:text="LIKE"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textColor="@color/lightOrange"
+            app:backgroundTint="@color/white"
+            app:drawableTint="@color/lightOrange"
+            app:drawableTopCompat="@drawable/ic_baseline_star_24"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@id/activity_detail_restaurant_call_btn"
+            app:layout_constraintRight_toLeftOf="@id/activity_detail_restaurant_website_btn"
+            app:layout_constraintTop_toTopOf="@id/activity_detail_restaurant_call_btn" />
+
+
+        <TextView
+            android:id="@+id/activity_detail_restaurant_website_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:drawablePadding="20dp"
+            android:focusable="true"
+            android:paddingVertical="20dp"
+            android:text="WEBSITE"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textColor="@color/lightOrange"
+            app:backgroundTint="@color/white"
+            app:drawableTint="@color/lightOrange"
+            app:drawableTopCompat="@drawable/earth"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toRightOf="@id/activity_detail_restaurant_like_btn"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/activity_detail_restaurant_call_btn" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/restaurant_list_item"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/activity_detail_restaurant_detail_btn_container">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:background="@color/lightGrey"
+                tools:ignore="MissingConstraints" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/activity_detail_restaurant_rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</FrameLayout>

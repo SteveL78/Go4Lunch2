@@ -82,5 +82,10 @@
     <string name="open_restaurant">Open</string>
     <string name="closed_restaurant">Closed</string>
 
+    <string name="text_workmate_joining">%1$s is joining!</string>
+    <string name="detail_restaurant_like_btn">LIKE</string>
+    <string name="detail_restaurant_call_btn">CALL</string>
+    <string name="detail_restaurant_website_btn">WEBSITE</string>
+
 
 </resources>

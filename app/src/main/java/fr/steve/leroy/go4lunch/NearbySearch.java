@@ -20,7 +20,6 @@ public class NearbySearch {
         GeoApiContext context = new GeoApiContext.Builder()
                 .apiKey( "AIzaSyDZVL23At9zWQeYZsUd2sx7A3GaqPhkZEw" )
                 .build();
-        // LatLng location = new LatLng(48.8566, 2.3522);
 
         try {
             request = PlacesApi.nearbySearchQuery( context, latLng )
@@ -32,32 +31,8 @@ public class NearbySearch {
             e.printStackTrace();
         } finally {
             return request;
-
-/*
-            List<Restaurant> restaurantList = new ArrayList<Restaurant>();
-            for (PlacesSearchResult result : request.results) {
-                Restaurant restaurant = new Restaurant( result.placeId, result.name, result.formattedAddress, result.openingHours, result.vicinity, result.photos );
-                restaurantList.add( restaurant );
-            }
-            return restaurantList;
+//PlacesApi.placeDetails(  )
         }
-*/
-
-        }
-
-
-
-
-    /*
-    OkHttpClient client = new OkHttpClient().newBuilder()
-            .build();
-    Request request = new Request.Builder()
-            .url("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522%2C151.1957362&radius=1500&type=restaurant&keyword=restaurant&key=AIzaSyDZVL23At9zWQeYZsUd2sx7A3GaqPhkZEw")
-            .method("GET", null)
-            .build();
-    Response response = client.newCall(request).execute();
-*/
-
 
     }
 }

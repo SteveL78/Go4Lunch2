@@ -2,12 +2,14 @@ package fr.steve.leroy.go4lunch.list;
 
 import android.content.Context;
 import android.location.Location;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.common.eventbus.EventBus;
 import com.google.maps.model.PlacesSearchResult;
 
 import java.util.List;
@@ -27,11 +29,12 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListVi
     private OnRestaurantClickListener listener;
 
     public interface OnRestaurantClickListener {
-        void onRestaurantClick(PlacesSearchResult result);
+        void onRestaurantClick( PlacesSearchResult result);
     }
 
-    public RestaurantListAdapter(List<PlacesSearchResult> placesSearchResults, Context context) {
+    public RestaurantListAdapter(List<PlacesSearchResult> placesSearchResults, OnRestaurantClickListener listener ) {
         this.placesSearchResults = placesSearchResults;
+        this.listener = listener;
     }
 
     @NonNull
@@ -58,7 +61,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListVi
         return this.placesSearchResults.size();
     }
 
-    public void update(List<Workmate> workmateList, List<PlacesSearchResult> restaurantList, Location currentLocation) {
+    public void updateWithData(List<Workmate> workmateList, List<PlacesSearchResult> restaurantList, Location currentLocation) {
         this.workmateList = workmateList;
         this.placesSearchResults = restaurantList;
         this.currentLocation = currentLocation;

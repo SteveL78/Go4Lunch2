@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,7 @@ public class WorkmateFragment extends Fragment {
         configureBinding(view);
         initViewModel();
         viewModel.getAllUsers();
+        configureSwipeRefreshLayout();
         return view;
     }
 
@@ -77,5 +79,15 @@ public class WorkmateFragment extends Fragment {
             this.mUserList = noFriendsList;
         }
         adapter.update(this.mUserList);
+        binding.swipeRefreshLayout.setRefreshing( false );
+    }
+
+    private void configureSwipeRefreshLayout(){
+        binding.swipeRefreshLayout.setOnRefreshListener( new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                setUpWorkmateList();
+            }
+        } );
     }
 }

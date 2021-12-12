@@ -12,17 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.maps.model.PlacesSearchResult;
 
-import java.util.List;
 import java.util.Objects;
 
 import fr.steve.leroy.go4lunch.R;
 import fr.steve.leroy.go4lunch.databinding.RestaurantItemBinding;
 import fr.steve.leroy.go4lunch.firebase.WorkmateHelper;
-import fr.steve.leroy.go4lunch.model.Workmate;
 
 /**
  * Created by Steve LEROY on 02/10/2021.
@@ -72,15 +69,13 @@ public class RestaurantListViewHolder extends RecyclerView.ViewHolder {
                             numberWorkmateEatingHere++;
                         }
                         if (numberWorkmateEatingHere > 0) {
-                            binding.personIcon.setVisibility( View.VISIBLE );
-                            binding.itemRestaurantListNumberWorkmatesTv.setVisibility( View.VISIBLE );
                             String numberOfUsers = "(" + numberWorkmateEatingHere + ")";
-                            binding.itemRestaurantListNumberWorkmatesTv.setText(numberOfUsers);
+                            binding.itemRestaurantListNumberWorkmatesTv.setText( numberOfUsers );
                         } else {
                             this.binding.personIcon.setVisibility( View.INVISIBLE );
                         }
                     } else {
-                        Log.d( "manager", "Error getting documents: ", task.getException() );
+                        Log.d( "updateWorkmateNumber", "Error getting documents: ", task.getException() );
                     }
                 } );
     }
@@ -127,23 +122,20 @@ public class RestaurantListViewHolder extends RecyclerView.ViewHolder {
         float restaurantRating = placesSearchResult.rating;
         float rating = (restaurantRating / 5) * 3;
 
-        if (rating > 0) {
-            binding.itemRestaurantListRatingbar.setRating( (float) rating );
-            binding.itemRestaurantListRatingbar.setVisibility( View.VISIBLE );
-        } else {
-            binding.itemRestaurantListRatingbar.setVisibility( View.GONE );
-        }
+        binding.itemRestaurantListRatingbar.setRating( rating );
+        binding.itemRestaurantListRatingbar.setVisibility( View.VISIBLE );
+
     }
 
 
     private void displayOpeningHours(PlacesSearchResult placesSearchResult) {
-        boolean result = Boolean.parseBoolean( placesSearchResult.openingHours.openNow.toString() );
-        boolean result2 = Boolean.parseBoolean( String.valueOf( placesSearchResult.permanentlyClosed ) );
+        boolean isOpen = Boolean.parseBoolean( placesSearchResult.openingHours.openNow.toString() );
+        boolean isPermanentlyClosed = Boolean.parseBoolean( String.valueOf( placesSearchResult.permanentlyClosed ) );
 
-        if (result2) {
+        if (isPermanentlyClosed) {
             binding.openingTimeTv.setText( "Permanently closed" );
             TextViewCompat.setTextAppearance( binding.openingTimeTv, R.style.closedRestaurant );
-        } else if (result) {
+        } else if (isOpen) {
             binding.openingTimeTv.setText( R.string.open_restaurant );
         } else {
             binding.openingTimeTv.setText( R.string.closed_restaurant );

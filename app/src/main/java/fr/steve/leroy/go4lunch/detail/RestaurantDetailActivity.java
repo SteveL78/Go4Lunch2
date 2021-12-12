@@ -1,16 +1,15 @@
 package fr.steve.leroy.go4lunch.detail;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
-import fr.steve.leroy.go4lunch.databinding.ActivityMainBinding;
+import androidx.appcompat.app.AppCompatActivity;
+
 import fr.steve.leroy.go4lunch.databinding.ActivityRestaurantDetailBinding;
 
 public class RestaurantDetailActivity extends AppCompatActivity {
 
     private ActivityRestaurantDetailBinding binding;
-    
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,5 +17,14 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
         binding = ActivityRestaurantDetailBinding.inflate( getLayoutInflater() );
         setContentView( binding.getRoot() );
+
+        //configureRecyclerView();
+
     }
+
+
 }
+
+
+
+

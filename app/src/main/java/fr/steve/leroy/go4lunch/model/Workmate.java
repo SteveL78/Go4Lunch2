@@ -6,13 +6,14 @@ import android.os.Parcelable;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 import com.google.firebase.firestore.ServerTimestamp;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Steve LEROY on 24/09/2021.
  */
 @IgnoreExtraProperties
-public class Workmate implements Parcelable {
+public class Workmate implements Serializable {
 
     private String workmateId,firstName, placeId, profileUrl, restaurantId, restaurantName;
     private @ServerTimestamp Date timestamp;
@@ -30,7 +31,7 @@ public class Workmate implements Parcelable {
     public Workmate(){
         //empty constructor needed
     }
-
+/*
     protected Workmate(Parcel in) {
         workmateId = in.readString();
         firstName = in.readString();
@@ -51,7 +52,7 @@ public class Workmate implements Parcelable {
             return new Workmate[size];
         }
     };
-
+*/
 
     // ------- GETTERS -------
     public String getWorkmateId() {
@@ -110,7 +111,7 @@ public class Workmate implements Parcelable {
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
-
+/*
     @Override
     public int describeContents() {
         return 0;
@@ -125,4 +126,6 @@ public class Workmate implements Parcelable {
         parcel.writeString(restaurantId);
         parcel.writeString(restaurantName);
     }
+
+ */
 }

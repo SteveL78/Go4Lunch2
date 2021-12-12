@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:id="@+id/parent_layout">
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <ImageView
         android:id="@+id/fragment_workmates_user_photo"
         android:layout_width="60dp"
         android:layout_height="60dp"
@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <TextView
         android:id="@+id/fragment_workmates_selected_restaurant_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

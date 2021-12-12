@@ -2,6 +2,8 @@ package fr.steve.leroy.go4lunch.firebase;
 
 
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -21,6 +23,10 @@ public class WorkmateHelper {
     }
 
     // ----- GET -----
+
+    public static FirebaseUser getCurrentWorkmate(){
+        return FirebaseAuth.getInstance().getCurrentUser();
+    }
 
     public static Task<DocumentSnapshot> getWorkmate(String id){
         return WorkmateHelper.getWorkmatesCollection().document(id).get();
