@@ -89,7 +89,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:drawablePadding="20dp"
         android:layout_marginLeft="15dp"
         android:focusable="true"
         android:paddingVertical="20dp"
@@ -110,7 +109,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:drawablePadding="20dp"
         android:focusable="true"
         android:paddingVertical="20dp"
         android:gravity="center_horizontal"
@@ -132,7 +130,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:drawablePadding="20dp"
         android:focusable="true"
         android:paddingVertical="20dp"
         android:text="@string/detail_restaurant_website_btn"
@@ -154,9 +151,12 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/activity_detail_restaurant_detail_btn_container">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_detail_restaurant_like_btn">
 
         <View
+            android:id="@+id/view"
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
             android:background="@color/lightGrey"
@@ -165,7 +165,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/activity_detail_restaurant_rv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="@+id/view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
