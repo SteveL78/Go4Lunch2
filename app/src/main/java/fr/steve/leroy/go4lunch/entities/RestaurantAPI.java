@@ -1,5 +1,6 @@
 package fr.steve.leroy.go4lunch.entities;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -10,23 +11,35 @@ import java.util.List;
 public class RestaurantAPI {
 
     @SerializedName("place_id")
+    @Expose
     private String placeId;
     @SerializedName("name")
+    @Expose
     private String name;
     @SerializedName("geometry")
+    @Expose
     private Geometry geometry;
     @SerializedName("photos")
+    @Expose
     private List<Photo> photos;
     @SerializedName("rating")
+    @Expose
     private float rating;
     @SerializedName("vicinity")
+    @Expose
     private String vicinity;
     @SerializedName("opening_hours")
+    @Expose
     private OpeningHours openingHours;
     @SerializedName("website")
+    @Expose
     private String website;
     @SerializedName("international_phone_number")
+    @Expose
     private String phoneNumber;
+
+    public RestaurantAPI() {
+    }
 
     public String getPlaceId() {
         return placeId;

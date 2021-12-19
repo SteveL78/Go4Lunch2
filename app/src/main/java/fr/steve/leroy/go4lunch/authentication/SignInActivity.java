@@ -15,6 +15,7 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
+import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -31,6 +32,9 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+
+import java.util.Collections;
+import java.util.List;
 
 import fr.steve.leroy.go4lunch.MainActivity;
 import fr.steve.leroy.go4lunch.R;
@@ -61,14 +65,13 @@ public class SignInActivity extends AppCompatActivity {
         initFacebookAuthentication();
 
         initGoogleAuthentication();
-        binding.activitySigninGoogleLoginButton.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                googleSignIn();
-            }
-        } );
+        binding.activitySigninGoogleLoginButton.setOnClickListener( v -> googleSignIn() );
+
+        binding.activitySigninEmailLoginButton.setOnClickListener( v -> startEmailSignIn() );
 
     }
+
+
 
 
     // ------------------------------------------------------------------------
@@ -100,6 +103,35 @@ public class SignInActivity extends AppCompatActivity {
         }
     }
 
+
+    // ------------------------------------------------------------------------
+    // AUTH WITH EMAIL
+    // ------------------------------------------------------------------------
+
+    private void startEmailSignIn() {
+        binding.activitySigninTwitterLoginButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Choose authentication providers
+                List<AuthUI.IdpConfig> providers =
+                        Collections.singletonList(new AuthUI.IdpConfig.EmailBuilder().build());
+
+                // Launch the activity
+                startActivityForResult(
+                        AuthUI.getInstance()
+                                .createSignInIntentBuilder()
+                                .setTheme(R.style.LoginTheme)
+                                .setAvailableProviders(providers)
+                                .setIsSmartLockEnabled(false, true)
+                                .setLogo(R.drawable.ic_logo_go4lunch)
+                                .build(),
+                        RC_SIGN_IN);
+
+                Intent intent = new Intent( SignInActivity.this, MainActivity.class );
+                startActivity( intent );
+            }
+    });
+    }
 
     // ------------------------------------------------------------------------
     // AUTH WITH FACEBOOK

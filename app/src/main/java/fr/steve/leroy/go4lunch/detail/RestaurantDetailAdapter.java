@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.maps.model.PlacesSearchResult;
+
 import java.util.List;
 
 import fr.steve.leroy.go4lunch.R;
@@ -19,9 +21,11 @@ import fr.steve.leroy.go4lunch.model.Workmate;
 public class RestaurantDetailAdapter extends RecyclerView.Adapter<RestaurantDetailViewHolder> {
 
     private List<Workmate> workmateList;
+    private List<PlacesSearchResult> placesSearchResult;
 
-    public RestaurantDetailAdapter(List<Workmate> result) {
-        this.workmateList = result;
+    public RestaurantDetailAdapter(List<PlacesSearchResult> placesSearchResults, List<Workmate> workmateList) {
+        this.placesSearchResult = placesSearchResults;
+        this.workmateList = workmateList;
     }
 
     @NonNull

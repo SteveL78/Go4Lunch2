@@ -100,13 +100,28 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
+                <Button
+                    android:id="@+id/activity_signin_email_login_button"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_large_margin"
+                    android:background="@drawable/button_radius_email_color"
+                    android:paddingStart="10dp"
+                    android:text="@string/sign_in_with_email"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/black"
+                    tools:ignore="RtlSymmetry" />
 
                 <com.facebook.login.widget.LoginButton
                     android:id="@+id/activity_signin_fb_login_button"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAllCaps="false"/>
+                    android:layout_marginTop="@dimen/default_large_margin"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:textAllCaps="false" />
 
                 <Button
                     android:id="@+id/activity_signin_google_login_button"
@@ -115,9 +130,23 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/default_large_margin"
                     android:background="@drawable/button_radius_google_color"
-                    android:drawableStart="@drawable/ic_google_plus_24"
+                    android:drawableLeft="@drawable/ic_google_plus_24"
                     android:paddingStart="10dp"
-                    android:text="@string/loginGoogle"
+                    android:text="@string/sign_in_with_google"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    tools:ignore="RtlSymmetry" />
+
+                <Button
+                    android:id="@+id/activity_signin_twitter_login_button"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_large_margin"
+                    android:background="@drawable/button_radius_twitter_color"
+                    android:drawableLeft="@drawable/fui_ic_twitter_bird_white_24dp"
+                    android:paddingStart="10dp"
+                    android:text="@string/sign_in_with_twitter"
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"
                     tools:ignore="RtlSymmetry" />

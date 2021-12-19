@@ -19,6 +19,8 @@
     <!-- BUTTONS -->
     <color name="color_fb_btn">#5b7cbb</color>
     <color name="color_google_btn">#cc543b</color>
+    <color name="color_twitter_btn">#FF5BAAF4</color>
+    <color name="color_email_btn">#FFFFFF</color>
 
     <!-- TEXTVIEW -->
     <color name="text_normal_dark">#202122</color>

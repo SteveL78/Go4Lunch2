@@ -3,8 +3,10 @@
 
     <!-- SIGN IN ACTIVITY -->
     <string name="main_activity_description">Find a nice restaurant and invite your co-workers for lunch !</string>
-    <string name="loginFb">Sign in with Facebook</string>
-    <string name="loginGoogle">Sign in with Google</string>
+    <string name="sign_in_with_fb">Sign in with Facebook</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="sign_in_with_twitter">Sign in with Twitter</string>
+    <string name="sign_in_with_email">Sign in with Email</string>
     <string name="google_maps_API_key">AIzaSyDZVL23At9zWQeYZsUd2sx7A3GaqPhkZEw</string>
 
 
@@ -86,6 +88,7 @@
     <string name="detail_restaurant_like_btn">LIKE</string>
     <string name="detail_restaurant_call_btn">CALL</string>
     <string name="detail_restaurant_website_btn">WEBSITE</string>
+
 
 
 </resources>

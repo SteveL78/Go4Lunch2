@@ -1,5 +1,6 @@
 package fr.steve.leroy.go4lunch.entities;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -12,15 +13,19 @@ import java.util.List;
 public class Photo implements Serializable {
 
     @SerializedName("height")
+    @Expose
     private Integer height;
 
     @SerializedName("width")
+    @Expose
     private Integer width;
 
     @SerializedName("html_attributions")
+    @Expose
     private List<String> htmlAttributions = new ArrayList<String>();
 
     @SerializedName("photo_reference")
+    @Expose
     private String photoReference;
 
 

@@ -1,5 +1,6 @@
 package fr.steve.leroy.go4lunch.entities;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -12,15 +13,19 @@ import java.util.List;
 public class PlacesResults implements Serializable {
 
     @SerializedName("html_attributions")
+    @Expose
     private List<Object> htmlAttributions = new ArrayList<Object>();
 
     @SerializedName("next_page_token")
+    @Expose
     private String nextPageToken;
 
     @SerializedName("results")
+    @Expose
     private List<Result> results = new ArrayList<Result>();
 
     @SerializedName("status")
+    @Expose
     private String status;
 
 

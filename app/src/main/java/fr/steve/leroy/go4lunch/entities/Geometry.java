@@ -1,5 +1,6 @@
 package fr.steve.leroy.go4lunch.entities;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -10,6 +11,7 @@ import java.io.Serializable;
 public class Geometry implements Serializable {
 
     @SerializedName("location")
+    @Expose
     private Location location;
 
     // ------- GETTER -------
