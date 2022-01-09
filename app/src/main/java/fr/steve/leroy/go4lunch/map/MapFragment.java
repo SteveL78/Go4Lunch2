@@ -94,6 +94,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated( view, savedInstanceState );
         Log.d( TAG, "initMap: initializing map" );
+        // Build the map, obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById( R.id.map );
         assert mapFragment != null;
@@ -106,6 +107,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mainExecutor = ContextCompat.getMainExecutor( requireContext() );
 
         init();
+
     }
 
 
@@ -234,11 +236,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         googleMap.addMarker( new MarkerOptions()
                 .position( new LatLng( 48.8566, 2.3522 ) )
-                .title( "Marker" ) );
+                .title( "You are here" ) );
 
         if (mLocationPermissionsGranted) {
             getDeviceLocation();
         }
+
+        binding.fragmentMapFloatingActionBtn.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getDeviceLocation();
+            }
+        } );
+
     }
 
 
@@ -271,7 +281,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }) );
     }
 
-    private void getLocationPermission() {
+    private boolean getLocationPermission() {
         Log.d( TAG, "getLocationPermission: getting location permissions" );
         String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION};
@@ -291,6 +301,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     permissions,
                     LOCATION_PERMISSION_REQUEST_CODE );
         }
+        return false;
     }
 
     @Override

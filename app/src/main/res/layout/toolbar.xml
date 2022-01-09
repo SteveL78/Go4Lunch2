@@ -9,8 +9,4 @@
     android:background="@color/lightOrange"
     android:theme="@style/ToolbarTheme"
     app:titleTextAppearance="@style/Toolbar.TitleText"
-    android:fitsSystemWindows="true"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"/>
-
+    android:fitsSystemWindows="true" />

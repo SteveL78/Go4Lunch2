@@ -8,8 +8,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -23,6 +23,9 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.maps.model.PlaceDetails;
+
+import java.util.List;
 
 import fr.steve.leroy.go4lunch.authentication.SignInActivity;
 import fr.steve.leroy.go4lunch.databinding.ActivityMainBinding;
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private ActivityMainBinding binding;
     private FirebaseAuth mAuth;
+    private List<PlaceDetails> placeDetailList;
 
     //FOR DESIGN
     private Toolbar toolbar;
@@ -86,7 +90,33 @@ public class MainActivity extends AppCompatActivity implements
         //3 - Handle actions on menu item
         switch (item.getItemId()) {
             case R.id.search_menu:
-                Toast.makeText( this, "Recherche indisponible, demandez plutôt l'avis de Google, c'est mieux et plus rapide.", Toast.LENGTH_LONG ).show();
+
+
+/*
+                SearchView searchView = (SearchView) item.getActionView();
+                searchView.setQueryHint( "Search restaurants" );
+
+                SearchManager mSearchManager = (SearchManager) requireContext().getSystemService( Context.SEARCH_SERVICE);
+                searchView.setSearchableInfo(mSearchManager.getSearchableInfo(((MainActivity) requireContext()).getComponentName()));
+                searchView.setIconifiedByDefault( false );
+                searchView.setOnQueryTextListener( new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String s) {
+                        if(s.length() >2){
+
+
+                        }
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String s) {
+                        return false;
+                    }
+                } );
+*/
+
+               // Toast.makeText( this, "Recherche indisponible, demandez plutôt l'avis de Google, c'est mieux et plus rapide.", Toast.LENGTH_LONG ).show();
                 return true;
             default:
                 return super.onOptionsItemSelected( item );

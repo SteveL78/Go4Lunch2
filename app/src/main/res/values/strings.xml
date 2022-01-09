@@ -30,7 +30,7 @@
     <string name="bottom_navigation_menu_map_view">Map View</string>
 
     <!-- TOOLBAR -->
-    <string name="search_btn_title">Search</string>
+    <string name="search_menu">Search restaurants</string>
     <string name="i_am_hungry">I\'m Hungry!</string>
 
     <!-- GOOGLE MAPS FRAGMENT -->

@@ -4,9 +4,10 @@
 
     <item
         android:id="@+id/search_menu"
-        android:hint="Find a Place"
         android:icon="@drawable/ic_search_24"
-        android:title="@string/search_btn_title"
-        app:showAsAction="collapseActionView|ifRoom" />
+        android:title="@string/search_menu"
+        app:showAsAction="collapseActionView|ifRoom"
+
+        app:actionViewClass="androidx.appcompat.widget.SearchView"/>
 
 </menu>
