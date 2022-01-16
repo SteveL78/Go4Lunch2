@@ -13,8 +13,8 @@ public class WorkmateDataRepository {
 
     private static WorkmateDataRepository newInstance;
 
-    public static WorkmateDataRepository getInstance(){
-        if(newInstance == null){
+    public static WorkmateDataRepository getInstance() {
+        if (newInstance == null) {
             newInstance = new WorkmateDataRepository();
         }
         return newInstance;
@@ -35,7 +35,7 @@ public class WorkmateDataRepository {
     }
 
     public void deleteUserFromFirebase() {
-        Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).delete();
+        Objects.requireNonNull( FirebaseAuth.getInstance().getCurrentUser() ).delete();
     }
 
 }

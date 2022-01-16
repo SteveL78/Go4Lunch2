@@ -6,15 +6,22 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.maps.model.PlaceDetails;
 import com.google.maps.model.PlacesSearchResult;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -27,15 +34,14 @@ import io.reactivex.rxjava3.disposables.Disposable;
 
 public class RestaurantDetailActivity extends AppCompatActivity {
 
-    private ActivityRestaurantDetailBinding activityBinding;
-    private WorkmatesJoiningItemBinding workmatesBinding;
-
+    private ActivityRestaurantDetailBinding binding;
     private RestaurantDetailAdapter adapter;
+
     private RecyclerView recyclerView;
     private RestaurantDetailViewModel viewModel;
     private Disposable disposable;
     private List<Workmate> mWorkmateList;
-    private PlacesSearchResult placesSearchResult;
+    private PlacesSearchResult placesSearchResults;
     private Context context;
     public static int REQUEST_CALL = 100;
     private static final String RESTAURANT_PLACE_ID = "placeId";
@@ -54,7 +60,67 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
         this.mainExecutor = ContextCompat.getMainExecutor( this );
 
+        configureRecycleView();
 
+        setFabListener();
+
+
+    }
+
+    private void setFabListener() {
+        this.binding.floatingActionButton.setOnClickListener( view -> bookThisRestaurant(placesSearchResults) );
+    }
+
+    @Nullable
+    private FirebaseUser getCurrentUser() {
+        return FirebaseAuth.getInstance().getCurrentUser();
+    }
+
+
+    private void bookThisRestaurant(PlacesSearchResult placesSearchResult) {
+        String userId = Objects.requireNonNull(getCurrentUser()).getUid();
+        String restaurantId = placesSearchResults.placeId;
+        String restaurantName = placesSearchResult.name;
+        checkBooked(userId, restaurantId, restaurantName, true);
+    }
+
+    private void checkBooked(String userId, String restaurantId, String restaurantName, boolean b) {
+      /*
+        RestaurantsHelper.getBooking(userId, getTodayDate()).addOnCompleteListener(restaurantTask -> {
+
+            if (restaurantTask.isSuccessful()) {
+                if (restaurantTask.getResult().size() == 1) {
+                    for (QueryDocumentSnapshot restaurant : restaurantTask.getResult()) {
+                        if (Objects.equals(restaurant.getData().get("restaurantName"), restaurantName)) {
+                            displayFloating((R.drawable.ic_clear_black_24dp), getResources().getColor(R.color.colorError));
+                            if (tryingToBook) {
+                                Booking_Firebase(userId, restaurantId, restaurantName, restaurant.getId(), false, false, true);
+                                showToast(this, getResources().getString(R.string.cancel_booking), Toast.LENGTH_SHORT);
+                            }
+                        } else {
+                            displayFloating((R.drawable.ic_check_circle_black_24dp), getResources().getColor(R.color.colorGreen));
+                            if (tryingToBook) {
+                                Booking_Firebase(userId, restaurantId, restaurantName, restaurant.getId(), false, true, false);
+                                showToast(this, getResources().getString(R.string.modify_booking), Toast.LENGTH_SHORT);
+                            }
+                        }
+                    }
+                } else {
+                    displayFloating((R.drawable.ic_check_circle_black_24dp), getResources().getColor(R.color.colorGreen));
+                    if (tryingToBook) {
+                        Booking_Firebase(userId, restaurantId, restaurantName, null, true, false, false);
+                        showToast(this, getResources().getString(R.string.new_booking), Toast.LENGTH_SHORT);
+                    }
+                }
+            }
+        });*/
+    }
+
+    private void configureRecycleView() {
+        mWorkmateList = new ArrayList<>();
+        this.adapter = new RestaurantDetailAdapter( mWorkmateList );
+        this.binding.activityDetailRestaurantRv.setAdapter( adapter );
+        this.binding.activityDetailRestaurantRv.setLayoutManager( new LinearLayoutManager( this ) );
     }
 
 
@@ -88,7 +154,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         Glide.with( this )
                 .load( imageurl )
                 .centerCrop()
-                .into( activityBinding.activityDetailRestaurantImg );
+                .into( binding.activityDetailRestaurantImg );
 
 
         /*
@@ -103,14 +169,14 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         }*/
 
         //Restaurant name
-        activityBinding.activityDetailRestaurantName.setText( mPlaceDetails.name );
+        binding.activityDetailRestaurantName.setText( mPlaceDetails.name );
 
         //Rating
         float rating = (mPlaceDetails.rating / 5) * 3;
-        activityBinding.itemRestaurantListRatingbar.setRating( rating );
+        binding.itemRestaurantListRatingbar.setRating( rating );
 
         //Restaurant address
-        activityBinding.activityDetailRestaurantAddress.setText( mPlaceDetails.formattedAddress );
+        binding.activityDetailRestaurantAddress.setText( mPlaceDetails.formattedAddress );
 
     }
 
@@ -120,8 +186,8 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     // ------------------------------------
 
     private void initView() {
-        activityBinding = ActivityRestaurantDetailBinding.inflate( getLayoutInflater() );
-        setContentView( activityBinding.getRoot() );
+        binding = ActivityRestaurantDetailBinding.inflate( getLayoutInflater() );
+        setContentView( binding.getRoot() );
     }
 
 
@@ -130,8 +196,8 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     // ------------------------------------
 
     private void initListeners() {
-        activityBinding.activityDetailRestaurantCallBtn.setOnClickListener( v -> openDialer( mPlaceDetails.formattedPhoneNumber ) );
-        activityBinding.activityDetailRestaurantWebsiteBtn.setOnClickListener( v -> openWebsite( mPlaceDetails.website.toString() ) );
+        binding.activityDetailRestaurantCallBtn.setOnClickListener( v -> openDialer( mPlaceDetails.formattedPhoneNumber ) );
+        binding.activityDetailRestaurantWebsiteBtn.setOnClickListener( v -> openWebsite( mPlaceDetails.website.toString() ) );
 
     }
 

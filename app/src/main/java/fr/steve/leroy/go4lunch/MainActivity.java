@@ -1,28 +1,32 @@
 package fr.steve.leroy.go4lunch;
 
+import android.annotation.SuppressLint;
+import android.app.SearchManager;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.maps.model.PlaceDetails;
 
 import java.util.List;
@@ -91,8 +95,7 @@ public class MainActivity extends AppCompatActivity implements
         switch (item.getItemId()) {
             case R.id.search_menu:
 
-
-/*
+                /*
                 SearchView searchView = (SearchView) item.getActionView();
                 searchView.setQueryHint( "Search restaurants" );
 
@@ -116,13 +119,19 @@ public class MainActivity extends AppCompatActivity implements
                 } );
 */
 
-               // Toast.makeText( this, "Recherche indisponible, demandez plutôt l'avis de Google, c'est mieux et plus rapide.", Toast.LENGTH_LONG ).show();
+                // Toast.makeText( this, "Recherche indisponible, demandez plutôt l'avis de Google, c'est mieux et plus rapide.", Toast.LENGTH_LONG ).show();
                 return true;
             default:
                 return super.onOptionsItemSelected( item );
         }
     }
 
+    private void updateToolbarTitle(boolean status) {
+        String title;
+        if (status) title = getResources().getString( R.string.i_am_hungry );
+        else title = getResources().getString( R.string.available_workmates );
+        binding.toolbar.mainToolbar.setTitle( title );
+    }
 
     // ------------------------------------
     // BOTTOM NAVIGATION VIEW
@@ -133,16 +142,20 @@ public class MainActivity extends AppCompatActivity implements
     }
 
 
+    @SuppressLint("NonConstantResourceId")
     private boolean updateMainFragment(int itemId) {
         Fragment selectedFragment = null;
         switch (itemId) {
             case R.id.map_view_item:
+                updateToolbarTitle( true );
                 selectedFragment = new MapFragment();
                 break;
             case R.id.list_view_item:
+                updateToolbarTitle( true );
                 selectedFragment = new ListViewFragment();
                 break;
             case R.id.workmates_item:
+                updateToolbarTitle( false );
                 selectedFragment = new WorkmateFragment();
                 break;
         }
@@ -161,8 +174,9 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
         // Handle back click to close menu
-        if (this.drawerLayout.isDrawerOpen( GravityCompat.START )) {
-            this.drawerLayout.closeDrawer( GravityCompat.START );
+        if (this.binding.activityMainDrawerLayout.isDrawerOpen( GravityCompat.START )) {
+            // Close DrawerLayout if displayed
+            this.binding.activityMainDrawerLayout.closeDrawer( GravityCompat.START );
         } else {
             super.onBackPressed();
         }
@@ -181,40 +195,47 @@ public class MainActivity extends AppCompatActivity implements
         this.navigationView = binding.activityMainNavView;
         navigationView.setNavigationItemSelectedListener( this );
 
-        updateNavigationHeader();
+        updateUserInfoInNavigationHeader();
     }
 
-    private void updateNavigationHeader() {
 
-        mAuth = FirebaseAuth.getInstance();
-
-        SharedPreferences preferences = getSharedPreferences( "MyPrefs", MODE_PRIVATE );
-
-        String userName = preferences.getString( "userName", "" );
-        String userEmail = preferences.getString( "userEmail", "" );
-        String userPhotoUrl = preferences.getString( "userPhoto", "" );
+    // Update the Navigation View Header with user information
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private void updateUserInfoInNavigationHeader() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         View headerView = binding.activityMainNavView.getHeaderView( 0 );
         TextView userNameHeader = headerView.findViewById( R.id.main_activity_nav_header_user_name );
-        userNameHeader.setText( userName );
-
         TextView userMailHeader = headerView.findViewById( R.id.main_activity_nav_header_user_email );
-        userMailHeader.setText( userEmail );
+        ImageView userAvatar = headerView.findViewById( R.id.main_activity_nav_header_user_picture );
 
-        Glide.with( this )
-                .load( userPhotoUrl )
-                .centerCrop()
-                .circleCrop()
-                .into( (ImageView) headerView.findViewById( R.id.main_activity_nav_header_user_picture ) );
+        if (user != null) {
+            try {
+                userNameHeader.setText( user.getDisplayName() );
+                userMailHeader.setText( user.getEmail() );
+                if (user.getPhotoUrl() != null) {
+                    Glide.with( this )
+                            .load( user.getPhotoUrl() )
+                            .apply( RequestOptions.circleCropTransform() )
+                            .into( userAvatar );
 
+                } else userAvatar.setImageDrawable( getResources()
+                        .getDrawable( R.drawable.ic_anon_user ) );
+            } catch (NullPointerException exception) {
+                exception.printStackTrace();
+            }
+        }
     }
 
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Intent intent = null;
+
         switch (item.getItemId()) {
             case R.id.drawer_menu_your_lunch_btn:
+                //TODO : Afficher le restaurant sélectionné (liké)
+                // Intent utilisé temporairement pour tests
                 Intent intent = new Intent( this, RestaurantDetailActivity.class );
                 startActivity( intent );
                 break;

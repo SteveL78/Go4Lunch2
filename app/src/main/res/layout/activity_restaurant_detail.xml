@@ -11,7 +11,7 @@
         android:id="@+id/activity_detail_restaurant_img"
         android:layout_width="0dp"
         android:layout_height="280dp"
-        android:contentDescription="Photo of the selected restaurant"
+        android:contentDescription="@string/photo_restaurant"
         android:scaleType="centerCrop"
         android:src="@drawable/lunch_meals"
         tools:ignore="MissingConstraints" />
@@ -59,6 +59,7 @@
         android:textColor="@color/white"
         app:layout_constraintLeft_toLeftOf="@id/activity_detail_restaurant_name"
         app:layout_constraintTop_toBottomOf="@id/activity_detail_restaurant_name"
+        tools:ignore="TextContrastCheck"
         tools:text="French restaurant - 12 rue du Faubourg Poissonnière" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -69,10 +70,10 @@
         android:clickable="true"
         android:contentDescription="Button to select this restaurant"
         android:focusable="true"
-        app:backgroundTint="@color/white"
         android:src="@drawable/ic_baseline_check_circle_24"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="@id/activity_detail_restaurant_img"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/activity_detail_restaurant_img" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -81,26 +82,26 @@
         android:layout_height="0dp"
         android:background="@color/white"
         app:layout_constraintHeight_percent=".160"
-        app:layout_constraintTop_toBottomOf="@id/activity_detail_restaurant_detail_container"
-        app:layout_constraintLeft_toRightOf="parent"/>
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_detail_restaurant_detail_container" />
 
     <TextView
         android:id="@+id/activity_detail_restaurant_call_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
         android:clickable="true"
-        android:layout_marginLeft="15dp"
         android:focusable="true"
+        android:gravity="center_horizontal"
         android:paddingVertical="20dp"
         android:text="@string/detail_restaurant_call_btn"
-        android:gravity="center_horizontal"
         android:textAppearance="?attr/textAppearanceHeadline6"
         android:textColor="@color/lightOrange"
         app:backgroundTint="@color/white"
         app:drawableTint="@color/lightOrange"
         app:drawableTopCompat="@drawable/ic_baseline_call_24"
-        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/activity_detail_restaurant_detail_container" />
 
@@ -110,19 +111,19 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="true"
-        android:paddingVertical="20dp"
         android:gravity="center_horizontal"
+        android:paddingVertical="20dp"
         android:text="@string/detail_restaurant_like_btn"
         android:textAppearance="?attr/textAppearanceHeadline6"
         android:textColor="@color/lightOrange"
         app:backgroundTint="@color/white"
         app:drawableTint="@color/lightOrange"
         app:drawableTopCompat="@drawable/ic_baseline_star_24"
-        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintTop_toTopOf="@id/activity_detail_restaurant_call_btn"
+        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintLeft_toRightOf="@id/activity_detail_restaurant_call_btn"
-        app:layout_constraintRight_toLeftOf="@id/activity_detail_restaurant_website_btn"/>
+        app:layout_constraintRight_toLeftOf="@id/activity_detail_restaurant_website_btn"
+        app:layout_constraintTop_toTopOf="@id/activity_detail_restaurant_call_btn" />
 
 
     <TextView
@@ -140,11 +141,11 @@
         app:backgroundTint="@color/white"
         app:drawableTint="@color/lightOrange"
         app:drawableTopCompat="@drawable/earth"
-        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintTop_toTopOf="@id/activity_detail_restaurant_call_btn"
+        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintLeft_toRightOf="@id/activity_detail_restaurant_like_btn"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/activity_detail_restaurant_call_btn" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/restaurant_list_item"
@@ -166,7 +167,8 @@
             android:id="@+id/activity_detail_restaurant_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintTop_toTopOf="@+id/view" />
+            app:layout_constraintTop_toTopOf="@+id/view"
+            tools:listitem="@layout/workmates_joining_item" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

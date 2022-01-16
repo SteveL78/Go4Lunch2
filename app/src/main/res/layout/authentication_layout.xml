@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_sign_in_coordinator_layout"
+    android:id="@+id/auth_layout_coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".authentication.SignInActivity">
 
     <!-- BACKGROUND IMAGE -->
     <ImageView
-        android:id="@+id/activity_signin_imageView"
+        android:id="@+id/background_img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
@@ -47,7 +47,7 @@
 
                 <!-- APP LOGO -->
                 <ImageView
-                    android:id="@+id/activity_signin_app_logo"
+                    android:id="@+id/app_logo"
                     android:layout_width="@dimen/default_logo_size"
                     android:layout_height="@dimen/default_logo_size"
                     android:layout_weight="1"
@@ -56,7 +56,7 @@
 
                 <!-- TITLE GO4LUNCH -->
                 <TextView
-                    android:id="@+id/activity_signin_app_name"
+                    android:id="@+id/app_name"
                     android:layout_width="wrap_content"
                     android:layout_height="51dp"
                     android:layout_weight="1"
@@ -67,7 +67,7 @@
 
                 <!-- DESCRIPTION GO4LUNCH  -->
                 <TextView
-                    android:id="@+id/activity_signin_app_description"
+                    android:id="@+id/app_subtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/app_subtitle"
@@ -89,7 +89,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
-                android:id="@+id/activity_signin_buttons_container"
+                android:id="@+id/auth_button_container"
                 android:layout_width="260dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/default_margin"
@@ -102,21 +102,65 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
+
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/login_button"
+                    android:id="@+id/fb_auth_btn"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/default_large_margin"
-                    android:theme="@style/MaterialButtonThemeSignIn"
+                    android:background="@drawable/button_radius_fb_color"
+                    android:paddingStart="10dp"
+                    android:text="@string/sign_in_with_fb"
+                    android:textAllCaps="false"
+                    android:theme="@style/MaterialButtonThemeFacebook"
+                    app:icon="@drawable/com_facebook_button_icon"
+                    tools:ignore="RtlSymmetry,TextContrastCheck" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/google_auth_btn"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_large_margin"
+                    android:background="@drawable/button_radius_google_color"
+                    android:paddingStart="10dp"
+                    android:text="@string/sign_in_with_google"
+                    android:textAllCaps="false"
+                    android:theme="@style/MaterialButtonThemeGoogle"
+                    app:icon="@drawable/fui_ic_googleg_color_24dp"
+                    tools:ignore="RtlSymmetry,TextContrastCheck" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/twitter_auth_btn"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_large_margin"
+                    android:background="@drawable/button_radius_twitter_color"
+                    android:paddingStart="10dp"
+                    android:text="@string/sign_in_with_twitter"
+                    android:textAllCaps="false"
+                    android:theme="@style/MaterialButtonThemeTwitter"
+                    app:icon="@drawable/fui_ic_twitter_bird_white_24dp"
+
+                    tools:ignore="RtlSymmetry" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/email_auth_btn"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_large_margin"
                     android:background="@drawable/button_radius_email_color"
                     android:paddingStart="10dp"
-                    android:text="@string/authentication_sign_in_btn"
+                    android:text="@string/sign_in_with_email"
                     android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    tools:ignore="RtlSymmetry" />
+                    android:theme="@style/MaterialButtonThemeSignIn"
+                    app:icon="@drawable/ic_email"
+                    tools:ignore="RtlSymmetry,TextContrastCheck" />
 
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,11 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_splashscreen"
     android:layout_gravity="center"
+    android:background="@drawable/ic_splashscreen"
     tools:context=".authentication.SplashScreenActivity">
 
-    <include
-        layout="@layout/progress_bar"/>
+    <include layout="@layout/progress_bar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

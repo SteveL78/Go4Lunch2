@@ -1,18 +1,14 @@
 package fr.steve.leroy.go4lunch.detail;
 
-import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.maps.model.PlacesSearchResult;
-
 import java.util.List;
 
-import fr.steve.leroy.go4lunch.R;
+import fr.steve.leroy.go4lunch.databinding.WorkmatesJoiningItemBinding;
 import fr.steve.leroy.go4lunch.model.Workmate;
 
 /**
@@ -20,32 +16,37 @@ import fr.steve.leroy.go4lunch.model.Workmate;
  */
 public class RestaurantDetailAdapter extends RecyclerView.Adapter<RestaurantDetailViewHolder> {
 
-    private List<Workmate> workmateList;
-    private List<PlacesSearchResult> placesSearchResult;
+    private List<Workmate> mWorkmateList;
 
-    public RestaurantDetailAdapter(List<PlacesSearchResult> placesSearchResults, List<Workmate> workmateList) {
-        this.placesSearchResult = placesSearchResults;
-        this.workmateList = workmateList;
+    public RestaurantDetailAdapter(List<Workmate> mWorkmateList) {
+        this.mWorkmateList = mWorkmateList;
     }
 
     @NonNull
     @Override
     public RestaurantDetailViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from( context );
-        View view = inflater.inflate( R.layout.workmates_joining_item, parent, false );
+        WorkmatesJoiningItemBinding view = WorkmatesJoiningItemBinding.inflate( LayoutInflater.from( parent.getContext() ), parent, false );
         return new RestaurantDetailViewHolder( view );
     }
 
     @Override
     public void onBindViewHolder(@NonNull RestaurantDetailViewHolder holder, int position) {
-        holder.updateWithData( this.workmateList.get( position ) );
+        holder.updateWithData( this.mWorkmateList.get( position ) );
 
     }
 
     @Override
     public int getItemCount() {
-        return workmateList.size();
+        int itemCount = 0;
+        if (mWorkmateList != null) itemCount = (mWorkmateList.size());
+        return itemCount;
+        //return mWorkmateList.size();
     }
+
+    public void update(List<Workmate> workmates) {
+        this.mWorkmateList = workmates;
+        notifyDataSetChanged();
+    }
+
 
 }

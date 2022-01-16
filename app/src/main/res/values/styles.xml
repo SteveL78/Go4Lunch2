@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <resources>
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/lightOrange</item>
-        <item name="colorPrimaryDark">#666B6B</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
 
-
     <!-- STYLE SIGN-IN ACTIVITY -->
     <style name="LoginTheme" parent="AppTheme">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorButtonNormal">@color/colorAccent</item>
         <item name="colorControlNormal">@android:color/darker_gray</item>
@@ -24,40 +21,50 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textColorPrimary">@android:color/darker_gray</item>
         <item name="android:textColorSecondary">@android:color/darker_gray</item>
-        <item name="android:windowBackground">@android:color/white</item>
+
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:textColorHint">@android:color/darker_gray</item>
+        <item name="android:textColorHint">@android:color/white</item>
     </style>
 
-
-
-
-
-    <style name="Facebook.Button" parent="ThemeOverlay.AppCompat">
-        <item name="colorAccent">@color/fui_bgFacebook</item>
-    </style>
-
-    <style name="Twitter.Button" parent="ThemeOverlay.AppCompat">
-        <item name="colorAccent">@color/fui_bgTwitter</item>
-    </style>
-
-
-
-    <!-- TOOLBAR THEME -->
+    <!-- Toolbar theme -->
     <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorControlNormal">@android:color/white</item>
     </style>
 
-    <!-- TOOLBAR TITLE THEME -->
+    <!-- Toolbar Title theme -->
     <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">21sp</item>
     </style>
 
-    <!-- OPENING HOURS -->
+    <!-- Material Button themes -->
+    <style name="MaterialButtonThemeGoogle" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="colorPrimary">@color/color_google_btn</item>
+    </style>
+
+    <style name="MaterialButtonThemeFacebook" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="colorPrimary">@color/color_fb_btn</item>
+    </style>
+
+    <style name="MaterialButtonThemeTwitter" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="colorPrimary">@color/color_twitter_btn</item>
+    </style>
+
+    <style name="MaterialButtonThemeSignIn" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="colorPrimary">@color/lightOrange</item>
+    </style>
+
+    <!-- Opening hours -->
     <style name="closedRestaurant">
         <item name="android:textColor">@color/red</item>
         <item name="android:textStyle">italic</item>
+    </style>
+
+    <!-- Rating Bar -->
+    <style name="ratingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/browser_actions_title_color</item>
+        <item name="colorControlActivated">@color/colorStar</item>
     </style>
 
 </resources>

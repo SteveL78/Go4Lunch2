@@ -1,9 +1,8 @@
 package fr.steve.leroy.go4lunch.detail;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,7 +12,6 @@ import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
 
 import fr.steve.leroy.go4lunch.R;
-import fr.steve.leroy.go4lunch.databinding.ActivityRestaurantDetailBinding;
 import fr.steve.leroy.go4lunch.databinding.WorkmatesJoiningItemBinding;
 import fr.steve.leroy.go4lunch.model.Workmate;
 
@@ -23,29 +21,65 @@ import fr.steve.leroy.go4lunch.model.Workmate;
 public class RestaurantDetailViewHolder extends RecyclerView.ViewHolder {
 
 
-    private ActivityRestaurantDetailBinding activityBinding;
-    private WorkmatesJoiningItemBinding workmatesBinding;
+    private WorkmatesJoiningItemBinding binding;
 
-    private ImageView mImageView;
-    private TextView mTextView;
+    public RestaurantDetailViewHolder(WorkmatesJoiningItemBinding itemView) {
+        super( itemView.getRoot() );
+        this.binding = itemView;
+    }
 
-    public RestaurantDetailViewHolder(@NonNull View itemView) {
-        super( itemView );
-        mImageView = itemView.findViewById( R.id.workmates_joining_img );
-        mTextView = itemView.findViewById( R.id.workmates_joining_name_tv );
+    public void updateWithData(Workmate result) {
+        RequestManager glide = Glide.with( itemView );
+
+        if (!(result.getProfileUrl() == null)) {
+            glide.load( result.getProfileUrl() )
+                    .apply( RequestOptions.circleCropTransform() )
+                    .into( binding.workmatesJoiningImg );
+        } else {
+            glide.load( R.drawable.ic_anon_user )
+                    .apply( RequestOptions.circleCropTransform() )
+                    .into( binding.workmatesJoiningImg );
+        }
+        binding.workmatesJoiningNameTv.setText( itemView.getResources().getString( R.string.text_workmate_joining, result.getFirstName() ) );
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+    /*
+    public RestaurantDetailViewHolder(@NonNull View itemView) {
+        super( itemView );
+       // mImageView = workmatesBinding.workmatesJoiningImg;
+        mImageView = itemView.findViewById( R.id.workmates_joining_img );
+        // mTextView = workmatesBinding.workmatesJoiningImg;
+        mTextView = itemView.findViewById( R.id.workmates_joining_name_tv );
+    }
+*/
+/*
     public void updateWithData(Workmate workmate) {
         RequestManager glide = Glide.with( itemView );
 
+        //Photo
         glide.load( workmate.getProfileUrl() )
                 .apply( RequestOptions.circleCropTransform() )
-                .into( workmatesBinding.workmatesJoiningImg );
+                .into( binding.workmatesJoiningImg );
 
-        workmatesBinding.workmatesJoiningNameTv.setText( workmate.getFirstName() );
+        //Name
+        binding.workmatesJoiningNameTv.setText( workmate.getFirstName() );
+
     }
 
+
+ */
 
 
 
@@ -75,7 +109,6 @@ public class RestaurantDetailViewHolder extends RecyclerView.ViewHolder {
             }
         }
     */
-
 
 
 }

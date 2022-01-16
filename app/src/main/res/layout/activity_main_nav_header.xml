@@ -12,9 +12,9 @@
         android:id="@+id/main_activity_nav_header_lunch_img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="Business lunch photo"
-        android:src="@drawable/lunch_meals"
+        android:contentDescription="@string/business_lunch_photo"
         android:scaleType="centerCrop"
+        android:src="@drawable/lunch_meals"
         tools:ignore="MissingConstraints" />
 
 
@@ -38,8 +38,8 @@
         android:layout_height="60dp"
         android:layout_marginStart="15dp"
         android:layout_marginBottom="15dp"
-        android:contentDescription="Profile picture"
         android:adjustViewBounds="true"
+        android:contentDescription="@string/Avatar"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="@+id/main_activity_nav_header_lunch_img"
         app:layout_constraintStart_toStartOf="@+id/main_activity_nav_header_lunch_img"

@@ -10,7 +10,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_margin="20dp"
-        android:contentDescription="Photo of a workmate"
+        android:contentDescription="@string/Avatar"
         android:background="@color/lightGrey"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"

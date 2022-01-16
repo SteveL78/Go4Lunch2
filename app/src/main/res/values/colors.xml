@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- APP BASE -->
-    <color name="colorPrimary">#039BE5</color>
-    <color name="colorPrimaryDark">#0288D1</color>
-    <color name="colorAccent">#FFA000</color>
+    <color name="colorPrimary">#ff5722</color>
+    <color name="colorPrimaryDark">#ff5722</color>
+    <color name="colorAccent">#D81B60</color>
     <color name="colorAccentDark">#202122</color>
     <color name="colorError">#FF5252</color>
     <color name="colorGreyFilter">#E6757575</color>
 
-    <color name="white">#FFFFFFFF</color>
+    <color name="white">#ffffff</color>
     <color name="lightGrey">#989CA0</color>
     <color name="darkGrey">#202122</color>
     <color name="black">#FF000000</color>
@@ -21,6 +21,7 @@
     <color name="color_google_btn">#cc543b</color>
     <color name="color_twitter_btn">#FF5BAAF4</color>
     <color name="color_email_btn">#FFFFFF</color>
+    <color name="colorStar">#ffd600</color>
 
     <!-- TEXTVIEW -->
     <color name="text_normal_dark">#202122</color>

@@ -1,14 +1,22 @@
 <resources>
     <string name="app_name">Go4Lunch</string>
 
-    <!-- SIGN IN ACTIVITY -->
-    <string name="main_activity_description">Find a nice restaurant and invite your co-workers for lunch !</string>
+    <!-- activity_sign_in.xml -->
+    <string name="go4lunch_logo">Go4Lunch logo</string>
+    <string name="app_subtitle">Find a nice restaurant and invite your co-workers for lunch !</string>
+    <string name="authentication_sign_in_btn">Sign in</string>
+
+    <!-- authentication_layout.xml -->
     <string name="sign_in_with_fb">Sign in with Facebook</string>
     <string name="sign_in_with_google">Sign in with Google</string>
     <string name="sign_in_with_twitter">Sign in with Twitter</string>
     <string name="sign_in_with_email">Sign in with Email</string>
+
+    <!-- Google Maps Api Key -->
     <string name="google_maps_API_key">AIzaSyDZVL23At9zWQeYZsUd2sx7A3GaqPhkZEw</string>
 
+    <!-- fragment_list_view.xml -->
+    <string name="no_restaurants_nearby">No restaurants nearby</string>
 
     <!-- NOTIFICATION SERVICE -->
     <string name="need_permission_msg">This application needs permission to run</string>
@@ -16,25 +24,26 @@
     <string name="notification_title">"Vous avez reçu une notification"</string>
 
     <!-- MAIN ACTIVITY -->
-    <string name="error_not_connected">Vous devez vous connecter !</string>
-    <string name="error_authentication_canceled">Authentification annulée&#8230;</string>
-    <string name="error_no_internet">Aucune connexion internet !</string>
-    <string name="error_unknown_error">Une erreur inconnue s\'est produite&#8230;</string>
-    <string name="connection_succeed">Authentification réussie !</string>
-    <string name="button_login_text_logged">Afficher le profil</string>
-    <string name="button_login_text_not_logged">Connexion</string>
+    <string name="error_not_connected">You must log in !</string>
+    <string name="error_authentication_canceled">Authentication canceled</string>
+    <string name="error_no_internet">No internet connection !</string>
+    <string name="error_unknown_error">An unknown error has occurred</string>
+    <string name="connection_succeed">Authentication successful !</string>
+    <string name="button_login_text_logged">Display profil</string>
+    <string name="button_login_text_not_logged">Login</string>
 
     <!-- BOTTOM NAVIGATION VIEW -->
-    <string name="bottom_navigation_menu_workmates">Workmates</string>
-    <string name="bottom_navigation_menu_list_view">List View</string>
-    <string name="bottom_navigation_menu_map_view">Map View</string>
+    <string name="icon_workmates">Workmates</string>
+    <string name="icon_list_view">List View</string>
+    <string name="icon_map_view">Map View</string>
 
     <!-- TOOLBAR -->
-    <string name="search_menu">Search restaurants</string>
+    <string name="icon_search">Search restaurants</string>
     <string name="i_am_hungry">I\'m Hungry!</string>
+    <string name="available_workmates">Available workmates</string>
 
-    <!-- GOOGLE MAPS FRAGMENT -->
-    <string name="current_location">Current location button</string>
+    <!-- fragment_maps.xml -->
+    <string name="content_description_fab_current_location">Button to center map cursor in current user location</string>
 
     <!-- LOGIN ACTIVITY -->
     <string name="toolbar_title_login_activity">Votre Profil</string>
@@ -88,7 +97,19 @@
     <string name="detail_restaurant_like_btn">LIKE</string>
     <string name="detail_restaurant_call_btn">CALL</string>
     <string name="detail_restaurant_website_btn">WEBSITE</string>
+    <string name="Avatar">Photo of a workmate</string>
+    <string name="call_btn">CALL</string>
+    <string name="like_btn">LIKE</string>
+    <string name="website_btn">WEBSITE</string>
+    <string name="business_lunch_photo">Business lunch photo</string>
 
+
+
+
+
+
+    
+    <string name="photo_restaurant">Photo of the selected restaurant</string>
 
 
 </resources>

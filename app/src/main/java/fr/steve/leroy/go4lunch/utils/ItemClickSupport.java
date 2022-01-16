@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  * Created by Steve LEROY on 11/12/2021.
  */
-public class ItemClickSupport  {
+public class ItemClickSupport {
     private final RecyclerView mRecyclerView;
     private OnItemClickListener mOnItemClickListener;
     private OnItemLongClickListener mOnItemLongClickListener;
@@ -16,8 +16,8 @@ public class ItemClickSupport  {
         @Override
         public void onClick(View v) {
             if (mOnItemClickListener != null) {
-                RecyclerView.ViewHolder holder = mRecyclerView.getChildViewHolder(v);
-                mOnItemClickListener.onItemClicked(mRecyclerView, holder.getAdapterPosition(), v);
+                RecyclerView.ViewHolder holder = mRecyclerView.getChildViewHolder( v );
+                mOnItemClickListener.onItemClicked( mRecyclerView, holder.getAdapterPosition(), v );
             }
         }
     };
@@ -25,8 +25,8 @@ public class ItemClickSupport  {
         @Override
         public boolean onLongClick(View v) {
             if (mOnItemLongClickListener != null) {
-                RecyclerView.ViewHolder holder = mRecyclerView.getChildViewHolder(v);
-                return mOnItemLongClickListener.onItemLongClicked(mRecyclerView, holder.getAdapterPosition(), v);
+                RecyclerView.ViewHolder holder = mRecyclerView.getChildViewHolder( v );
+                return mOnItemLongClickListener.onItemLongClicked( mRecyclerView, holder.getAdapterPosition(), v );
             }
             return false;
         }
@@ -36,10 +36,10 @@ public class ItemClickSupport  {
         @Override
         public void onChildViewAttachedToWindow(View view) {
             if (mOnItemClickListener != null) {
-                view.setOnClickListener(mOnClickListener);
+                view.setOnClickListener( mOnClickListener );
             }
             if (mOnItemLongClickListener != null) {
-                view.setOnLongClickListener(mOnLongClickListener);
+                view.setOnLongClickListener( mOnLongClickListener );
             }
         }
 
@@ -52,22 +52,22 @@ public class ItemClickSupport  {
     private ItemClickSupport(RecyclerView recyclerView, int itemID) {
         mRecyclerView = recyclerView;
         mItemID = itemID;
-        mRecyclerView.setTag(itemID, this);
-        mRecyclerView.addOnChildAttachStateChangeListener(mAttachListener);
+        mRecyclerView.setTag( itemID, this );
+        mRecyclerView.addOnChildAttachStateChangeListener( mAttachListener );
     }
 
     public static ItemClickSupport addTo(RecyclerView view, int itemID) {
-        ItemClickSupport support = (ItemClickSupport) view.getTag(itemID);
+        ItemClickSupport support = (ItemClickSupport) view.getTag( itemID );
         if (support == null) {
-            support = new ItemClickSupport(view, itemID);
+            support = new ItemClickSupport( view, itemID );
         }
         return support;
     }
 
     public static ItemClickSupport removeFrom(RecyclerView view, int itemID) {
-        ItemClickSupport support = (ItemClickSupport) view.getTag(itemID);
+        ItemClickSupport support = (ItemClickSupport) view.getTag( itemID );
         if (support != null) {
-            support.detach(view);
+            support.detach( view );
         }
         return support;
     }
@@ -83,8 +83,8 @@ public class ItemClickSupport  {
     }
 
     private void detach(RecyclerView view) {
-        view.removeOnChildAttachStateChangeListener(mAttachListener);
-        view.setTag(mItemID, null);
+        view.removeOnChildAttachStateChangeListener( mAttachListener );
+        view.setTag( mItemID, null );
     }
 
     public interface OnItemClickListener {

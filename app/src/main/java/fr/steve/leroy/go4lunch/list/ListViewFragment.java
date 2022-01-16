@@ -30,7 +30,6 @@ import java.util.List;
 import fr.steve.leroy.go4lunch.R;
 import fr.steve.leroy.go4lunch.databinding.FragmentListViewBinding;
 import fr.steve.leroy.go4lunch.detail.RestaurantDetailActivity;
-import fr.steve.leroy.go4lunch.firebase.WorkmateHelper;
 import fr.steve.leroy.go4lunch.model.Workmate;
 
 /**
