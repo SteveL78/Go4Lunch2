@@ -8,6 +8,7 @@
     <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/progress_bar"
         style="?android:attr/progressBarStyle"
+        android:theme=""
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:progressTint="@color/lightOrange"

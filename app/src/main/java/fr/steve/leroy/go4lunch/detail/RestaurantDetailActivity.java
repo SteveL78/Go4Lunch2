@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.maps.model.PlaceDetails;
 import com.google.maps.model.PlacesSearchResult;
 
@@ -28,7 +27,6 @@ import java.util.concurrent.Executors;
 import fr.steve.leroy.go4lunch.FetchDetail;
 import fr.steve.leroy.go4lunch.R;
 import fr.steve.leroy.go4lunch.databinding.ActivityRestaurantDetailBinding;
-import fr.steve.leroy.go4lunch.databinding.WorkmatesJoiningItemBinding;
 import fr.steve.leroy.go4lunch.model.Workmate;
 import io.reactivex.rxjava3.disposables.Disposable;
 
@@ -68,7 +66,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     }
 
     private void setFabListener() {
-        this.binding.floatingActionButton.setOnClickListener( view -> bookThisRestaurant(placesSearchResults) );
+        this.binding.floatingActionButton.setOnClickListener( view -> bookThisRestaurant( placesSearchResults ) );
     }
 
     @Nullable
@@ -78,10 +76,10 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
 
     private void bookThisRestaurant(PlacesSearchResult placesSearchResult) {
-        String userId = Objects.requireNonNull(getCurrentUser()).getUid();
+        String userId = Objects.requireNonNull( getCurrentUser() ).getUid();
         String restaurantId = placesSearchResults.placeId;
         String restaurantName = placesSearchResult.name;
-        checkBooked(userId, restaurantId, restaurantName, true);
+        checkBooked( userId, restaurantId, restaurantName, true );
     }
 
     private void checkBooked(String userId, String restaurantId, String restaurantName, boolean b) {
