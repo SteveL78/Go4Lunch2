@@ -40,13 +40,15 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     private Disposable disposable;
     private List<Workmate> mWorkmateList;
     private List<String> userLike;
-    private PlacesSearchResult placesSearchResults;
+    private PlaceDetails mPlaceDetails;
     private Context context;
     public static int REQUEST_CALL = 100;
     private static final String RESTAURANT_PLACE_ID = "placeId";
     private Executor executor = Executors.newSingleThreadExecutor();
     private Executor mainExecutor = null;
-    private PlaceDetails mPlaceDetails;
+
+    private boolean isFavorite = false;
+
 
 
     @Override
@@ -195,7 +197,9 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     private void initListeners() {
         binding.callBtn.setOnClickListener( v -> openDialer( mPlaceDetails.formattedPhoneNumber ) );
         binding.websiteBtn.setOnClickListener( v -> openWebsite( mPlaceDetails.website.toString() ) );
-        binding.likeBtn.setOnClickListener( view -> likeThisRestaurant() );
+        binding.likeBtn.setOnClickListener( view -> {
+            updateLikeButtonDisplay();
+        } );
     }
 
 
@@ -214,7 +218,16 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         }
     }
 
-    public void likeThisRestaurant() {
+    public void updateLikeButtonDisplay() {
+        if (binding.likeBtn.getText().equals( getResources().getString( R.string.detail_restaurant_like_btn ) )){
+            binding.likeBtn.setText( R.string.detail_restaurant_unlike_btn );
+            //TODO : ajouter ce restaurant à la liste des favoris
+
+        }
+        else{
+            binding.likeBtn.setText( R.string.detail_restaurant_like_btn );
+            //TODO : retirer ce restaurant de la liste des favoris
+        }
     }
 
 

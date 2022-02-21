@@ -2,6 +2,7 @@ package fr.steve.leroy.go4lunch;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -46,7 +48,7 @@ import fr.steve.leroy.go4lunch.ui.restaurant_list.ListViewFragment;
 import fr.steve.leroy.go4lunch.ui.workmates_list.WorkmateFragment;
 
 public class MainActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener {
+        NavigationView.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener {
 
     private ActivityMainBinding binding;
     private FirebaseAuth mAuth;
@@ -110,7 +112,26 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate( R.menu.toolbar_search_menu, menu );
+
+/*
+        final MenuItem searchItem = menu.findItem(R.id.search_menu);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(this);
+
+ */
+
         return true;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        // Here is where we are going to implement the filter logic
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+        return false;
     }
 
 
@@ -388,14 +409,13 @@ public class MainActivity extends AppCompatActivity implements
 
         switch (item.getItemId()) {
             case R.id.drawer_menu_your_lunch_btn:
-                //TODO : Afficher le restaurant sélectionné (fab)
                 // Intent utilisé temporairement pour tests
                 Intent intent = new Intent( this, RestaurantDetailActivity.class );
                 startActivity( intent );
                 break;
 
             case R.id.drawer_menu_settings_btn:
-                startActivityForResult( new Intent( Settings.ACTION_SETTINGS ), 0 );
+                startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + BuildConfig.APPLICATION_ID)));               // startActivityForResult( new Intent( Settings.ACTION_SETTINGS ), 0 );
                 break;
 
             case R.id.drawer_menu_logout_btn:
@@ -419,4 +439,6 @@ public class MainActivity extends AppCompatActivity implements
         this.binding.activityMainDrawerLayout.closeDrawer( GravityCompat.START );
         return true;
     }
+
+
 }
