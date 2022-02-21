@@ -1,4 +1,4 @@
-package fr.steve.leroy.go4lunch.detail;
+package fr.steve.leroy.go4lunch.ui.restaurant_details;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;

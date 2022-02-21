@@ -3,9 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_toolbar"
     android:layout_width="match_parent"
-    android:layout_height="0dp"
+    android:layout_height="?attr/actionBarSize"
     android:background="@color/lightOrange"
     android:fitsSystemWindows="true"
-    android:minHeight="?attr/actionBarSize"
     android:theme="@style/ToolbarTheme"
-    app:titleTextAppearance="@style/Toolbar.TitleText" />
+    app:titleTextAppearance="@style/Toolbar.TitleText"
+    app:titleTextColor="@android:color/white">
+
+</androidx.appcompat.widget.Toolbar>

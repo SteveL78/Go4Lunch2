@@ -1,4 +1,4 @@
-package fr.steve.leroy.go4lunch.detail;
+package fr.steve.leroy.go4lunch.ui.restaurant_details;
 
 import android.content.Context;
 import android.content.Intent;
@@ -39,6 +39,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     private RestaurantDetailViewModel viewModel;
     private Disposable disposable;
     private List<Workmate> mWorkmateList;
+    private List<String> userLike;
     private PlacesSearchResult placesSearchResults;
     private Context context;
     public static int REQUEST_CALL = 100;
@@ -66,7 +67,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     }
 
     private void setFabListener() {
-        this.binding.floatingActionButton.setOnClickListener( view -> bookThisRestaurant( placesSearchResults ) );
+        this.binding.floatingActionButton.setOnClickListener( view -> bookThisRestaurant( mPlaceDetails ) );
     }
 
     @Nullable
@@ -75,17 +76,16 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     }
 
 
-    private void bookThisRestaurant(PlacesSearchResult placesSearchResult) {
+    private void bookThisRestaurant(PlaceDetails placeDetails) {
         String userId = Objects.requireNonNull( getCurrentUser() ).getUid();
-        String restaurantId = placesSearchResults.placeId;
-        String restaurantName = placesSearchResult.name;
+        String restaurantId = placeDetails.placeId;
+        String restaurantName = placeDetails.name;
         checkBooked( userId, restaurantId, restaurantName, true );
     }
 
     private void checkBooked(String userId, String restaurantId, String restaurantName, boolean b) {
       /*
         RestaurantsHelper.getBooking(userId, getTodayDate()).addOnCompleteListener(restaurantTask -> {
-
             if (restaurantTask.isSuccessful()) {
                 if (restaurantTask.getResult().size() == 1) {
                     for (QueryDocumentSnapshot restaurant : restaurantTask.getResult()) {
@@ -157,7 +157,6 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
         /*
         if (mPlaceDetails.photos != null && mPlaceDetails.photos.length > 0) {
-
             Glide.with( this )
                     .load( mPlaceDetails.photos )
                     .centerCrop()
@@ -194,9 +193,9 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     // ------------------------------------
 
     private void initListeners() {
-        binding.activityDetailRestaurantCallBtn.setOnClickListener( v -> openDialer( mPlaceDetails.formattedPhoneNumber ) );
-        binding.activityDetailRestaurantWebsiteBtn.setOnClickListener( v -> openWebsite( mPlaceDetails.website.toString() ) );
-
+        binding.callBtn.setOnClickListener( v -> openDialer( mPlaceDetails.formattedPhoneNumber ) );
+        binding.websiteBtn.setOnClickListener( v -> openWebsite( mPlaceDetails.website.toString() ) );
+        binding.likeBtn.setOnClickListener( view -> likeThisRestaurant() );
     }
 
 
@@ -213,6 +212,9 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         } else {
             Toast.makeText( RestaurantDetailActivity.this, "No phone", Toast.LENGTH_SHORT ).show();
         }
+    }
+
+    public void likeThisRestaurant() {
     }
 
 
@@ -242,7 +244,3 @@ public class RestaurantDetailActivity extends AppCompatActivity {
 
 
 }
-
-
-
-

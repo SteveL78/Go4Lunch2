@@ -1,4 +1,4 @@
-package fr.steve.leroy.go4lunch.workmates;
+package fr.steve.leroy.go4lunch.ui.workmates_list;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

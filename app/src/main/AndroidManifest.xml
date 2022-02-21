@@ -21,7 +21,7 @@
             android:name=".authentication.SignInActivity"
             android:exported="false" />
         <activity
-            android:name=".detail.RestaurantDetailActivity"
+            android:name=".ui.restaurant_details.RestaurantDetailActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <!--
@@ -38,6 +38,9 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="android.app.default_searchable"
+            android:value="com.example.ExampleActivity" />
 
         <activity
             android:name=".MainActivity"
@@ -66,6 +69,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.SEARCH" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />

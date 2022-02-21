@@ -1,7 +1,6 @@
 package fr.steve.leroy.go4lunch.model;
 
 import com.google.firebase.firestore.IgnoreExtraProperties;
-import com.google.firebase.firestore.ServerTimestamp;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -12,28 +11,32 @@ import java.util.Date;
 @IgnoreExtraProperties
 public class Workmate implements Serializable {
 
-    private String workmateId, firstName, placeId, profileUrl, restaurantId, restaurantName;
-    private @ServerTimestamp
-    Date timestamp;
+    private String uid, firstName, placeId, profileUrl, restaurantId, restaurantName;
+    private boolean favorite;
 
-    public Workmate(String workmateId, String firstName, String placeId, String profileUrl, String restaurantId, String restaurantName, Date timestamp) {
-        this.workmateId = workmateId;
+
+    public Workmate(String uid, String firstName, String placeId, String profileUrl, String restaurantId, String restaurantName) {
+        this.uid = uid;
         this.firstName = firstName;
         this.placeId = placeId;
         this.profileUrl = profileUrl;
         this.restaurantId = restaurantId;
         this.restaurantName = restaurantName;
-        this.timestamp = timestamp;
+
     }
 
+    //empty constructor needed for the recyclerView
     public Workmate() {
-        //empty constructor needed
+    }
+
+    public boolean isFavorite() {
+        return favorite;
     }
 
 
     // ------- GETTERS -------
     public String getWorkmateId() {
-        return workmateId;
+        return uid;
     }
 
     public String getFirstName() {
@@ -56,13 +59,10 @@ public class Workmate implements Serializable {
         return restaurantName;
     }
 
-    public Date getTimestamp() {
-        return timestamp;
-    }
 
     // ------- SETTERS -------
     public void setWorkmateId(String workmateId) {
-        this.workmateId = workmateId;
+        this.uid = workmateId;
     }
 
     public void setFirstName(String workmateName) {
@@ -85,8 +85,8 @@ public class Workmate implements Serializable {
         this.restaurantName = restaurantName;
     }
 
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 
 }

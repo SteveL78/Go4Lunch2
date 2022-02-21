@@ -1,4 +1,4 @@
-package fr.steve.leroy.go4lunch.workmates;
+package fr.steve.leroy.go4lunch.ui.workmates_list;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -33,8 +33,8 @@ public class WorkmateFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate( R.layout.fragment_workmate, container, false);
-        configureBinding(view);
+        View view = inflater.inflate( R.layout.fragment_workmate, container, false );
+        configureBinding( view );
         initViewModel();
         viewModel.getAllUsers();
         configureSwipeRefreshLayout();
@@ -43,46 +43,46 @@ public class WorkmateFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        super.onViewCreated( view, savedInstanceState );
         configureRecycleView();
     }
 
     private void configureBinding(View view) {
-        binding = FragmentWorkmateBinding.bind(view);
+        binding = FragmentWorkmateBinding.bind( view );
     }
 
     private void initViewModel() {
-        viewModel = new ViewModelProvider(this).get(WorkmateViewModel.class);
+        viewModel = new ViewModelProvider( this ).get( WorkmateViewModel.class );
         viewModel.init();
         setUpWorkmateList();
     }
 
     private void setUpWorkmateList() {
-        viewModel.getWorkmates().observe(getViewLifecycleOwner(), this::initUserList);
+        viewModel.getWorkmates().observe( getViewLifecycleOwner(), this::initUserList );
     }
 
     private void configureRecycleView() {
         mUserList = new ArrayList<>();
-        adapter = new WorkmateListAdapter(mUserList);
-        binding.fragmentWorkmatesRecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
-        binding.fragmentWorkmatesRecyclerview.setAdapter(adapter);
+        adapter = new WorkmateListAdapter( mUserList );
+        binding.fragmentWorkmatesRecyclerview.setLayoutManager( new LinearLayoutManager( getActivity() ) );
+        binding.fragmentWorkmatesRecyclerview.setAdapter( adapter );
     }
 
     private void initUserList(List<Workmate> workmateList) {
         if (!workmateList.isEmpty()) {
             this.mUserList = workmateList;
         } else {
-            List<Workmate> noFriendsList= new ArrayList<>();
+            List<Workmate> noFriendsList = new ArrayList<>();
             Workmate user = new Workmate();
-            user.setFirstName(getString(R.string.no_friends));
-            noFriendsList.add(user);
+            user.setFirstName( getString( R.string.no_friends ) );
+            noFriendsList.add( user );
             this.mUserList = noFriendsList;
         }
-        adapter.update(this.mUserList);
+        adapter.update( this.mUserList );
         binding.swipeRefreshLayout.setRefreshing( false );
     }
 
-    private void configureSwipeRefreshLayout(){
+    private void configureSwipeRefreshLayout() {
         binding.swipeRefreshLayout.setOnRefreshListener( new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

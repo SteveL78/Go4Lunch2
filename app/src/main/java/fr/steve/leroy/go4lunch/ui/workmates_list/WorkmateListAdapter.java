@@ -1,4 +1,4 @@
-package fr.steve.leroy.go4lunch.workmates;
+package fr.steve.leroy.go4lunch.ui.workmates_list;
 
 import android.content.Context;
 import android.view.LayoutInflater;

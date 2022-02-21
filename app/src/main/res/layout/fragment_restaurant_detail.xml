@@ -73,7 +73,7 @@
             android:clickable="true"
             android:contentDescription="Button to select this restaurant"
             android:focusable="true"
-            android:src="@drawable/ic_baseline_check_circle_24"
+            android:src="@drawable/ic_baseline_check_circle_black_24"
             app:backgroundTint="@color/white"
             app:layout_constraintBottom_toBottomOf="@id/activity_detail_restaurant_img"
             app:layout_constraintEnd_toEndOf="parent"
@@ -89,7 +89,7 @@
             app:layout_constraintTop_toBottomOf="@id/activity_detail_restaurant_detail_container" />
 
         <TextView
-            android:id="@+id/activity_detail_restaurant_call_btn"
+            android:id="@+id/call_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
@@ -110,7 +110,7 @@
             app:layout_constraintTop_toBottomOf="@id/activity_detail_restaurant_detail_container" />
 
         <TextView
-            android:id="@+id/activity_detail_restaurant_like_btn"
+            android:id="@+id/like_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:clickable="true"
@@ -126,12 +126,12 @@
             app:drawableTopCompat="@drawable/ic_baseline_star_24"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintLeft_toRightOf="@id/activity_detail_restaurant_call_btn"
-            app:layout_constraintRight_toLeftOf="@id/activity_detail_restaurant_website_btn"
-            app:layout_constraintTop_toTopOf="@id/activity_detail_restaurant_call_btn" />
+            app:layout_constraintLeft_toRightOf="@id/call_btn"
+            app:layout_constraintRight_toLeftOf="@id/website_btn"
+            app:layout_constraintTop_toTopOf="@id/call_btn" />
 
         <TextView
-            android:id="@+id/activity_detail_restaurant_website_btn"
+            android:id="@+id/website_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:clickable="true"
@@ -148,9 +148,9 @@
             app:drawableTopCompat="@drawable/earth"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintLeft_toRightOf="@id/activity_detail_restaurant_like_btn"
+            app:layout_constraintLeft_toRightOf="@id/like_btn"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/activity_detail_restaurant_call_btn" />
+            app:layout_constraintTop_toTopOf="@id/call_btn" />
 
 
         <androidx.constraintlayout.widget.ConstraintLayout

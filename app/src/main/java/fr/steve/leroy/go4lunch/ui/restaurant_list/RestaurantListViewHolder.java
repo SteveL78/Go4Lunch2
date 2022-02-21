@@ -1,4 +1,4 @@
-package fr.steve.leroy.go4lunch.list;
+package fr.steve.leroy.go4lunch.ui.restaurant_list;
 
 import android.content.Context;
 import android.content.res.Resources;

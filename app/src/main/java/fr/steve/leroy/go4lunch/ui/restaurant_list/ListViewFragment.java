@@ -1,4 +1,4 @@
-package fr.steve.leroy.go4lunch.list;
+package fr.steve.leroy.go4lunch.ui.restaurant_list;
 
 import android.content.Intent;
 import android.location.Location;
@@ -29,7 +29,7 @@ import java.util.List;
 
 import fr.steve.leroy.go4lunch.R;
 import fr.steve.leroy.go4lunch.databinding.FragmentListViewBinding;
-import fr.steve.leroy.go4lunch.detail.RestaurantDetailActivity;
+import fr.steve.leroy.go4lunch.ui.restaurant_details.RestaurantDetailActivity;
 import fr.steve.leroy.go4lunch.model.Workmate;
 
 /**

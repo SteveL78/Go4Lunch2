@@ -1,10 +1,5 @@
-package fr.steve.leroy.go4lunch.detail;
+package fr.steve.leroy.go4lunch.ui.restaurant_details;
 
-import android.content.Context;
-import android.content.res.Resources;
-import android.view.View;
-
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;

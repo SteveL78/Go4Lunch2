@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
@@ -34,7 +35,6 @@ public class WorkmateHelper {
     }
 
     // --- CREATE ---
-
     public static Task<DocumentReference> createBooking(String bookingDate, String userId, String restaurantPlaceId, String restaurantName) {
         Booking bookingToCreate = new Booking(bookingDate, userId, restaurantPlaceId, restaurantName);
         return WorkmateHelper.getWorkmatesCollection().add(bookingToCreate);
@@ -65,6 +65,26 @@ public class WorkmateHelper {
 
     public static Task<QuerySnapshot> getAllWorkmates() {
         return WorkmateHelper.getWorkmatesCollection().get();
+    }
+
+    public static Task<DocumentSnapshot> getLikeForThisRestaurant(String restaurantPlaceId) {
+        return WorkmateHelper.getLikedCollection().document(restaurantPlaceId).get();
+    }
+
+
+
+
+    // ----- DELETE -----
+
+    public static Boolean deleteLike(String restaurantId, String userId) {
+        WorkmateHelper.getLikeForThisRestaurant(restaurantId).addOnCompleteListener(restaurantTask -> {
+            if (restaurantTask.isSuccessful()) {
+                Map<String, Object> update = new HashMap<>();
+                update.put(userId, FieldValue.delete());
+                WorkmateHelper.getLikedCollection().document(restaurantId).update(update);
+            }
+        });
+        return true;
     }
 
 }

@@ -22,10 +22,17 @@
     <color name="color_twitter_btn">#FF5BAAF4</color>
     <color name="color_email_btn">#FFFFFF</color>
     <color name="colorStar">#ffd600</color>
+    <color name="colorFab">#a6e9b7</color>
+
 
     <!-- TEXTVIEW -->
     <color name="text_normal_dark">#202122</color>
     <color name="colorSandLight">#ECDAAF</color>
     <color name="colorSand">#EBCB94</color>
     <color name="red">#FF0000</color>
+
+    <!-- SEARCH FIELDS -->
+    <color name="search_field_background">#ECECF1</color>
+    <color name="search_field_stroke">#727272</color>
+    <color name="search_field_start_icon">#727272</color>
 </resources>

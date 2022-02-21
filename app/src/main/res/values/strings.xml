@@ -23,7 +23,7 @@
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
     <string name="notification_title">"Vous avez reçu une notification"</string>
 
-    <!-- MAIN ACTIVITY -->
+    <!-- activity_main.xml -->
     <string name="error_not_connected">You must log in !</string>
     <string name="error_authentication_canceled">Authentication canceled</string>
     <string name="error_no_internet">No internet connection !</string>
@@ -32,13 +32,13 @@
     <string name="button_login_text_logged">Display profil</string>
     <string name="button_login_text_not_logged">Login</string>
 
-    <!-- BOTTOM NAVIGATION VIEW -->
+    <!-- bottom_navigation_menu.xml -->
     <string name="icon_workmates">Workmates</string>
     <string name="icon_list_view">List View</string>
     <string name="icon_map_view">Map View</string>
 
     <!-- TOOLBAR -->
-    <string name="icon_search">Search restaurants</string>
+    <string name="icon_search">Search</string>
     <string name="i_am_hungry">I\'m Hungry!</string>
     <string name="available_workmates">Available workmates</string>
 
@@ -94,9 +94,7 @@
     <string name="closed_restaurant">Closed</string>
 
     <string name="text_workmate_joining">%1$s is joining!</string>
-    <string name="detail_restaurant_like_btn">LIKE</string>
-    <string name="detail_restaurant_call_btn">CALL</string>
-    <string name="detail_restaurant_website_btn">WEBSITE</string>
+
     <string name="Avatar">Photo of a workmate</string>
     <string name="call_btn">CALL</string>
     <string name="like_btn">LIKE</string>
@@ -104,12 +102,19 @@
     <string name="business_lunch_photo">Business lunch photo</string>
 
 
-
-
-
-
-    
+    <!-- activity_restaurant_detail.xml -->
     <string name="photo_restaurant">Photo of the selected restaurant</string>
+    <string name="content_description_select_restaurant_fab">Button to select this restaurant</string>
+    <string name="detail_restaurant_like_btn">LIKE</string>
+    <string name="detail_restaurant_unlike_btn">UNLIKE</string>
+    <string name="detail_restaurant_call_btn">CALL</string>
+    <string name="detail_restaurant_website_btn">WEBSITE</string>
+    <string name="cancel_booking">You cancelled the booking for this place</string>
+    <string name="modify_booking">You have chosen a new place for lunch</string>
+    <string name="new_booking">You have chosen this place for lunch</string>
+    <string name="restaurant_error">Unable to retrieve information</string>
 
+    <!-- Autocomplete search bar -->
+    <string name="search_bar_hint">Search restaurants</string>
 
 </resources>

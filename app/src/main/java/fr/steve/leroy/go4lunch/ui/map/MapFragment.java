@@ -1,4 +1,4 @@
-package fr.steve.leroy.go4lunch.map;
+package fr.steve.leroy.go4lunch.ui.map;
 
 import android.Manifest;
 import android.app.Dialog;
