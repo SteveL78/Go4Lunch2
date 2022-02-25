@@ -86,29 +86,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/activity_detail_restaurant_detail_container" />
 
-    <Button
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/call_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:background="@android:color/transparent"
-        android:drawableTop="@drawable/ic_baseline_call_24"
+        android:drawableTop="@drawable/ic_baseline_call_orange_24"
         android:paddingVertical="20dp"
         android:paddingStart="16dp"
         android:text="@string/detail_restaurant_call_btn"
         android:textAppearance="?attr/textAppearanceHeadline6"
         android:textColor="@color/lightOrange"
-        app:drawableTint="@color/lightOrange"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/activity_detail_restaurant_detail_container"
         tools:ignore="RtlSymmetry" />
 
-    <Button
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/like_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:drawableTop="@drawable/ic_baseline_star_orange_24"
+        android:drawableTop="@drawable/ic_baseline_star_border_orange_24"
         android:paddingVertical="20dp"
         android:paddingStart="16dp"
         android:text="@string/detail_restaurant_like_btn"
@@ -120,12 +119,12 @@
         tools:ignore="RtlSymmetry" />
 
 
-    <Button
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/website_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:drawableTop="@drawable/earth"
+        android:drawableTop="@drawable/ic_baseline_public_orange_24"
         android:paddingVertical="20dp"
         android:paddingStart="16dp"
         android:text="@string/detail_restaurant_website_btn"

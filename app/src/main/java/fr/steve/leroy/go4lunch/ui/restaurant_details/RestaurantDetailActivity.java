@@ -1,5 +1,6 @@
 package fr.steve.leroy.go4lunch.ui.restaurant_details;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -13,10 +14,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.maps.model.PlaceDetails;
-import com.google.maps.model.PlacesSearchResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +51,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     private Executor mainExecutor = null;
 
     private boolean isFavorite = false;
-
+    //private boolean isBooked = false;
 
 
     @Override
@@ -69,8 +72,19 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     }
 
     private void setFabListener() {
-        this.binding.floatingActionButton.setOnClickListener( view -> bookThisRestaurant( mPlaceDetails ) );
+        this.binding.floatingActionButton.setOnClickListener( view -> updateFabDisplay() );
+        //this.binding.floatingActionButton.setOnClickListener( view -> bookThisRestaurant( mPlaceDetails ) );
     }
+
+    private void updateFabDisplay() {
+
+        // TODO : si oui réservé alors changer la couleur du FAB + ajouter les infos dans firebase (id, placeId, workmateId) + MAJ du RV avec le workmate
+
+
+        //TODO : si non retirer ce restaurant de la liste des favoris + remettre bouton dans son état d'origine
+
+    }
+
 
     @Nullable
     private FirebaseUser getCurrentUser() {
@@ -146,6 +160,29 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     private void displayInfoRestaurant() {
 
         //Restaurant image
+        if (mPlaceDetails.photos != null && mPlaceDetails.photos.length > 0) {
+            String imageurl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="
+                    + mPlaceDetails.photos[0].photoReference
+                    + "&key="
+                    + this.getString( R.string.google_maps_API_key );
+
+            Glide.with( this )
+                    .load( imageurl )
+                    .centerCrop()
+                    .into( binding.activityDetailRestaurantImg );
+
+        } else {
+            Glide.with( binding.activityDetailRestaurantImg )
+                    .load( R.drawable.image_not_avalaible )
+                    .apply( new RequestOptions()
+
+                            .format( DecodeFormat.PREFER_ARGB_8888 )
+                            .override( Target.SIZE_ORIGINAL ) )
+                    .into( binding.activityDetailRestaurantImg );
+        }
+
+
+        /*
         String imageurl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="
                 + mPlaceDetails.photos[0].photoReference
                 + "&key="
@@ -155,6 +192,8 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                 .load( imageurl )
                 .centerCrop()
                 .into( binding.activityDetailRestaurantImg );
+
+         */
 
 
         /*
@@ -218,15 +257,14 @@ public class RestaurantDetailActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     public void updateLikeButtonDisplay() {
-        if (binding.likeBtn.getText().equals( getResources().getString( R.string.detail_restaurant_like_btn ) )){
-            binding.likeBtn.setText( R.string.detail_restaurant_unlike_btn );
-            //TODO : ajouter ce restaurant à la liste des favoris
+        if (binding.likeBtn.getText().equals( getResources().getString( R.string.detail_restaurant_like_btn ) )) {
+            binding.likeBtn.setCompoundDrawablesWithIntrinsicBounds( null, getResources().getDrawable( R.drawable.ic_baseline_star_orange_24 ), null, null );
 
-        }
-        else{
+            binding.likeBtn.setText( R.string.detail_restaurant_unlike_btn );
+        } else {
             binding.likeBtn.setText( R.string.detail_restaurant_like_btn );
-            //TODO : retirer ce restaurant de la liste des favoris
         }
     }
 
