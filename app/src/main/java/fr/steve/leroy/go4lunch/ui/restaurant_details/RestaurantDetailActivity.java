@@ -3,6 +3,7 @@ package fr.steve.leroy.go4lunch.ui.restaurant_details;
 import static fr.steve.leroy.go4lunch.utils.GetTodayDate.getTodayDate;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,7 +20,6 @@ import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.maps.model.PlaceDetails;
@@ -145,7 +145,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
         String workmateId = Objects.requireNonNull( getCurrentUser() ).getUid();
         String placeId = mPlaceDetails.placeId;
         String restaurantName = mPlaceDetails.name;
-        checkBooked( workmateId, placeId, restaurantName, true );
+        checkBooked( workmateId, placeId, restaurantName );
     }
 
 
@@ -154,31 +154,25 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
         return WorkmateHelper.getCurrentWorkmate();
     }
 
-    private void checkBooked(String workmateId, String placeId, String restaurantName, boolean tryingToBook) {
+    private void checkBooked(String workmateId, String placeId, String restaurantName) {
         RestaurantHelper.getBooking( workmateId, getTodayDate() ).addOnCompleteListener( restaurantTask -> {
             if (restaurantTask.isSuccessful()) {
                 if (restaurantTask.getResult().size() == 1) {
                     for (QueryDocumentSnapshot restaurant : restaurantTask.getResult()) {
                         if (Objects.equals( restaurant.getData().get( "restaurantName" ), restaurantName )) {
                             displayFloating( (R.drawable.ic_baseline_clear_orange_24) );
-                            if (tryingToBook) {
-                                Booking_Firebase( workmateId, placeId, restaurantName, restaurant.getId(), false, false, true );
-                                Toast.makeText( RestaurantDetailActivity.this, R.string.cancel_booking, Toast.LENGTH_SHORT ).show();
-                            }
+                            Booking_Firebase( workmateId, placeId, restaurantName, restaurant.getId(), false, false, true );
+                            Toast.makeText( RestaurantDetailActivity.this, R.string.cancel_booking, Toast.LENGTH_SHORT ).show();
                         } else {
                             displayFloating( (R.drawable.ic_baseline_check_circle_green_24) );
-                            if (tryingToBook) {
-                                Booking_Firebase( workmateId, placeId, restaurantName, restaurant.getId(), false, true, false );
-                                Toast.makeText( RestaurantDetailActivity.this, R.string.modify_booking, Toast.LENGTH_SHORT ).show();
-                            }
+                            Booking_Firebase( workmateId, placeId, restaurantName, restaurant.getId(), false, true, false );
+                            Toast.makeText( RestaurantDetailActivity.this, R.string.modify_booking, Toast.LENGTH_SHORT ).show();
                         }
                     }
                 } else {
                     displayFloating( (R.drawable.ic_baseline_check_circle_green_24) );
-                    if (tryingToBook) {
-                        Booking_Firebase( workmateId, placeId, restaurantName, null, true, false, false );
-                        Toast.makeText( RestaurantDetailActivity.this, R.string.new_booking, Toast.LENGTH_SHORT ).show();
-                    }
+                    Booking_Firebase( workmateId, placeId, restaurantName, null, true, false, false );
+                    Toast.makeText( RestaurantDetailActivity.this, R.string.new_booking, Toast.LENGTH_SHORT ).show();
                 }
             }
         } );
@@ -204,8 +198,11 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
 
 
     private void displayFloating(int icon) {
+       // int colorUnbooking = ContextCompat.getColor(this, R.color.colorError);
+        int color = ContextCompat.getColor(this, R.color.colorFab);
         Drawable mDrawable = Objects.requireNonNull( ContextCompat.getDrawable( getBaseContext(), icon ) ).mutate();
         binding.floatingActionButton.setImageDrawable( mDrawable );
+        binding.floatingActionButton.getDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
     }
 
     private void Update_Booking_RecyclerView(String placeId) {

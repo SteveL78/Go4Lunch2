@@ -42,9 +42,10 @@ public class RestaurantHelper {
     }
 
     public static Task<Void> createLike(String placeId, String workmateId) {
-        Map<String, Object> user = new HashMap<>();
-        user.put(workmateId, true);
-        return RestaurantHelper.getLikedCollection().document(placeId).set(user, SetOptions.merge());
+        Map<String, Object> like = new HashMap<>();
+        like.put("workmateId", workmateId);
+        like.put( "placeId", placeId );
+        return RestaurantHelper.getLikedCollection().document(placeId + workmateId).set(like, SetOptions.merge());
     }
 
     // --- GET ---
@@ -58,6 +59,7 @@ public class RestaurantHelper {
     }
 
     public static Task<DocumentSnapshot> getLikeForThisRestaurant(String placeId) {
+        //TODO : changer la façon de récupérer le like
         return RestaurantHelper.getLikedCollection().document(placeId).get();
     }
 

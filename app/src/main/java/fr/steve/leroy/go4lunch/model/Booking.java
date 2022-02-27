@@ -5,13 +5,13 @@ package fr.steve.leroy.go4lunch.model;
  */
 public class Booking {
 
-    private String bookingData;
+    private String bookingDate;
     private String workmateId;
     private String restaurantId;
     private String restaurantName;
 
-    public Booking(String bookingData, String workmateId, String restaurantId, String restaurantName) {
-        this.bookingData = bookingData;
+    public Booking(String bookingDate, String workmateId, String restaurantId, String restaurantName) {
+        this.bookingDate = bookingDate;
         this.workmateId = workmateId;
         this.restaurantId = restaurantId;
         this.restaurantName = restaurantName;
@@ -20,8 +20,8 @@ public class Booking {
 
     // ------- GETTERS -------
 
-    public String getBookingData() {
-        return bookingData;
+    public String getBookingDate() {
+        return bookingDate;
     }
 
     public String getWorkmateId() {
@@ -39,8 +39,8 @@ public class Booking {
 
     // ------- SETTERS -------
 
-    public void setBookingData(String bookingData) {
-        this.bookingData = bookingData;
+    public void setBookingDate(String bookingData) {
+        this.bookingDate = bookingData;
     }
 
     public void setWorkmateId(String workmateId) {

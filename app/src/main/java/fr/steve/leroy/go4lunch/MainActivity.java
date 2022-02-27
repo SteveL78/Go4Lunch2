@@ -42,6 +42,7 @@ import java.util.List;
 
 import fr.steve.leroy.go4lunch.authentication.SignInActivity;
 import fr.steve.leroy.go4lunch.databinding.ActivityMainBinding;
+import fr.steve.leroy.go4lunch.firebase.WorkmateHelper;
 import fr.steve.leroy.go4lunch.ui.map.MapFragment;
 import fr.steve.leroy.go4lunch.ui.restaurant_details.RestaurantDetailActivity;
 import fr.steve.leroy.go4lunch.ui.restaurant_list.ListViewFragment;
@@ -84,6 +85,13 @@ public class MainActivity extends AppCompatActivity implements
 
 
     }
+
+
+    @Nullable
+    private FirebaseUser getCurrentUser() {
+        return WorkmateHelper.getCurrentWorkmate();
+    }
+
 
     private void initPlaceApiClient() {
         if (!Places.isInitialized())
