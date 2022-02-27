@@ -67,11 +67,10 @@
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="15dp"
+        android:layout_marginEnd="16dp"
         android:clickable="true"
         android:contentDescription="@string/content_description_select_restaurant_fab"
         android:focusable="true"
-        android:src="@drawable/ic_baseline_check_circle_black_24"
         app:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="@id/activity_detail_restaurant_img"
         app:layout_constraintEnd_toEndOf="parent"
@@ -81,20 +80,20 @@
         android:id="@+id/activity_detail_restaurant_detail_btn_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintHeight_percent=".160"
         app:layout_constraintLeft_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/activity_detail_restaurant_detail_container" />
 
-    <com.google.android.material.textview.MaterialTextView
+    <Button
         android:id="@+id/call_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:background="@android:color/transparent"
         android:drawableTop="@drawable/ic_baseline_call_orange_24"
-        android:paddingVertical="20dp"
-        android:paddingStart="16dp"
+        android:paddingTop="20dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="5dp"
         android:text="@string/detail_restaurant_call_btn"
         android:textAppearance="?attr/textAppearanceHeadline6"
         android:textColor="@color/lightOrange"
@@ -102,15 +101,18 @@
         app:layout_constraintTop_toBottomOf="@id/activity_detail_restaurant_detail_container"
         tools:ignore="RtlSymmetry" />
 
-    <com.google.android.material.textview.MaterialTextView
+    <Button
         android:id="@+id/like_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:drawableTop="@drawable/ic_baseline_star_border_orange_24"
-        android:paddingVertical="20dp"
-        android:paddingStart="16dp"
-        android:text="@string/detail_restaurant_like_btn"
+        android:gravity="center_horizontal"
+        android:paddingLeft="40dp"
+        android:paddingTop="20dp"
+        android:paddingRight="40dp"
+        android:paddingBottom="5dp"
+        android:text="@string/detail_restaurant_like"
         android:textAppearance="?attr/textAppearanceHeadline6"
         android:textColor="@color/lightOrange"
         app:layout_constraintLeft_toRightOf="@id/call_btn"
@@ -119,18 +121,20 @@
         tools:ignore="RtlSymmetry" />
 
 
-    <com.google.android.material.textview.MaterialTextView
+    <Button
         android:id="@+id/website_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:drawableTop="@drawable/ic_baseline_public_orange_24"
-        android:paddingVertical="20dp"
-        android:paddingStart="16dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="20dp"
+        android:paddingRight="32dp"
+        android:paddingBottom="5dp"
         android:text="@string/detail_restaurant_website_btn"
         android:textAppearance="?attr/textAppearanceHeadline6"
         android:textColor="@color/lightOrange"
-        app:drawableTint="@color/lightOrange"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toRightOf="@id/like_btn"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/call_btn"

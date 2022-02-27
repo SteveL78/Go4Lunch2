@@ -32,6 +32,7 @@ import bolts.Task;
 import fr.steve.leroy.go4lunch.MainActivity;
 import fr.steve.leroy.go4lunch.R;
 import fr.steve.leroy.go4lunch.databinding.ActivitySigninBinding;
+import fr.steve.leroy.go4lunch.firebase.WorkmateHelper;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -70,11 +71,43 @@ public class SignInActivity extends AppCompatActivity {
 
     }
 
+
+    @Nullable
+    private FirebaseUser getCurrentUser() {
+        return FirebaseAuth.getInstance().getCurrentUser();
+    }
+
     // Check if user is logged-in
     private void checkUserAlreadyLogged() {
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             startMainActivity();
         }
+    }
+
+    private void createWorkmate() {
+        if (getCurrentUser() != null) {
+            WorkmateHelper.getWorkmate(getCurrentUser().getUid()).addOnCompleteListener( UserTask -> {
+                        if (UserTask.isSuccessful()) {
+                            if (!UserTask.getResult().exists()) {
+                                String urlPicture = (getCurrentUser().getPhotoUrl() != null) ? getCurrentUser().getPhotoUrl().toString() : null;
+                                if (getCurrentUser().getDisplayName() != null) {
+                                    String name = getCurrentUser().getDisplayName();
+                                    String uid = getCurrentUser().getUid();
+                                    WorkmateHelper.createWorkmate(uid, urlPicture, name).addOnFailureListener(onFailureListener());
+                                } else {
+                                    String name = getCurrentUser().getEmail();
+                                    String uid = getCurrentUser().getUid();
+                                    WorkmateHelper.createWorkmate(uid, urlPicture, name).addOnFailureListener(onFailureListener());
+                                }
+                            }
+                        }
+                    }
+            );
+        }
+    }
+
+    protected OnFailureListener onFailureListener() {
+        return e -> Toast.makeText( getApplicationContext(), getString( R.string.error_unknown_error ), 1);
     }
 
 
@@ -146,8 +179,7 @@ public class SignInActivity extends AppCompatActivity {
             IdpResponse response = IdpResponse.fromResultIntent( data );
 
             if (resultCode == RESULT_OK) {
-                //userManager.createUser();
-                addUserIdToFirestoreDatabase();
+                createWorkmate();
                 startMainActivity();
                 showSnackBar( getString( R.string.connection_succeed ) );
             } else { // ERRORS
@@ -166,11 +198,7 @@ public class SignInActivity extends AppCompatActivity {
         }
     }
 
-    // Update Firestore database with current user information if this their first authentication
-    private void addUserIdToFirestoreDatabase() {/*
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        */
-    }
+
 
 
     // ------------------------------------------------------------------------

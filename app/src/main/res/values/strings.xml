@@ -104,9 +104,9 @@
 
     <!-- activity_restaurant_detail.xml -->
     <string name="photo_restaurant">Photo of the selected restaurant</string>
-    <string name="content_description_select_restaurant_fab">Button to select this restaurant</string>
-    <string name="detail_restaurant_like_btn">LIKE</string>
-    <string name="detail_restaurant_unlike_btn">UNLIKE</string>
+    <string name="content_description_select_restaurant_fab">Button to mark the restaurant as selected</string>
+    <string name="detail_restaurant_like">LIKE</string>
+    <string name="detail_restaurant_unlike" translatable="false">UNLIKE</string>
     <string name="detail_restaurant_call_btn">CALL</string>
     <string name="detail_restaurant_website_btn">WEBSITE</string>
     <string name="cancel_booking">You cancelled the booking for this place</string>

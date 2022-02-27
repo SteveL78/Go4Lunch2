@@ -24,6 +24,7 @@
         <entry key="app/src/main/res/drawable/ic_baseline_check_circle_24.xml" value="0.3151041666666667" />
         <entry key="app/src/main/res/drawable/ic_baseline_check_circle_black_24.xml" value="0.3151041666666667" />
         <entry key="app/src/main/res/drawable/ic_baseline_clear_24.xml" value="0.12777777777777777" />
+        <entry key="app/src/main/res/drawable/ic_baseline_clear_black_24.xml" value="0.13796296296296295" />
         <entry key="app/src/main/res/drawable/ic_baseline_close_24.xml" value="0.12777777777777777" />
         <entry key="app/src/main/res/drawable/ic_baseline_power_settings_new_24.xml" value="0.2388888888888889" />
         <entry key="app/src/main/res/drawable/ic_baseline_public_24.xml" value="0.13796296296296295" />
@@ -39,13 +40,20 @@
         <entry key="app/src/main/res/drawable/ic_black_map_bottom_nav.xml" value="0.2388888888888889" />
         <entry key="app/src/main/res/drawable/ic_email.xml" value="0.16018518518518518" />
         <entry key="app/src/main/res/drawable/ic_go4lunchlogo.xml" value="0.15925925925925927" />
+        <entry key="app/src/main/res/drawable/ic_gps_fixed_24.xml" value="0.13796296296296295" />
+        <entry key="app/src/main/res/drawable/ic_magnify.xml" value="0.13796296296296295" />
         <entry key="app/src/main/res/drawable/ic_map_bottom_nav.xml" value="0.2388888888888889" />
+        <entry key="app/src/main/res/drawable/ic_power_24.xml" value="0.13796296296296295" />
+        <entry key="app/src/main/res/drawable/ic_search_24.xml" value="0.13796296296296295" />
+        <entry key="app/src/main/res/drawable/ic_settings_24.xml" value="0.3151041666666667" />
+        <entry key="app/src/main/res/drawable/ic_splashscreen.xml" value="0.3151041666666667" />
+        <entry key="app/src/main/res/drawable/ic_workmates_bottom_nav.xml" value="0.3151041666666667" />
         <entry key="app/src/main/res/drawable/ic_your_lunch_24.xml" value="0.2388888888888889" />
         <entry key="app/src/main/res/drawable/splash_image.xml" value="0.15925925925925927" />
         <entry key="app/src/main/res/drawable/white_border.xml" value="0.22407407407407406" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main_nav_header.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_restaurant_detail.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_restaurant_detail.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_signin.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.1" />
@@ -58,7 +66,7 @@
         <entry key="app/src/main/res/layout/fragment_list_view.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_list_view_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_logout.xml" value="0.3" />
-        <entry key="app/src/main/res/layout/fragment_map.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_map.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_restaurant_detail.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_workmate.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_workmates.xml" value="0.375" />

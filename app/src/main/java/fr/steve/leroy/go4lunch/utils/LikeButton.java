@@ -4,23 +4,27 @@ import android.content.Context;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.maps.model.PlacesSearchResult;
+import com.google.maps.model.PlaceDetails;
+
+import fr.steve.leroy.go4lunch.R;
+import fr.steve.leroy.go4lunch.firebase.RestaurantHelper;
 
 /**
- * Created by Steve LEROY on 19/02/2022.
+ * Created by Steve LEROY on 21/01/2022.
  */
 public class LikeButton {
-/*
-    public static void likeRestaurant(PlacesSearchResult result, Context context, TextView textView, String unlike, String liked) {
-        if (result != null && FirebaseAuth.getInstance().getCurrentUser() != null) {
-            RestaurantsHelper.createLike(result.placeId(), FirebaseAuth.getInstance()
-                    .getCurrentUser()
-                    .getUid())
-                    .addOnCompleteListener(likeTask -> {
+
+    public static void likeRestaurant(PlaceDetails placeDetails, Context context, TextView textView, String unlike, String liked) {
+        if (placeDetails != null && FirebaseAuth.getInstance().getCurrentUser() != null) {
+            RestaurantHelper.createLike( placeDetails.placeId, FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnCompleteListener( (Task<Void> likeTask) -> {
                 if (likeTask.isSuccessful()) {
-                    Toast.makeText(context, liked, Toast.LENGTH_SHORT).show();
                     textView.setText(unlike);
+                    Toast.makeText(context, liked, Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
@@ -28,15 +32,13 @@ public class LikeButton {
         }
     }
 
-    public static void dislikeRestaurant(PlacesSearchResult result, Context context, TextView textView, String like, String disliked, String liked) {
-        if (result != null) {
-            RestaurantsHelper.deleteLike(result.placeId(), FirebaseAuth.getInstance().getUid());
+    public static void dislikeRestaurant(PlaceDetails placeDetails, Context context, TextView textView, String like, String disliked, String liked) {
+        if (placeDetails != null) {
+            RestaurantHelper.deleteLike(placeDetails.placeId, FirebaseAuth.getInstance().getUid());
             textView.setText(like);
             Toast.makeText(context, disliked, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(context, liked, Toast.LENGTH_SHORT).show();
         }
     }
-
- */
 }

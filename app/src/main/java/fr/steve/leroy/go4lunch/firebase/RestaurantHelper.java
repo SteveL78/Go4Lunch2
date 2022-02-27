@@ -36,15 +36,15 @@ public class RestaurantHelper {
 
     // --- CREATE ---
 
-    public static Task<DocumentReference> createBooking(String bookingDate, String userId, String restaurantPlaceId, String restaurantName) {
-        Booking bookingToCreate = new Booking(bookingDate, userId, restaurantPlaceId, restaurantName);
+    public static Task<DocumentReference> createBooking(String bookingDate, String workmateId, String placeId, String restaurantName) {
+        Booking bookingToCreate = new Booking(bookingDate, workmateId, placeId, restaurantName);
         return RestaurantHelper.getBookingCollection().add(bookingToCreate);
     }
 
-    public static Task<Void> createLike(String restaurantId, String userId) {
+    public static Task<Void> createLike(String placeId, String workmateId) {
         Map<String, Object> user = new HashMap<>();
-        user.put(userId, true);
-        return RestaurantHelper.getLikedCollection().document(restaurantId).set(user, SetOptions.merge());
+        user.put(workmateId, true);
+        return RestaurantHelper.getLikedCollection().document(placeId).set(user, SetOptions.merge());
     }
 
     // --- GET ---
@@ -53,16 +53,16 @@ public class RestaurantHelper {
         return RestaurantHelper.getBookingCollection().whereEqualTo("workmateId", userId).whereEqualTo("bookingDate", bookingDate).get();
     }
 
-    public static Task<QuerySnapshot> getTodayBooking(String restaurantPlaceId, String bookingDate) {
-        return RestaurantHelper.getBookingCollection().whereEqualTo("restaurantId", restaurantPlaceId).whereEqualTo("bookingDate", bookingDate).get();
+    public static Task<QuerySnapshot> getTodayBooking(String placeId, String bookingDate) {
+        return RestaurantHelper.getBookingCollection().whereEqualTo("placeId", placeId).whereEqualTo("bookingDate", bookingDate).get();
     }
 
-    public static Task<DocumentSnapshot> getLikeForThisRestaurant(String restaurantPlaceId) {
-        return RestaurantHelper.getLikedCollection().document(restaurantPlaceId).get();
+    public static Task<DocumentSnapshot> getLikeForThisRestaurant(String placeId) {
+        return RestaurantHelper.getLikedCollection().document(placeId).get();
     }
 
-    public static Task<QuerySnapshot> getAllLikeByUserId(String userId) {
-        return RestaurantHelper.getLikedCollection().whereEqualTo(userId, true).get();
+    public static Task<QuerySnapshot> getAllLikeByUserId(String workmateId) {
+        return RestaurantHelper.getLikedCollection().whereEqualTo(workmateId, true).get();
     }
 
     // --- DELETE ---
@@ -71,4 +71,14 @@ public class RestaurantHelper {
         return RestaurantHelper.getBookingCollection().document(bookingId).delete();
     }
 
+    public static Boolean deleteLike(String placeId, String workmateId) {
+        RestaurantHelper.getLikeForThisRestaurant(placeId).addOnCompleteListener(restaurantTask -> {
+            if (restaurantTask.isSuccessful()) {
+                Map<String, Object> update = new HashMap<>();
+                update.put(workmateId, FieldValue.delete());
+                RestaurantHelper.getLikedCollection().document(placeId).update(update);
+            }
+        });
+        return true;
+    }
 }

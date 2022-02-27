@@ -1,21 +1,17 @@
 package fr.steve.leroy.go4lunch.firebase;
 
 
+import androidx.annotation.Nullable;
+
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import fr.steve.leroy.go4lunch.model.Booking;
+import fr.steve.leroy.go4lunch.model.Workmate;
 
 /**
  * Created by Steve LEROY on 03/10/2021.
@@ -23,28 +19,20 @@ import fr.steve.leroy.go4lunch.model.Booking;
 public class WorkmateHelper {
 
     private static final String COLLECTION_NAME = "workmate";
-    private static final String COLLECTION_LIKED_NAME = "restaurantLiked";
 
     // ----- COLLECTION REFERENCE -----
     public static CollectionReference getWorkmatesCollection() {
         return FirebaseFirestore.getInstance().collection( COLLECTION_NAME );
     }
 
-    public static CollectionReference getLikedCollection() {
-        return FirebaseFirestore.getInstance().collection( COLLECTION_LIKED_NAME );
-    }
-
     // --- CREATE ---
-    public static Task<DocumentReference> createBooking(String bookingDate, String userId, String restaurantPlaceId, String restaurantName) {
-        Booking bookingToCreate = new Booking(bookingDate, userId, restaurantPlaceId, restaurantName);
-        return WorkmateHelper.getWorkmatesCollection().add(bookingToCreate);
+    public static Task<Void> createWorkmate(String workmateId, @Nullable String profileUrl, String firstName) {
+        if (profileUrl == null)
+            profileUrl = "https://unc.nc/wp-content/uploads/2020/07/Portrait_Placeholder-1.png";
+        Workmate workmateToCreate = new Workmate( workmateId, profileUrl, firstName );
+        return WorkmateHelper.getWorkmatesCollection().document( workmateId ).set( workmateToCreate );
     }
 
-    public static Task<Void> createLike(String restaurantId, String userId) {
-        Map<String, Object> user = new HashMap<>();
-        user.put(userId, true);
-        return WorkmateHelper.getLikedCollection().document(restaurantId).set(user, SetOptions.merge());
-    }
 
     // ----- GET -----
 
@@ -52,8 +40,8 @@ public class WorkmateHelper {
         return FirebaseAuth.getInstance().getCurrentUser();
     }
 
-    public static Task<DocumentSnapshot> getWorkmate(String id) {
-        return WorkmateHelper.getWorkmatesCollection().document( id ).get();
+    public static Task<DocumentSnapshot> getWorkmate(String workmateId) {
+        return WorkmateHelper.getWorkmatesCollection().document( workmateId ).get();
     }
 
     public static Task<DocumentSnapshot> getWorkmatesForRestaurant(String placeId) {
@@ -62,29 +50,8 @@ public class WorkmateHelper {
         return WorkmateHelper.getWorkmatesCollection().document( placeId ).get();
     }
 
-
     public static Task<QuerySnapshot> getAllWorkmates() {
         return WorkmateHelper.getWorkmatesCollection().get();
-    }
-
-    public static Task<DocumentSnapshot> getLikeForThisRestaurant(String restaurantPlaceId) {
-        return WorkmateHelper.getLikedCollection().document(restaurantPlaceId).get();
-    }
-
-
-
-
-    // ----- DELETE -----
-
-    public static Boolean deleteLike(String restaurantId, String userId) {
-        WorkmateHelper.getLikeForThisRestaurant(restaurantId).addOnCompleteListener(restaurantTask -> {
-            if (restaurantTask.isSuccessful()) {
-                Map<String, Object> update = new HashMap<>();
-                update.put(userId, FieldValue.delete());
-                WorkmateHelper.getLikedCollection().document(restaurantId).update(update);
-            }
-        });
-        return true;
     }
 
 }
