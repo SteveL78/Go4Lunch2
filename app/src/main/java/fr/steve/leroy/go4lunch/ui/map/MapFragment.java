@@ -34,6 +34,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.maps.model.PlacesSearchResult;
 
@@ -186,25 +187,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         try {
             if (mLocationPermissionsGranted) {
 
-                Task location = fusedLocationClient.getLastLocation();
-                location.addOnCompleteListener( task -> {
-                    if (task.isSuccessful()) {
-                        Log.d( TAG, "onComplete: found location" );
-                        Location currentLocation = (Location) task.getResult();
+                fusedLocationClient.getLastLocation()
+                        .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                // Got last known location. In some rare situations this can be null.
+                                if (location != null) {
+                                    moveCamera( new LatLng( location.getLatitude(), location.getLongitude() ),
+                                            DEFAULT_ZOOM,
+                                            "My location" );
 
-                        if (currentLocation != null) {
-                            moveCamera( new LatLng( currentLocation.getLatitude(), currentLocation.getLongitude() ),
-                                    DEFAULT_ZOOM,
-                                    "My location" );
-
-                            initLocation( currentLocation );
-
-                        }
-                    } else {
-                        Log.d( TAG, "onComplete: current location is null" );
-                        Toast.makeText( getActivity(), "unable to get current location", Toast.LENGTH_SHORT ).show();
-                    }
-                } );
+                                    initLocation( location );
+                                }
+                            }
+                        });
             }
         } catch (SecurityException e) {
             Log.e( TAG, "getDeviceLocation : SecurityException: " + e.getMessage() );
@@ -261,6 +257,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
 
         mMap.setMyLocationEnabled( true );
+        moveCamera( new LatLng( currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM, "You are here" );
         mMap.getUiSettings().setMyLocationButtonEnabled( false );
 
         init();
@@ -275,6 +272,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     double lng = placesSearchResults[i].geometry.location.lng;
 
                     mMap.addMarker( new MarkerOptions().position( new LatLng( lat, lng ) ) );
+
 
                 }
             }) );
