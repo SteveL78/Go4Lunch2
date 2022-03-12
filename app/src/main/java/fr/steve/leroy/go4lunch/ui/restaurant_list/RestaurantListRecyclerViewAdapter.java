@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.maps.model.PlaceDetails;
 import com.google.maps.model.PlacesSearchResult;
 
 import java.util.List;
@@ -18,7 +19,7 @@ import fr.steve.leroy.go4lunch.model.Workmate;
 /**
  * Created by Steve LEROY on 26/09/2021.
  */
-public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListViewHolder> {
+public class RestaurantListRecyclerViewAdapter extends RecyclerView.Adapter<RestaurantListViewHolder> {
 
 
     private List<PlacesSearchResult> placesSearchResults;
@@ -26,23 +27,30 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListVi
     private Location currentLocation = null;
     private OnRestaurantClickListener listener;
 
+
     public interface OnRestaurantClickListener {
         void onRestaurantClick(PlacesSearchResult result);
     }
 
-    public RestaurantListAdapter(List<PlacesSearchResult> placesSearchResults, OnRestaurantClickListener listener) {
+
+    // Constructor
+    public RestaurantListRecyclerViewAdapter(List<PlacesSearchResult> placesSearchResults, OnRestaurantClickListener listener, Location currentLocation) {
         this.placesSearchResults = placesSearchResults;
         this.listener = listener;
+        this.currentLocation = currentLocation;
     }
 
-    @NonNull
+
+    // Create viewHolder
     @Override
-    public RestaurantListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from( parent.getContext() );
+    public RestaurantListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
+        LayoutInflater layoutInflater = LayoutInflater.from( parent.getContext() );
         return new RestaurantListViewHolder( RestaurantItemBinding.inflate( layoutInflater ), context );
     }
 
+
+    // Update viewHolder with placeDetails
     @Override
     public void onBindViewHolder(@NonNull RestaurantListViewHolder holder, int position) {
 
@@ -54,10 +62,13 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListVi
         } );
     }
 
+
+    // Return the total count of items in the list
     @Override
     public int getItemCount() {
         return this.placesSearchResults.size();
     }
+
 
     public void updateWithData(List<Workmate> workmateList, List<PlacesSearchResult> restaurantList, Location currentLocation) {
         this.workmateList = workmateList;

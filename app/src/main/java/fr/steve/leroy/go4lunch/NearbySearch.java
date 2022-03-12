@@ -23,7 +23,7 @@ public class NearbySearch {
 
         try {
             request = PlacesApi.nearbySearchQuery( context, latLng )
-                    .radius( 5000 )
+                    .radius( 500 )
                     .rankby( RankBy.PROMINENCE )
                     .type( PlaceType.RESTAURANT )
                     .await();

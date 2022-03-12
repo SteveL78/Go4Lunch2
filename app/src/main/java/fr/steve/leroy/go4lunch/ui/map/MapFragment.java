@@ -35,7 +35,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.maps.model.PlacesSearchResult;
 
 import java.io.IOException;
@@ -151,7 +150,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             Log.d( TAG, "geolocate: found a location: " + address.toString() );
             //  Toast.makeText( getActivity(), address.toString(), Toast.LENGTH_SHORT ).show();
 
-            moveCamera( new LatLng( address.getLatitude(), address.getLongitude() ), DEFAULT_ZOOM,
+            moveCamera( new LatLng( address.getLatitude(), address.getLongitude() ),
                     address.getAddressLine( 0 ) );
         }
 
@@ -194,7 +193,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                 // Got last known location. In some rare situations this can be null.
                                 if (location != null) {
                                     moveCamera( new LatLng( location.getLatitude(), location.getLongitude() ),
-                                            DEFAULT_ZOOM,
                                             "My location" );
 
                                     initLocation( location );
@@ -209,9 +207,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-    private void moveCamera(LatLng latLng, float zoom, String title) {
+    private void moveCamera(LatLng latLng, String title) {
         Log.d( TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude );
-        mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( latLng, zoom ) );
+        mMap.moveCamera( CameraUpdateFactory.newLatLngZoom( latLng, MapFragment.DEFAULT_ZOOM ) );
 
         if (!title.equals( "My location" )) {
             MarkerOptions options = new MarkerOptions()
@@ -230,6 +228,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         Log.d( TAG, "onMapReady: map is ready" );
         mMap = googleMap;
 
+        googleMap.setMapType( GoogleMap.MAP_TYPE_NORMAL );
         googleMap.addMarker( new MarkerOptions()
                 .position( new LatLng( 48.8566, 2.3522 ) )
                 .title( "You are here" ) );
@@ -257,7 +256,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
 
         mMap.setMyLocationEnabled( true );
-        moveCamera( new LatLng( currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM, "You are here" );
+        moveCamera( new LatLng( currentLocation.getLatitude(), currentLocation.getLongitude()), "You are here" );
         mMap.getUiSettings().setMyLocationButtonEnabled( false );
 
         init();

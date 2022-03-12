@@ -85,6 +85,8 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
 
     /**
      * Launches an Intent.ACTION_DIAL intent after a click on the "Call" option button.
+     * Updates "Like" button display.
+     * Launches an Intent.ACTION_VIEW intent with a URI website after a click on the "WEBSITE" option button.
      */
     @Override
     public void onClick(View view) {
@@ -99,7 +101,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
                 Toast.makeText( RestaurantDetailActivity.this, "No phone number", Toast.LENGTH_SHORT ).show();
             }
 
-            // LIKE BUTTON
+            // UPDATE "LIKE" BUTTON DISPLAY
         } else if (id == R.id.like_btn) {
             if (binding.likeBtn.getText().equals( getResources().getString( R.string.detail_restaurant_like ) )) {
                 binding.likeBtn.setCompoundDrawablesWithIntrinsicBounds( null, getResources().getDrawable( R.drawable.ic_baseline_star_orange_24 ), null, null );
@@ -198,11 +200,11 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
 
 
     private void displayFloating(int icon) {
-       // int colorUnbooking = ContextCompat.getColor(this, R.color.colorError);
-        int color = ContextCompat.getColor(this, R.color.colorFab);
+        // int colorUnbooking = ContextCompat.getColor(this, R.color.colorError);
+        int color = ContextCompat.getColor( this, R.color.colorFab );
         Drawable mDrawable = Objects.requireNonNull( ContextCompat.getDrawable( getBaseContext(), icon ) ).mutate();
         binding.floatingActionButton.setImageDrawable( mDrawable );
-        binding.floatingActionButton.getDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        binding.floatingActionButton.getDrawable().setColorFilter( color, PorterDuff.Mode.SRC_IN );
     }
 
     private void Update_Booking_RecyclerView(String placeId) {

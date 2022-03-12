@@ -20,16 +20,20 @@ public class WorkmateHelper {
 
     private static final String COLLECTION_NAME = "workmate";
 
+
     // ----- COLLECTION REFERENCE -----
     public static CollectionReference getWorkmatesCollection() {
         return FirebaseFirestore.getInstance().collection( COLLECTION_NAME );
     }
 
+
     // --- CREATE ---
-    public static Task<Void> createWorkmate(String workmateId, @Nullable String profileUrl, String firstName) {
+
+    // Create Workmate in Firestore
+    public static Task<Void> createWorkmate(String workmateId, String firstName, String profileUrl ) {
         if (profileUrl == null)
             profileUrl = "https://unc.nc/wp-content/uploads/2020/07/Portrait_Placeholder-1.png";
-        Workmate workmateToCreate = new Workmate( workmateId, profileUrl, firstName );
+        Workmate workmateToCreate = new Workmate( workmateId, firstName, profileUrl );
         return WorkmateHelper.getWorkmatesCollection().document( workmateId ).set( workmateToCreate );
     }
 

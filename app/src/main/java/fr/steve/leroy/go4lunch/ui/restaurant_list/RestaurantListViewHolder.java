@@ -11,7 +11,6 @@ import androidx.core.widget.TextViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.maps.model.PlacesSearchResult;
 
@@ -29,8 +28,9 @@ public class RestaurantListViewHolder extends RecyclerView.ViewHolder {
     private RestaurantItemBinding binding;
     private Context context;
     private Resources resources;
-    private FirebaseAuth mAuth;
     private int numberWorkmateEatingHere = 0;
+    public static final double MAX_STAR = 3;
+    public static final double MAX_RATING = 5;
 
 
     public RestaurantListViewHolder(@NonNull RestaurantItemBinding binding, Context context) {
@@ -41,27 +41,28 @@ public class RestaurantListViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    public void updateRestaurantInfo(PlacesSearchResult placesSearchResult, Location currentLocation) {
-        binding.restaurantNameTv.setText( placesSearchResult.name );
-        binding.restaurantAddressTv.setText( placesSearchResult.vicinity );
 
-        displayOpeningHours( placesSearchResult );
+    public void updateRestaurantInfo(PlacesSearchResult placeSearchResults, android.location.Location currentLocation) {
+        binding.restaurantNameTv.setText( placeSearchResults.name );
+        binding.restaurantAddressTv.setText( placeSearchResults.vicinity );
 
-        restaurantRating( placesSearchResult );
+        displayOpeningHours( placeSearchResults );
 
-        restaurantDistance( placesSearchResult, currentLocation );
+        displayRestaurantRating( placeSearchResults );
 
-        displayRestaurantPhoto( placesSearchResult );
+        displayRestaurantDistance( placeSearchResults, currentLocation );
 
-        updateWorkmateNumber( placesSearchResult );
+        displayRestaurantPhoto( placeSearchResults );
+
+        updateWorkmateNumber( placeSearchResults );
 
     }
 
 
-    private void updateWorkmateNumber(PlacesSearchResult placesSearchResult) {
+    private void updateWorkmateNumber(PlacesSearchResult placesSearchResults) {
 
         WorkmateHelper.getWorkmatesCollection()
-                .whereEqualTo( "restaurantId", placesSearchResult.placeId )
+                .whereEqualTo( "restaurantId", placesSearchResults.placeId )
                 .get()
                 .addOnCompleteListener( task -> {
                     if (task.isSuccessful()) {
@@ -81,14 +82,14 @@ public class RestaurantListViewHolder extends RecyclerView.ViewHolder {
     }
 
 
-    private void displayRestaurantPhoto(PlacesSearchResult placesSearchResult) {
+    private void displayRestaurantPhoto(PlacesSearchResult placesSearchResults) {
 
-        if (placesSearchResult.photos != null && placesSearchResult.photos.length > 0) {
+        if (placesSearchResults.photos != null && placesSearchResults.photos.length > 0) {
 
-            Log.d( "photos", placesSearchResult.photos[0].toString() );
+            Log.d( "photos", placesSearchResults.photos[0].toString() );
 
             String imageurl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="
-                    + placesSearchResult.photos[0].photoReference
+                    + placesSearchResults.photos[0].photoReference
                     + "&key="
                     + context.getString( R.string.google_maps_API_key );
 
@@ -102,7 +103,7 @@ public class RestaurantListViewHolder extends RecyclerView.ViewHolder {
     }
 
 
-    private void restaurantDistance(PlacesSearchResult placesSearchResult, Location currentLocation) {
+    private void displayRestaurantDistance(PlacesSearchResult placesSearchResults, Location currentLocation) {
 
         double userLocationLat = currentLocation.getLatitude();
         double userLocationLng = currentLocation.getLongitude();
@@ -112,8 +113,8 @@ public class RestaurantListViewHolder extends RecyclerView.ViewHolder {
         userLocation.setLongitude( userLocationLng );
 
         Location selectedRestaurantLocation = new Location( "Arrival point" );
-        selectedRestaurantLocation.setLatitude( placesSearchResult.geometry.location.lat );
-        selectedRestaurantLocation.setLongitude( placesSearchResult.geometry.location.lng );
+        selectedRestaurantLocation.setLatitude( placesSearchResults.geometry.location.lat );
+        selectedRestaurantLocation.setLongitude( placesSearchResults.geometry.location.lng );
 
         String distanceResult = String.valueOf( Math.round( userLocation.distanceTo( selectedRestaurantLocation ) ) );
         distanceResult = String.format( "%sm", distanceResult );
@@ -121,19 +122,19 @@ public class RestaurantListViewHolder extends RecyclerView.ViewHolder {
         binding.distanceRestaurantTv.setText( distanceResult );
     }
 
-    private void restaurantRating(PlacesSearchResult placesSearchResult) {
-        float restaurantRating = placesSearchResult.rating;
-        float rating = (restaurantRating / 5) * 3;
+    private void displayRestaurantRating(PlacesSearchResult placesSearchResults) {
+        double googleRating = placesSearchResults.rating;
+        double rating = (googleRating / MAX_RATING) * MAX_STAR;
 
-        binding.itemRestaurantListRatingbar.setRating( rating );
+        binding.itemRestaurantListRatingbar.setRating( (float) rating );
         binding.itemRestaurantListRatingbar.setVisibility( View.VISIBLE );
 
     }
 
 
-    private void displayOpeningHours(PlacesSearchResult placesSearchResult) {
-        boolean isOpen = Boolean.parseBoolean( placesSearchResult.openingHours.openNow.toString() );
-        boolean isPermanentlyClosed = Boolean.parseBoolean( String.valueOf( placesSearchResult.permanentlyClosed ) );
+    private void displayOpeningHours(PlacesSearchResult placesSearchResults) {
+        boolean isOpen = Boolean.parseBoolean( placesSearchResults.openingHours.openNow.toString() );
+        boolean isPermanentlyClosed = Boolean.parseBoolean( String.valueOf( placesSearchResults.permanentlyClosed ) );
 
         if (isPermanentlyClosed) {
             binding.openingTimeTv.setText( "Permanently closed" );

@@ -29,10 +29,10 @@ public class RestaurantListViewModel extends ViewModel {
     private Executor mainExecutor = null;
 
 
-    private MutableLiveData<Pair<List<Workmate>, List<PlacesSearchResult>>> placesSearchResult = new MutableLiveData<>();
+    private MutableLiveData<Pair<List<Workmate>, List<PlacesSearchResult>>> placesSearchResults = new MutableLiveData<>();
 
-    public LiveData<Pair<List<Workmate>, List<PlacesSearchResult>>> getPlacesSearchResult() {
-        return placesSearchResult;
+    public LiveData<Pair<List<Workmate>, List<PlacesSearchResult>>> getPlacesSearchResults() {
+        return placesSearchResults;
     }
 
 
@@ -58,11 +58,12 @@ public class RestaurantListViewModel extends ViewModel {
                         PlacesSearchResult[] placesSearchResults = new NearbySearch().run( latLng ).results;
                         mainExecutor.execute( (() -> {
 
-                            this.placesSearchResult.setValue( new Pair( workmateList, Arrays.asList( placesSearchResults ) ) );
+                            this.placesSearchResults.setValue( new Pair( workmateList, Arrays.asList( placesSearchResults ) ) );
 
                         }) );
                     }) );
                 } );
 
     }
+
 }

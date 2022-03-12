@@ -3,7 +3,6 @@ package fr.steve.leroy.go4lunch.model;
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Created by Steve LEROY on 24/09/2021.
@@ -11,14 +10,12 @@ import java.util.Date;
 @IgnoreExtraProperties
 public class Workmate implements Serializable {
 
-    private String uid, firstName, profileUrl, placeId, restaurantName;
+    private String workmateId, firstName, profileUrl, placeId, restaurantName;
 
-    // Empty constructor needed for the recyclerView
-    public Workmate() {
-    }
+    public Workmate() { /* Required empty public constructor for the recyclerView */ }
 
-    public Workmate(String uid, String firstName, String profileUrl) {
-        this.uid = uid;
+    public Workmate(String workmateId, String firstName, String profileUrl) {
+        this.workmateId = workmateId;
         this.firstName = firstName;
         this.profileUrl = profileUrl;
     }
@@ -26,7 +23,7 @@ public class Workmate implements Serializable {
 
     // ------- GETTERS -------
     public String getWorkmateId() {
-        return uid;
+        return workmateId;
     }
 
     public String getFirstName() {
@@ -48,7 +45,7 @@ public class Workmate implements Serializable {
 
     // ------- SETTERS -------
     public void setWorkmateId(String workmateId) {
-        this.uid = workmateId;
+        this.workmateId = workmateId;
     }
 
     public void setFirstName(String workmateName) {
