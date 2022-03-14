@@ -133,7 +133,10 @@ public class RestaurantListViewHolder extends RecyclerView.ViewHolder {
 
 
     private void displayOpeningHours(PlacesSearchResult placesSearchResults) {
-        boolean isOpen = Boolean.parseBoolean( placesSearchResults.openingHours.openNow.toString() );
+        boolean isOpen = false;
+        if (placesSearchResults.openingHours != null) {
+            isOpen = Boolean.parseBoolean( placesSearchResults.openingHours.openNow.toString() );
+        }
         boolean isPermanentlyClosed = Boolean.parseBoolean( String.valueOf( placesSearchResults.permanentlyClosed ) );
 
         if (isPermanentlyClosed) {

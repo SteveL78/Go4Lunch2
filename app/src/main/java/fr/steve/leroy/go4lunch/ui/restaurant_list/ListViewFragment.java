@@ -102,6 +102,7 @@ public class ListViewFragment extends Fragment implements RestaurantListRecycler
                         if (location != null) {
                             // Logic to handle location object
                             mLocationPermissionsGranted = true;
+                            currentLocation = location;
                             viewModel.getAllRestaurants( new com.google.maps.model.LatLng( location.getLatitude(), location.getLongitude() ) );
 
                         } else {

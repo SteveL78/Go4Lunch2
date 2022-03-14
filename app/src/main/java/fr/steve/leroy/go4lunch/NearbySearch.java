@@ -31,7 +31,6 @@ public class NearbySearch {
             e.printStackTrace();
         } finally {
             return request;
-//PlacesApi.placeDetails(  )
         }
 
     }
