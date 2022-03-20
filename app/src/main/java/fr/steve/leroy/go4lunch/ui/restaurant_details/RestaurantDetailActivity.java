@@ -2,6 +2,7 @@ package fr.steve.leroy.go4lunch.ui.restaurant_details;
 
 import static fr.steve.leroy.go4lunch.utils.GetTodayDate.getTodayDate;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -36,6 +37,7 @@ import fr.steve.leroy.go4lunch.databinding.ActivityRestaurantDetailBinding;
 import fr.steve.leroy.go4lunch.firebase.RestaurantHelper;
 import fr.steve.leroy.go4lunch.firebase.WorkmateHelper;
 import fr.steve.leroy.go4lunch.model.Workmate;
+import fr.steve.leroy.go4lunch.ui.workmates_list.WorkmateListAdapter;
 import fr.steve.leroy.go4lunch.utils.LikeButton;
 import io.reactivex.rxjava3.disposables.Disposable;
 
@@ -88,11 +90,12 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
      * Updates "Like" button display.
      * Launches an Intent.ACTION_VIEW intent with a URI website after a click on the "WEBSITE" option button.
      */
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void onClick(View view) {
         int id = view.getId();
 
-        // CALL BUTTON
+        // Call Button
         if (id == R.id.call_btn) {
             if (mPlaceDetails.formattedPhoneNumber != null && mPlaceDetails.formattedPhoneNumber.trim().length() > 0) {
                 Intent intent = new Intent( Intent.ACTION_DIAL, Uri.parse( "tel:" + mPlaceDetails.formattedPhoneNumber ) );// Initiates the Intent
@@ -101,7 +104,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
                 Toast.makeText( RestaurantDetailActivity.this, "No phone number", Toast.LENGTH_SHORT ).show();
             }
 
-            // UPDATE "LIKE" BUTTON DISPLAY
+            // Update "Like" button display
         } else if (id == R.id.like_btn) {
             if (binding.likeBtn.getText().equals( getResources().getString( R.string.detail_restaurant_like ) )) {
                 binding.likeBtn.setCompoundDrawablesWithIntrinsicBounds( null, getResources().getDrawable( R.drawable.ic_baseline_star_orange_24 ), null, null );
@@ -112,7 +115,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
                 Toast.makeText( RestaurantDetailActivity.this, "Unlike this restaurant", Toast.LENGTH_SHORT ).show();
             }
 
-            // WEBSITE BUTTON
+            // Website button
         } else if (id == R.id.website_btn) {
             if (mPlaceDetails.website != null) {
                 String website = mPlaceDetails.website.toString();
@@ -121,7 +124,6 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
             } else {
                 Toast.makeText( RestaurantDetailActivity.this, "No website", Toast.LENGTH_SHORT ).show();
             }
-
         }
     }
 
@@ -183,12 +185,12 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
     private void Booking_Firebase(String workmateId, String placeId, String restaurantName, @Nullable String bookingPlaceId, boolean toCreate, boolean toUpdate, boolean toDelete) {
         if (toUpdate) {
             RestaurantHelper.deleteBooking( bookingPlaceId );
-            RestaurantHelper.createBooking( getTodayDate(), workmateId, placeId, restaurantName ).addOnFailureListener( onFailureListener() );
+            RestaurantHelper.createBooking( workmateId, placeId, restaurantName ).addOnFailureListener( onFailureListener() );
             displayFloating( (R.drawable.ic_baseline_clear_orange_24) );
 
         } else {
             if (toCreate) {
-                RestaurantHelper.createBooking( getTodayDate(), workmateId, placeId, restaurantName ).addOnFailureListener( onFailureListener() );
+                RestaurantHelper.createBooking( workmateId, placeId, restaurantName ).addOnFailureListener( onFailureListener() );
                 displayFloating( (R.drawable.ic_baseline_clear_orange_24) );
             } else if (toDelete) {
                 RestaurantHelper.deleteBooking( bookingPlaceId );
@@ -207,6 +209,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
         binding.floatingActionButton.getDrawable().setColorFilter( color, PorterDuff.Mode.SRC_IN );
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void Update_Booking_RecyclerView(String placeId) {
         mWorkmateList.clear();
         RestaurantHelper.getTodayBooking( placeId, getTodayDate() ).addOnCompleteListener( restaurantTask -> {
@@ -236,7 +239,15 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
         if (getIntent().hasExtra( RESTAURANT_PLACE_ID )) {
             String placeId = getIntent().getStringExtra( RESTAURANT_PLACE_ID );
             getRestaurantDetail( placeId );
+            initWorkmateList();
         }
+    }
+
+    private void initWorkmateList() {
+        mWorkmateList = new ArrayList<>();
+        adapter = new RestaurantDetailAdapter( mWorkmateList );
+        binding.activityDetailRestaurantRv.setLayoutManager( new LinearLayoutManager( this ) );
+        binding.activityDetailRestaurantRv.setAdapter( adapter );
     }
 
     private void getRestaurantDetail(String placeId) {
@@ -252,7 +263,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
 
     private void displayInfoRestaurant() {
 
-        //Restaurant image
+        // Restaurant image
         if (mPlaceDetails.photos != null && mPlaceDetails.photos.length > 0) {
             String imageurl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="
                     + mPlaceDetails.photos[0].photoReference
@@ -274,30 +285,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
                     .into( binding.activityDetailRestaurantImg );
         }
 
-
-        /*
-        String imageurl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="
-                + mPlaceDetails.photos[0].photoReference
-                + "&key="
-                + this.getString( R.string.google_maps_API_key );
-        Glide.with( this )
-                .load( imageurl )
-                .centerCrop()
-                .into( binding.activityDetailRestaurantImg );
-         */
-
-
-        /*
-        if (mPlaceDetails.photos != null && mPlaceDetails.photos.length > 0) {
-            Glide.with( this )
-                    .load( mPlaceDetails.photos )
-                    .centerCrop()
-                    .into( activityBinding.activityDetailRestaurantImg );
-        } else {
-            activityBinding.activityDetailRestaurantImg.setImageResource( R.drawable.image_not_avalaible );
-        }*/
-
-        //Display restaurant name
+        // Display restaurant name
         binding.activityDetailRestaurantName.setText( mPlaceDetails.name );
 
         // Display rating bar
@@ -306,7 +294,6 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
 
         //Display restaurant address
         binding.activityDetailRestaurantAddress.setText( mPlaceDetails.formattedAddress );
-
     }
 
 
@@ -314,10 +301,6 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
         return e -> Toast.makeText( getApplicationContext(), getString( R.string.error_unknown_error ), Toast.LENGTH_LONG ).show();
     }
 
-
-    public void onFailure() {
-        Toast.makeText( RestaurantDetailActivity.this, R.string.error_unknown_error, Toast.LENGTH_SHORT ).show();
-    }
 
     @Override
     public void onDestroy() {

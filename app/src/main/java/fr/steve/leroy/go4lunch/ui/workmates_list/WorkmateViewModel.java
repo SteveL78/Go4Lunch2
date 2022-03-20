@@ -12,7 +12,7 @@ import java.util.Objects;
 
 import fr.steve.leroy.go4lunch.firebase.WorkmateHelper;
 import fr.steve.leroy.go4lunch.model.Workmate;
-import fr.steve.leroy.go4lunch.repositories.WorkmateDataRepository;
+import fr.steve.leroy.go4lunch.repositories.RestaurantRepository;
 
 /**
  * Created by Steve LEROY on 03/10/2021.
@@ -29,7 +29,7 @@ public class WorkmateViewModel extends ViewModel {
     private String placeId;
 
     public void init() {
-        WorkmateDataRepository workmateRepository = WorkmateDataRepository.getInstance();
+        RestaurantRepository workmateRepository = RestaurantRepository.getInstance();
         workmateId = workmateRepository.getCurrentUserId();
     }
 

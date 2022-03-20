@@ -5,6 +5,13 @@
     <string name="go4lunch_logo">Go4Lunch logo</string>
     <string name="app_subtitle">Find a nice restaurant and invite your co-workers for lunch !</string>
     <string name="authentication_sign_in_btn">Sign in</string>
+    <string name="authentication_sign_out_btn">Sign out</string>
+
+    <!-- popup logout -->
+    <string name="popup_logout_title">Logout</string>
+    <string name="popup_logout_message">Are you sure you want to logout ?</string>
+    <string name="popup_logout_yes_btn">YES</string>
+    <string name="popup_logout_no_btn">NO</string>
 
     <!-- authentication_layout.xml -->
     <string name="sign_in_with_fb">Sign in with Facebook</string>
@@ -30,7 +37,7 @@
     <string name="error_unknown_error">An unknown error has occurred</string>
     <string name="connection_succeed">Authentication successful !</string>
     <string name="button_login_text_logged">Display profil</string>
-    <string name="button_login_text_not_logged">Login</string>
+    <string name="button_login_text_not_logged">Sign in</string>
 
     <!-- bottom_navigation_menu.xml -->
     <string name="icon_workmates">Workmates</string>

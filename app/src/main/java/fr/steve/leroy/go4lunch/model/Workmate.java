@@ -1,5 +1,7 @@
 package fr.steve.leroy.go4lunch.model;
 
+import androidx.annotation.Nullable;
+
 import com.google.firebase.firestore.IgnoreExtraProperties;
 
 import java.io.Serializable;
@@ -10,7 +12,9 @@ import java.io.Serializable;
 @IgnoreExtraProperties
 public class Workmate implements Serializable {
 
-    private String workmateId, firstName, profileUrl, placeId, restaurantName;
+    private String workmateId, firstName, placeId, restaurantName;
+    @Nullable
+    private String profileUrl = "";
 
     public Workmate() { /* Required empty public constructor for the recyclerView */ }
 
@@ -34,6 +38,7 @@ public class Workmate implements Serializable {
         return placeId;
     }
 
+    @Nullable
     public String getProfileUrl() {
         return profileUrl;
     }
@@ -56,7 +61,7 @@ public class Workmate implements Serializable {
         this.placeId = placeId;
     }
 
-    public void setProfileUrl(String profileUrl) {
+    public void setProfileUrl(@Nullable String profileUrl) {
         this.profileUrl = profileUrl;
     }
 

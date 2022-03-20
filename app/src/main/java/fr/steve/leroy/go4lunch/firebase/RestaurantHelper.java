@@ -36,8 +36,8 @@ public class RestaurantHelper {
 
     // --- CREATE ---
 
-    public static Task<DocumentReference> createBooking(String bookingDate, String workmateId, String placeId, String restaurantName) {
-        Booking bookingToCreate = new Booking(bookingDate, workmateId, placeId, restaurantName);
+    public static Task<DocumentReference> createBooking(String workmateId, String placeId, String restaurantName) {
+        Booking bookingToCreate = new Booking(workmateId, placeId, restaurantName);
         return RestaurantHelper.getBookingCollection().add(bookingToCreate);
     }
 

@@ -62,7 +62,7 @@ public class RestaurantListViewHolder extends RecyclerView.ViewHolder {
     private void updateWorkmateNumber(PlacesSearchResult placesSearchResults) {
 
         WorkmateHelper.getWorkmatesCollection()
-                .whereEqualTo( "restaurantId", placesSearchResults.placeId )
+                .whereEqualTo( "placeId", placesSearchResults.placeId )
                 .get()
                 .addOnCompleteListener( task -> {
                     if (task.isSuccessful()) {

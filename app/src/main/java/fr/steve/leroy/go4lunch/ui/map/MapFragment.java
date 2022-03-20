@@ -3,19 +3,13 @@ package fr.steve.leroy.go4lunch.ui.map;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -37,9 +31,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.maps.model.PlacesSearchResult;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -55,21 +46,21 @@ import fr.steve.leroy.go4lunch.databinding.FragmentMapBinding;
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private static final String TAG = "MapFragment";
+    private FragmentMapBinding binding;
+
     private static final int ERROR_DIALOG_REQUEST = 9001;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
+
     private static final float DEFAULT_ZOOM = 15f;
-    private FragmentMapBinding binding;
-    private Executor executor = Executors.newSingleThreadExecutor();
+
+    private final Executor executor = Executors.newSingleThreadExecutor();
     private Executor mainExecutor = null;
-    //widgets
-    private EditText mSearchText;
 
     //vars
     private Boolean mLocationPermissionsGranted = false;
     private GoogleMap mMap;
-    private FusedLocationProviderClient fusedLocationClient;
 
 
     @Override
@@ -85,8 +76,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
 
-        isServicesOK();
-
+        isGooglePlayServicesAvailable();
     }
 
 
@@ -100,75 +90,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         assert mapFragment != null;
         mapFragment.getMapAsync( this );
 
-        mSearchText = binding.inputSearch;
-
         getLocationPermission();
 
         mainExecutor = ContextCompat.getMainExecutor( requireContext() );
 
-        init();
-
     }
 
 
-    private void init() {
-        Log.d( TAG, "init: initializing" );
-
-        mSearchText.setOnEditorActionListener( new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent keyEvent) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH
-                        || actionId == EditorInfo.IME_ACTION_DONE
-                        || keyEvent.getAction() == KeyEvent.ACTION_DOWN
-                        || keyEvent.getAction() == keyEvent.KEYCODE_ENTER) {
-
-                    // execute our method for searching
-                    geoLocate();
-                }
-                return false;
-            }
-        } );
-        hideSoftKeyboard();
-    }
-
-    private void geoLocate() {
-        Log.d( TAG, "geolocate: geolocating" );
-
-        String searchString = mSearchText.getText().toString();
-
-        Geocoder geocoder = new Geocoder( getActivity() );
-        List<Address> list = new ArrayList<>();
-        try {
-            list = geocoder.getFromLocationName( searchString, 1 );
-        } catch (IOException e) {
-            Log.e( TAG, "geoLocate: IOException: " + e.getMessage() );
-        }
-
-        if (list.size() > 0) {
-            Address address = list.get( 0 );
-
-            Log.d( TAG, "geolocate: found a location: " + address.toString() );
-            //  Toast.makeText( getActivity(), address.toString(), Toast.LENGTH_SHORT ).show();
-
-            moveCamera( new LatLng( address.getLatitude(), address.getLongitude() ),
-                    address.getAddressLine( 0 ) );
-        }
-
-    }
-
-
-    public boolean isServicesOK() {
-        Log.d( TAG, "isServicesOK: checking google services version" );
+    public boolean isGooglePlayServicesAvailable() {
+        Log.d( TAG, "isGooglePlayServicesAvailable: checking google services version" );
 
         int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable( getActivity() );
 
         if (available == ConnectionResult.SUCCESS) {
             // Everything is fine and the user can make map request
-            Log.d( TAG, "isServicesOK: Google Play Services is working" );
+            Log.d( TAG, "isGooglePlayServicesAvailable: Google Play Services is working" );
             return true;
         } else if (GoogleApiAvailability.getInstance().isUserResolvableError( available )) {
             // An error occured but we can resolve it
-            Log.d( TAG, "isServicesOK: an error occured but we can fix it" );
+            Log.d( TAG, "isGooglePlayServicesAvailable: an error occured but we can fix it" );
             Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog( getActivity(), available, ERROR_DIALOG_REQUEST );
             dialog.show();
         } else {
@@ -179,15 +119,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
     private void getDeviceLocation() {
-        Log.d( TAG, "getDevicelocation: getting the devices current location" );
+        Log.d( TAG, "getDeviceLocation: getting the devices current location" );
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient( getActivity() );
+        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient( getActivity() );
 
         try {
             if (mLocationPermissionsGranted) {
 
                 fusedLocationClient.getLastLocation()
-                        .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                        .addOnSuccessListener( getActivity(), new OnSuccessListener<Location>() {
                             @Override
                             public void onSuccess(Location location) {
                                 // Got last known location. In some rare situations this can be null.
@@ -198,7 +138,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                                     initLocation( location );
                                 }
                             }
-                        });
+                        } );
             }
         } catch (SecurityException e) {
             Log.e( TAG, "getDeviceLocation : SecurityException: " + e.getMessage() );
@@ -237,12 +177,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             getDeviceLocation();
         }
 
-        binding.fragmentMapFloatingActionBtn.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getDeviceLocation();
-            }
-        } );
+        binding.fragmentMapFloatingActionBtn.setOnClickListener( view -> getDeviceLocation() );
 
     }
 
@@ -256,10 +191,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
 
         mMap.setMyLocationEnabled( true );
-        moveCamera( new LatLng( currentLocation.getLatitude(), currentLocation.getLongitude()), "You are here" );
+        moveCamera( new LatLng( currentLocation.getLatitude(), currentLocation.getLongitude() ), "You are here" );
         mMap.getUiSettings().setMyLocationButtonEnabled( false );
-
-        init();
 
         executor.execute( (() -> {
             com.google.maps.model.LatLng latLng = new com.google.maps.model.LatLng( currentLocation.getLatitude(), currentLocation.getLongitude() );
@@ -271,14 +204,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     double lng = placesSearchResults[i].geometry.location.lng;
 
                     mMap.addMarker( new MarkerOptions().position( new LatLng( lat, lng ) ) );
-
-
                 }
             }) );
         }) );
     }
 
-    private boolean getLocationPermission() {
+    private void getLocationPermission() {
         Log.d( TAG, "getLocationPermission: getting location permissions" );
         String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION};
@@ -298,7 +229,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     permissions,
                     LOCATION_PERMISSION_REQUEST_CODE );
         }
-        return false;
     }
 
     @Override

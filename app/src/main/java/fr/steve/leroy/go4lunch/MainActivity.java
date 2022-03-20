@@ -4,13 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,31 +22,27 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.maps.model.PlaceDetails;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import fr.steve.leroy.go4lunch.authentication.SignInActivity;
 import fr.steve.leroy.go4lunch.databinding.ActivityMainBinding;
 import fr.steve.leroy.go4lunch.firebase.WorkmateHelper;
+import fr.steve.leroy.go4lunch.manager.UserManager;
 import fr.steve.leroy.go4lunch.ui.map.MapFragment;
 import fr.steve.leroy.go4lunch.ui.restaurant_details.RestaurantDetailActivity;
 import fr.steve.leroy.go4lunch.ui.restaurant_list.ListViewFragment;
 import fr.steve.leroy.go4lunch.ui.workmates_list.WorkmateFragment;
 
-public class MainActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    private UserManager userManager = UserManager.getInstance();
 
     private ActivityMainBinding binding;
     private FirebaseAuth mAuth;
@@ -58,25 +51,23 @@ public class MainActivity extends AppCompatActivity implements
 
     private PlacesClient placesClient;
 
+    private ImageView profileImageView;
+    private TextView usernameEditText;
+    private TextView emailTextView;
+
     //FOR DESIGN
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
 
-        binding = ActivityMainBinding.inflate( getLayoutInflater() );
-        setContentView( binding.getRoot() );
+        initView();
 
-        // Configure all views
-        this.configureToolbar();
-        this.configureBottomView();
-        this.configureDrawerLayout();
-        this.configureNavigationView();
+        configureUI();
 
         updateMainFragment( R.id.map_view_item );
 
@@ -94,7 +85,29 @@ public class MainActivity extends AppCompatActivity implements
     private void initPlaceApiClient() {
         if (!Places.isInitialized())
             Places.initialize( getApplicationContext(), BuildConfig.ApiPlaceKey );
-        placesClient = Places.createClient(this);
+        placesClient = Places.createClient( this );
+    }
+
+
+    // ------------------------------------
+    // INIT VIEW
+    // ------------------------------------
+
+    private void initView() {
+        binding = ActivityMainBinding.inflate( getLayoutInflater() );
+        setContentView( binding.getRoot() );
+    }
+
+
+    // ------------------------------------
+    // CONFIGURE UI NAVIGATION
+    // ------------------------------------
+
+    private void configureUI() {
+        this.configureToolbar();
+        this.configureBottomView();
+        this.configureDrawerLayout();
+        this.configureNavigationView();
     }
 
 
@@ -111,38 +124,18 @@ public class MainActivity extends AppCompatActivity implements
         setSupportActionBar( binding.toolbar.mainToolbar );
     }
 
-
     /**
      * Inflate the menu and add it to the Toolbar.
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate( R.menu.toolbar_search_menu, menu );
-
-/*
-        final MenuItem searchItem = menu.findItem(R.id.search_menu);
-        final SearchView searchView = (SearchView) searchItem.getActionView();
-        searchView.setOnQueryTextListener(this);
-
- */
-
         return true;
     }
 
-    @Override
-    public boolean onQueryTextSubmit(String s) {
-        // Here is where we are going to implement the filter logic
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String s) {
-        return false;
-    }
-
-
     /**
      * Handle actions on menu items.
+     *
      * @param item Item selected.
      */
     @Override
@@ -150,157 +143,14 @@ public class MainActivity extends AppCompatActivity implements
         switch (item.getItemId()) {
             case R.id.search_menu:
 
-                placeDetailList.clear();
-                List<Place.Field> fields = Arrays.asList( Place.Field.ID, Place.Field.NAME );
+                // placeDetailList.clear();
+                //List<Place.Field> fields = Arrays.asList( Place.Field.ID, Place.Field.NAME );
 
                 return true;
             default:
                 return super.onOptionsItemSelected( item );
         }
-
-
-        /*
-        switch (item.getItemId()) {
-            case R.id.search_menu:
-
-                placeDetailList.clear();
-
-
-
-                /*
-                List<Place.Field> fields = Arrays.asList( Place.Field.ID, Place.Field.NAME );
-                // Define the region
-                RectangularBounds bounds = RectangularBounds.newInstance(
-                        new LatLng( getLocation().getLatitude() - 0.01, getLocation().getLongitude() - 0.01 ),
-                        new LatLng( getLocation().getLatitude() + 0.01, getLocation().getLongitude() + 0.01 ) );
-                // Start the autocomplete intent.
-                Intent intent = new Autocomplete.IntentBuilder(
-                        AutocompleteActivityMode.OVERLAY, fields )
-                        .setLocationBias( bounds )
-                        .setTypeFilter( TypeFilter.ESTABLISHMENT )
-                        .build( this );
-                startActivityForResult( intent, AUTOCOMPLETE_REQUEST_CODE );
-                */
-
-
-                //onSearchCalled();
-
-
-
-/*
-                SearchManager manager = (SearchManager) getSystemService( Context.SEARCH_SERVICE);
-
-                SearchView searchView = (SearchView) item.getActionView();
-                searchView.setQueryHint( "Search restaurants" );
-*/
-
-
-
-/*
-                MenuItem myActionMenuItem = menu.findItem( R.id.action_search);
-                searchView = (SearchView) myActionMenuItem.getActionView();
-                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String query) {
-                        // Toast like print
-                        UserFeedback.show( "SearchOnQueryTextSubmit: " + query);
-                        if( ! searchView.isIconified()) {
-                            searchView.setIconified(true);
-                        }
-                        myActionMenuItem.collapseActionView();
-                        return false;
-                    }
-                    @Override
-                    public boolean onQueryTextChange(String s) {
-                        // UserFeedback.show( "SearchOnQueryTextChanged: " + s);
-                        return false;
-                    }
-                });
-                return true;
-*/
-
-                /*
-                SearchView searchView = (SearchView) item.getActionView();
-                searchView.setQueryHint( "Search restaurants" );
-
-                SearchManager mSearchManager = (SearchManager) requireContext().getSystemService( Context.SEARCH_SERVICE);
-                searchView.setSearchableInfo(mSearchManager.getSearchableInfo(((MainActivity) requireContext()).getComponentName()));
-                searchView.setIconifiedByDefault( false );
-                searchView.setOnQueryTextListener( new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String s) {
-                        if(s.length() >2){
-
-
-                        }
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onQueryTextChange(String s) {
-                        return false;
-                    }
-                } );
-*/
-
-                // Toast.makeText( this, "Recherche indisponible, demandez plutôt l'avis de Google, c'est mieux et plus rapide.", Toast.LENGTH_LONG ).show();
-              /*  return true;
-            default:
-                return super.onOptionsItemSelected( item );
-        }
-        */
     }
-
-
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
-        // Initialize the AutocompleteSupportFragment.
-        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
-                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-
-        // Specify the types of place data to return.
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
-
-        // Set up a PlaceSelectionListener to handle the response.
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(@NonNull Place place) {
-                // TODO: Get info about the selected place.
-                //Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
-            }
-
-
-            @Override
-            public void onError(@NonNull Status status) {
-                // TODO: Handle the error.
-                //Log.i(TAG, "An error occurred: " + status);
-            }
-        });
-
-
-       /* if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                Place place = Autocomplete.getPlaceFromIntent(data);
-                //Log.i(TAG, "Place: " + place.getName() + ", " + place.getId() + ", " + place.getAddress());
-                Toast.makeText(MainActivity.this, "ID: " + place.getId() + "address:" + place.getAddress() + "Name:" + place.getName() + " latlong: " + place.getLatLng(), Toast.LENGTH_LONG).show();
-                String address = place.getAddress();
-                // do query with address
-
-            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
-                // TODO: Handle the error.
-                Status status = Autocomplete.getStatusFromIntent(data);
-                Toast.makeText(MainActivity.this, "Error: " + status.getStatusMessage(), Toast.LENGTH_LONG).show();
-                //Log.i(TAG, status.getStatusMessage());
-            } else if (resultCode == RESULT_CANCELED) {
-                // The user canceled the operation.
-            }
-        }
-        */
-    }
-
 
     private void updateToolbarTitle(boolean status) {
         String title;
@@ -346,6 +196,7 @@ public class MainActivity extends AppCompatActivity implements
     // ------------------------------------
     // DRAWER
     // ------------------------------------
+
     /**
      * Close the NavigationDrawer or the Autocomplete bar with the button back
      */
@@ -370,8 +221,7 @@ public class MainActivity extends AppCompatActivity implements
 
 
     private void configureNavigationView() {
-        this.navigationView = binding.activityMainNavView;
-        navigationView.setNavigationItemSelectedListener( this );
+        binding.activityMainNavView.setNavigationItemSelectedListener( this );
 
         updateUserInfoInNavigationHeader();
     }
@@ -380,29 +230,40 @@ public class MainActivity extends AppCompatActivity implements
     // Update the Navigation View Header with user information
     @SuppressLint("UseCompatLoadingForDrawables")
     private void updateUserInfoInNavigationHeader() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        binding.activityMainNavView.setNavigationItemSelectedListener( this );
+        profileImageView = binding.activityMainNavView.getHeaderView( 0 ).findViewById( R.id.main_activity_nav_header_user_picture );
+        usernameEditText = binding.activityMainNavView.getHeaderView( 0 ).findViewById( R.id.main_activity_nav_header_user_name );
+        emailTextView = binding.activityMainNavView.getHeaderView( 0 ).findViewById( R.id.main_activity_nav_header_user_email );
 
-        View headerView = binding.activityMainNavView.getHeaderView( 0 );
-        TextView userNameHeader = headerView.findViewById( R.id.main_activity_nav_header_user_name );
-        TextView userMailHeader = headerView.findViewById( R.id.main_activity_nav_header_user_email );
-        ImageView userAvatar = headerView.findViewById( R.id.main_activity_nav_header_user_picture );
+        if (userManager.isCurrentUserLogged()) {
+            FirebaseUser user = userManager.getCurrentUser();
 
-        if (user != null) {
-            try {
-                userNameHeader.setText( user.getDisplayName() );
-                userMailHeader.setText( user.getEmail() );
-                if (user.getPhotoUrl() != null) {
-                    Glide.with( this )
-                            .load( user.getPhotoUrl() )
-                            .apply( RequestOptions.circleCropTransform() )
-                            .into( userAvatar );
-
-                } else userAvatar.setImageDrawable( getResources()
+            if (user.getPhotoUrl() != null) {
+                setProfilePicture( user.getPhotoUrl() );
+            } else {
+                profileImageView.setImageDrawable( getResources()
                         .getDrawable( R.drawable.ic_anon_user ) );
-            } catch (NullPointerException exception) {
-                exception.printStackTrace();
             }
+            setTextUserData( user );
         }
+    }
+
+
+    private void setProfilePicture(Uri profilePictureUrl) {
+        Glide.with( this )
+                .load( profilePictureUrl )
+                .apply( RequestOptions.circleCropTransform() )
+                .into( profileImageView );
+    }
+
+    private void setTextUserData(FirebaseUser user) {
+        //Get email & username from User
+        String email = TextUtils.isEmpty( user.getEmail() ) ? getString( R.string.info_no_email_found ) : user.getEmail();
+        String username = TextUtils.isEmpty( user.getDisplayName() ) ? getString( R.string.info_no_username_found ) : user.getDisplayName();
+
+        //Update views with data
+        usernameEditText.setText( username );
+        emailTextView.setText( email );
     }
 
 
@@ -421,22 +282,22 @@ public class MainActivity extends AppCompatActivity implements
                 break;
 
             case R.id.drawer_menu_settings_btn:
-                startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + BuildConfig.APPLICATION_ID)));               // startActivityForResult( new Intent( Settings.ACTION_SETTINGS ), 0 );
+                startActivity( new Intent( android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse( "package:" + BuildConfig.APPLICATION_ID ) ) );               // startActivityForResult( new Intent( Settings.ACTION_SETTINGS ), 0 );
                 break;
 
             case R.id.drawer_menu_logout_btn:
-                AlertDialog.Builder builder = new AlertDialog.Builder( this );
-                builder.setTitle( "Logout" );
-                builder.setMessage( "Are you sure you want to logout?" );
-                builder.setPositiveButton( "YES", (dialog, which) -> {
-                    mAuth = FirebaseAuth.getInstance();
-                    FirebaseAuth.getInstance().signOut();
-                    Intent intent1 = new Intent( getApplicationContext(), SignInActivity.class );
-                    intent1.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP );
-                    startActivity( intent1 );
-                } );
-                builder.setNegativeButton( "NO", (dialog, which) -> dialog.dismiss() );
-                builder.show();
+                new AlertDialog.Builder( this )
+                        .setTitle( R.string.popup_logout_title )
+                        .setMessage( R.string.popup_logout_message )
+                        .setPositiveButton( R.string.popup_logout_yes_btn, (dialogInterface, i) -> {
+
+                            userManager.signOut( MainActivity.this )
+                                    .addOnSuccessListener( aVoid -> {
+                                        finish();
+                                    } );
+                        } )
+                        .setNegativeButton( R.string.popup_logout_no_btn, null )
+                        .show();
                 break;
 
             default:
