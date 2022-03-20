@@ -10,6 +10,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,9 +37,9 @@ public class RestaurantHelper {
 
     // --- CREATE ---
 
-    public static Task<DocumentReference> createBooking(String workmateId, String placeId, String restaurantName) {
+    public static Task<Void> createBooking(String workmateId, String placeId, String restaurantName) {
         Booking bookingToCreate = new Booking(workmateId, placeId, restaurantName);
-        return RestaurantHelper.getBookingCollection().add(bookingToCreate);
+        return RestaurantHelper.getBookingCollection().document(workmateId).set(bookingToCreate);
     }
 
     public static Task<Void> createLike(String placeId, String workmateId) {
@@ -48,14 +49,15 @@ public class RestaurantHelper {
         return RestaurantHelper.getLikedCollection().document(placeId + workmateId).set(like, SetOptions.merge());
     }
 
+
     // --- GET ---
 
-    public static Task<QuerySnapshot> getBooking(String userId, String bookingDate) {
-        return RestaurantHelper.getBookingCollection().whereEqualTo("workmateId", userId).whereEqualTo("bookingDate", bookingDate).get();
+    public static Task<QuerySnapshot> getBooking(String userId, Date date) {
+        return RestaurantHelper.getBookingCollection().whereEqualTo("workmateId", userId).whereEqualTo("dateCreated", date).get();
     }
 
     public static Task<QuerySnapshot> getTodayBooking(String placeId, String bookingDate) {
-        return RestaurantHelper.getBookingCollection().whereEqualTo("placeId", placeId).whereEqualTo("bookingDate", bookingDate).get();
+        return RestaurantHelper.getBookingCollection().whereEqualTo("placeId", placeId).whereEqualTo("dateCreated", bookingDate).get();
     }
 
     public static Task<DocumentSnapshot> getLikeForThisRestaurant(String placeId) {
@@ -66,6 +68,16 @@ public class RestaurantHelper {
     public static Task<QuerySnapshot> getAllLikeByUserId(String workmateId) {
         return RestaurantHelper.getLikedCollection().whereEqualTo(workmateId, true).get();
     }
+
+
+    // --- UPDATE ---
+    public static Task<Void> updateBooking(String workmateId, String restaurantName, String placeId) {
+        Map<String, Object> updatedData = new HashMap<>();
+        updatedData.put("restaurantName", restaurantName);
+        updatedData.put( "placeId", placeId );
+        return RestaurantHelper.getBookingCollection().document(workmateId).update(updatedData);
+    }
+
 
     // --- DELETE ---
 

@@ -26,6 +26,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.maps.model.PlaceDetails;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Executor;
@@ -159,46 +160,50 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
     }
 
     private void checkBooked(String workmateId, String placeId, String restaurantName) {
-        RestaurantHelper.getBooking( workmateId, getTodayDate() ).addOnCompleteListener( restaurantTask -> {
+        RestaurantHelper.getBooking( workmateId, new Date() ).addOnCompleteListener( restaurantTask -> {
             if (restaurantTask.isSuccessful()) {
                 if (restaurantTask.getResult().size() == 1) {
+                    //QueryDocumentSnapshot = restaurantTask.getResult().getDocuments().get( 0 );
                     for (QueryDocumentSnapshot restaurant : restaurantTask.getResult()) {
-                        if (Objects.equals( restaurant.getData().get( "restaurantName" ), restaurantName )) {
+                        if (Objects.equals( restaurant.getData().get( "placeId" ), placeId )) {
                             displayFloating( (R.drawable.ic_baseline_clear_orange_24) );
-                            Booking_Firebase( workmateId, placeId, restaurantName, restaurant.getId(), false, false, true );
+                            deleteBooking( workmateId);
                             Toast.makeText( RestaurantDetailActivity.this, R.string.cancel_booking, Toast.LENGTH_SHORT ).show();
                         } else {
                             displayFloating( (R.drawable.ic_baseline_check_circle_green_24) );
-                            Booking_Firebase( workmateId, placeId, restaurantName, restaurant.getId(), false, true, false );
+                            updateBooking( workmateId, placeId, restaurantName );
                             Toast.makeText( RestaurantDetailActivity.this, R.string.modify_booking, Toast.LENGTH_SHORT ).show();
                         }
                     }
                 } else {
                     displayFloating( (R.drawable.ic_baseline_check_circle_green_24) );
-                    Booking_Firebase( workmateId, placeId, restaurantName, null, true, false, false );
+                    createBooking( workmateId, placeId, restaurantName);
                     Toast.makeText( RestaurantDetailActivity.this, R.string.new_booking, Toast.LENGTH_SHORT ).show();
                 }
             }
         } );
     }
 
-    private void Booking_Firebase(String workmateId, String placeId, String restaurantName, @Nullable String bookingPlaceId, boolean toCreate, boolean toUpdate, boolean toDelete) {
-        if (toUpdate) {
-            RestaurantHelper.deleteBooking( bookingPlaceId );
-            RestaurantHelper.createBooking( workmateId, placeId, restaurantName ).addOnFailureListener( onFailureListener() );
-            displayFloating( (R.drawable.ic_baseline_clear_orange_24) );
-
-        } else {
-            if (toCreate) {
-                RestaurantHelper.createBooking( workmateId, placeId, restaurantName ).addOnFailureListener( onFailureListener() );
-                displayFloating( (R.drawable.ic_baseline_clear_orange_24) );
-            } else if (toDelete) {
-                RestaurantHelper.deleteBooking( bookingPlaceId );
-                displayFloating( (R.drawable.ic_baseline_check_circle_green_24) );
-            }
-        }
+    private void updateBooking(String workmateId, String placeId, String restaurantName){
+        RestaurantHelper.updateBooking( workmateId, placeId, restaurantName );
+        displayFloating( (R.drawable.ic_baseline_clear_orange_24) );
         Update_Booking_RecyclerView( mPlaceDetails.placeId );
     }
+
+    private void createBooking (String workmateId, String placeId, String restaurantName){
+        RestaurantHelper.createBooking( workmateId, placeId, restaurantName ).addOnFailureListener( onFailureListener() );
+        displayFloating( (R.drawable.ic_baseline_clear_orange_24) );
+        Update_Booking_RecyclerView( mPlaceDetails.placeId );
+    }
+
+    private void deleteBooking (String workmateId){
+        RestaurantHelper.deleteBooking( workmateId );
+        displayFloating( (R.drawable.ic_baseline_check_circle_green_24) );
+        Update_Booking_RecyclerView( mPlaceDetails.placeId );
+    }
+
+
+
 
 
     private void displayFloating(int icon) {

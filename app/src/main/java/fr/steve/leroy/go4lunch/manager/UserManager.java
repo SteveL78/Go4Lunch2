@@ -37,7 +37,6 @@ public class UserManager {
         return userRepository.getCurrentUser();
     }
 
-
     public Boolean isCurrentUserLogged(){
         return (this.getCurrentUser() != null);
     }
@@ -60,8 +59,8 @@ public class UserManager {
         return userRepository.updateUsername(username);
     }
 
-    public void updateIsMentor(Boolean isMentor){
-        userRepository.updateBooking(isMentor);
+    public void updateHasBooked(Boolean hasBooked){
+        userRepository.updateBooking(hasBooked);
     }
 
     public Task<Void> deleteUser(Context context){

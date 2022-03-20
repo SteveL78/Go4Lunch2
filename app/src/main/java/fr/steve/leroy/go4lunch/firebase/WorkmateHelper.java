@@ -1,8 +1,6 @@
 package fr.steve.leroy.go4lunch.firebase;
 
 
-import androidx.annotation.Nullable;
-
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,9 +28,17 @@ public class WorkmateHelper {
     // --- CREATE ---
 
     // Create Workmate in Firestore
-    public static Task<Void> createWorkmate(String workmateId, String firstName, String profileUrl ) {
+    public static Task<Void> createWorkmate(String workmateId, String firstName, String profileUrl) {
+        FirebaseUser user = getCurrentWorkmate();
+
         if (profileUrl == null)
             profileUrl = "https://unc.nc/wp-content/uploads/2020/07/Portrait_Placeholder-1.png";
+
+        if (user != null) {
+            workmateId = user.getUid();
+            firstName = user.getDisplayName();
+        }
+
         Workmate workmateToCreate = new Workmate( workmateId, firstName, profileUrl );
         return WorkmateHelper.getWorkmatesCollection().document( workmateId ).set( workmateToCreate );
     }
@@ -43,6 +49,7 @@ public class WorkmateHelper {
     public static FirebaseUser getCurrentWorkmate() {
         return FirebaseAuth.getInstance().getCurrentUser();
     }
+
 
     public static Task<DocumentSnapshot> getWorkmate(String workmateId) {
         return WorkmateHelper.getWorkmatesCollection().document( workmateId ).get();

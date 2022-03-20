@@ -88,7 +88,7 @@ public class UserRepository {
             User userToCreate = new User( uid, username, urlPicture );
 
             Task<DocumentSnapshot> userData = getUserData();
-            // If the user already exist in Firestore, we get his data (isMentor)
+            // If the user already exist in Firestore, we get his data (hasBooked)
             userData.addOnSuccessListener( documentSnapshot -> {
                 if (documentSnapshot.contains( HAS_BOOKED_FIELD )) {
                     userToCreate.setHasBooked( (Boolean) documentSnapshot.get( HAS_BOOKED_FIELD ) );
