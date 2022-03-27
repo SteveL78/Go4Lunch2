@@ -8,13 +8,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.maps.model.PlaceDetails;
 import com.google.maps.model.PlacesSearchResult;
 
 import java.util.List;
 
 import fr.steve.leroy.go4lunch.databinding.RestaurantItemBinding;
-import fr.steve.leroy.go4lunch.model.Workmate;
+import fr.steve.leroy.go4lunch.model.User;
 
 /**
  * Created by Steve LEROY on 26/09/2021.
@@ -23,7 +22,7 @@ public class RestaurantListRecyclerViewAdapter extends RecyclerView.Adapter<Rest
 
 
     private List<PlacesSearchResult> placesSearchResults;
-    private List<Workmate> workmateList;
+    private List<User> workmateList;
     private Location currentLocation = null;
     private OnRestaurantClickListener listener;
 
@@ -70,7 +69,7 @@ public class RestaurantListRecyclerViewAdapter extends RecyclerView.Adapter<Rest
     }
 
 
-    public void updateWithData(List<Workmate> workmateList, List<PlacesSearchResult> restaurantList, Location currentLocation) {
+    public void updateWithData(List<User> workmateList, List<PlacesSearchResult> restaurantList, Location currentLocation) {
         this.workmateList = workmateList;
         this.placesSearchResults = restaurantList;
         this.currentLocation = currentLocation;

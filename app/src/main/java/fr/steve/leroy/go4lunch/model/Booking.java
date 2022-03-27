@@ -9,14 +9,14 @@ import java.util.Date;
  */
 public class Booking {
 
-    private String workmateId;
+    private String uid;
     private String placeId;
     private String restaurantName;
     private Date dateCreated;
 
 
-    public Booking( String workmateId, String placeId, String restaurantName) {
-        this.workmateId = workmateId;
+    public Booking(String uid, String placeId, String restaurantName) {
+        this.uid = uid;
         this.placeId = placeId;
         this.restaurantName = restaurantName;
     }
@@ -24,8 +24,8 @@ public class Booking {
 
     // ------- GETTERS -------
 
-    public String getWorkmateId() {
-        return workmateId;
+    public String getUid() {
+        return uid;
     }
 
     public String getPlaceId() {
@@ -44,8 +44,8 @@ public class Booking {
 
     // ------- SETTERS -------
 
-    public void setWorkmateId(String workmateId) {
-        this.workmateId = workmateId;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public void setPlaceId(String placeId) {

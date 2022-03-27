@@ -21,10 +21,11 @@ public class LikeButton {
 
     public static void likeRestaurant(PlaceDetails placeDetails, Context context, TextView textView, String unlike, String liked) {
         if (placeDetails != null && FirebaseAuth.getInstance().getCurrentUser() != null) {
-            RestaurantHelper.createLike( placeDetails.placeId, FirebaseAuth.getInstance().getCurrentUser().getUid()).addOnCompleteListener( (Task<Void> likeTask) -> {
+            RestaurantHelper.createLike( placeDetails.placeId, placeDetails.name, FirebaseAuth.getInstance().getCurrentUser().getUid(), FirebaseAuth.getInstance().getCurrentUser().getDisplayName()).addOnCompleteListener( (Task<Void> likeTask) -> {
                 if (likeTask.isSuccessful()) {
                     textView.setText(unlike);
                     Toast.makeText(context, liked, Toast.LENGTH_SHORT).show();
+                    // TODO : ajouter ce restaurant à la liste des restaurants likés du User
                 }
             });
         } else {
@@ -37,6 +38,8 @@ public class LikeButton {
             RestaurantHelper.deleteLike(placeDetails.placeId, FirebaseAuth.getInstance().getUid());
             textView.setText(like);
             Toast.makeText(context, disliked, Toast.LENGTH_SHORT).show();
+
+            // TODO : delete ce restaurant à la liste des restaurants likés du User
         } else {
             Toast.makeText(context, liked, Toast.LENGTH_SHORT).show();
         }

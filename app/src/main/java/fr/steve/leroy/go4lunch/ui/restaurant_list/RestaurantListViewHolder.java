@@ -18,12 +18,15 @@ import java.util.Objects;
 
 import fr.steve.leroy.go4lunch.R;
 import fr.steve.leroy.go4lunch.databinding.RestaurantItemBinding;
-import fr.steve.leroy.go4lunch.firebase.WorkmateHelper;
+import fr.steve.leroy.go4lunch.manager.UserManager;
+import fr.steve.leroy.go4lunch.repositories.UserRepository;
 
 /**
  * Created by Steve LEROY on 02/10/2021.
  */
 public class RestaurantListViewHolder extends RecyclerView.ViewHolder {
+
+    private UserManager userManager = UserManager.getInstance();
 
     private RestaurantItemBinding binding;
     private Context context;
@@ -61,7 +64,7 @@ public class RestaurantListViewHolder extends RecyclerView.ViewHolder {
 
     private void updateWorkmateNumber(PlacesSearchResult placesSearchResults) {
 
-        WorkmateHelper.getWorkmatesCollection()
+        UserRepository.getUsersCollection()
                 .whereEqualTo( "placeId", placesSearchResults.placeId )
                 .get()
                 .addOnCompleteListener( task -> {
@@ -88,13 +91,13 @@ public class RestaurantListViewHolder extends RecyclerView.ViewHolder {
 
             Log.d( "photos", placesSearchResults.photos[0].toString() );
 
-            String imageurl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="
+            String urlPicture = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="
                     + placesSearchResults.photos[0].photoReference
                     + "&key="
                     + context.getString( R.string.google_maps_API_key );
 
             Glide.with( context )
-                    .load( imageurl )
+                    .load( urlPicture )
                     .centerCrop()
                     .into( binding.restaurantImg );
         } else {

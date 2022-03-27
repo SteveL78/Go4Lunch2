@@ -30,7 +30,8 @@ import java.util.List;
 
 import fr.steve.leroy.go4lunch.R;
 import fr.steve.leroy.go4lunch.databinding.FragmentListViewBinding;
-import fr.steve.leroy.go4lunch.model.Workmate;
+import fr.steve.leroy.go4lunch.manager.UserManager;
+import fr.steve.leroy.go4lunch.model.User;
 import fr.steve.leroy.go4lunch.ui.restaurant_details.RestaurantDetailActivity;
 import io.reactivex.rxjava3.disposables.Disposable;
 
@@ -41,6 +42,8 @@ import io.reactivex.rxjava3.disposables.Disposable;
  */
 
 public class ListViewFragment extends Fragment implements RestaurantListRecyclerViewAdapter.OnRestaurantClickListener {
+
+    private UserManager userManager = UserManager.getInstance();
 
     private FragmentListViewBinding binding;
     private static final String TAG = ListViewFragment.class.getSimpleName();
@@ -139,8 +142,8 @@ public class ListViewFragment extends Fragment implements RestaurantListRecycler
     }
 
 
-    private void initRestaurantList(Pair<List<Workmate>, List<PlacesSearchResult>> result) {
-        List<Workmate> workmateList = result.first;
+    private void initRestaurantList(Pair<List<User>, List<PlacesSearchResult>> result) {
+        List<User> workmateList = result.first;
         this.placeSearchResult = result.second;
         this.adapter.updateWithData( workmateList, this.placeSearchResult, this.currentLocation );
         this.binding.swipeRefreshRestaurantLayout.setRefreshing( false );

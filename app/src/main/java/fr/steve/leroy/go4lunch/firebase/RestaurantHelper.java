@@ -37,16 +37,18 @@ public class RestaurantHelper {
 
     // --- CREATE ---
 
-    public static Task<Void> createBooking(String workmateId, String placeId, String restaurantName) {
-        Booking bookingToCreate = new Booking(workmateId, placeId, restaurantName);
-        return RestaurantHelper.getBookingCollection().document(workmateId).set(bookingToCreate);
+    public static Task<Void> createBooking(String uid, String placeId, String restaurantName) {
+        Booking bookingToCreate = new Booking(uid, placeId, restaurantName);
+        return RestaurantHelper.getBookingCollection().document(uid).set(bookingToCreate);
     }
 
-    public static Task<Void> createLike(String placeId, String workmateId) {
+    public static Task<Void> createLike(String placeId, String restaurantName, String uid, String username) {
         Map<String, Object> like = new HashMap<>();
-        like.put("workmateId", workmateId);
         like.put( "placeId", placeId );
-        return RestaurantHelper.getLikedCollection().document(placeId + workmateId).set(like, SetOptions.merge());
+        like.put( "restaurantName", restaurantName );
+        like.put("uid", uid);
+        like.put( "username", username );
+        return RestaurantHelper.getLikedCollection().document(placeId + restaurantName + uid + username).set(like, SetOptions.merge());
     }
 
 
@@ -71,11 +73,11 @@ public class RestaurantHelper {
 
 
     // --- UPDATE ---
-    public static Task<Void> updateBooking(String workmateId, String restaurantName, String placeId) {
+    public static Task<Void> updateBooking(String uid, String placeId, String restaurantName ) {
         Map<String, Object> updatedData = new HashMap<>();
-        updatedData.put("restaurantName", restaurantName);
         updatedData.put( "placeId", placeId );
-        return RestaurantHelper.getBookingCollection().document(workmateId).update(updatedData);
+        updatedData.put("restaurantName", restaurantName);
+        return RestaurantHelper.getBookingCollection().document(uid).update(updatedData);
     }
 
 

@@ -9,17 +9,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import fr.steve.leroy.go4lunch.databinding.WorkmatesJoiningItemBinding;
-import fr.steve.leroy.go4lunch.model.Workmate;
+import fr.steve.leroy.go4lunch.model.User;
 
 /**
  * Created by Steve LEROY on 04/12/2021.
  */
 public class RestaurantDetailAdapter extends RecyclerView.Adapter<RestaurantDetailViewHolder> {
 
-    private List<Workmate> mWorkmateList;
+    private List<User> listOfWorkmatesWhoChooseThisRestaurant;
 
-    public RestaurantDetailAdapter(List<Workmate> mWorkmateList) {
-        this.mWorkmateList = mWorkmateList;
+    public RestaurantDetailAdapter(List<User> listOfWorkmatesWhoChooseThisRestaurant) {
+        this.listOfWorkmatesWhoChooseThisRestaurant = listOfWorkmatesWhoChooseThisRestaurant;
     }
 
     @NonNull
@@ -31,20 +31,21 @@ public class RestaurantDetailAdapter extends RecyclerView.Adapter<RestaurantDeta
 
     @Override
     public void onBindViewHolder(@NonNull RestaurantDetailViewHolder holder, int position) {
-        holder.updateWithData( this.mWorkmateList.get( position ) );
+        holder.updateWithData( this.listOfWorkmatesWhoChooseThisRestaurant.get( position ) );
 
     }
 
     @Override
     public int getItemCount() {
         int itemCount = 0;
-        if (mWorkmateList != null) itemCount = (mWorkmateList.size());
+        if (listOfWorkmatesWhoChooseThisRestaurant != null)
+            itemCount = (listOfWorkmatesWhoChooseThisRestaurant.size());
         return itemCount;
         //return mWorkmateList.size();
     }
 
-    public void update(List<Workmate> workmates) {
-        this.mWorkmateList = workmates;
+    public void update(List<User> workmates) {
+        this.listOfWorkmatesWhoChooseThisRestaurant = workmates;
         notifyDataSetChanged();
     }
 

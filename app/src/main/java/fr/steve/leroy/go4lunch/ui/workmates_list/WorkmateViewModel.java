@@ -10,56 +10,43 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import fr.steve.leroy.go4lunch.firebase.WorkmateHelper;
-import fr.steve.leroy.go4lunch.model.Workmate;
-import fr.steve.leroy.go4lunch.repositories.RestaurantRepository;
+import fr.steve.leroy.go4lunch.manager.UserManager;
+import fr.steve.leroy.go4lunch.model.User;
+import fr.steve.leroy.go4lunch.repositories.UserRepository;
 
 /**
  * Created by Steve LEROY on 03/10/2021.
  */
 public class WorkmateViewModel extends ViewModel {
 
-    private MutableLiveData<List<Workmate>> workmates = new MutableLiveData<>();
+    private UserManager userManager = UserManager.getInstance();
 
-    public LiveData<List<Workmate>> getWorkmates() {
-        return workmates;
+    private MutableLiveData<List<User>> userList = new MutableLiveData<>();
+
+    public LiveData<List<User>> getWorkmateList() {
+        return userList;
     }
 
     private String workmateId;
-    private String placeId;
+
 
     public void init() {
-        RestaurantRepository workmateRepository = RestaurantRepository.getInstance();
-        workmateId = workmateRepository.getCurrentUserId();
+        UserRepository userRepository = UserRepository.getInstance();
+        workmateId = userRepository.getCurrentUserUID();
     }
 
     public void getAllUsers() {
-        WorkmateHelper.getAllWorkmates()
+        userManager.getAllUsers()
                 .addOnSuccessListener( queryDocumentSnapshots -> {  //Callback
-                    List<Workmate> workmateList = new ArrayList<>();
+                    List<User> workmatesList = new ArrayList<>();
                     for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
-                        Workmate workmateFetched = documentSnapshot.toObject( Workmate.class );
-                        if (!Objects.requireNonNull( workmateFetched ).getWorkmateId().equals( workmateId )) {
-                            workmateList.add( workmateFetched );
+                        User workmateFetched = documentSnapshot.toObject( User.class );
+                        if (!Objects.requireNonNull( workmateFetched ).getUid().equals( workmateId )) {
+                            workmatesList.add( workmateFetched );
                         }
                     }
-                    this.workmates.setValue( workmateList );
+                    this.userList.setValue( workmatesList );
                 } );
-    }
-
-    public void getWorkmatesForRestaurant() {
-      /*
-        WorkmateHelper.getWorkmatesForRestaurant(restaurantId)
-                .addOnSuccessListener( queryDocumentSnapshots -> {  //Callback
-                    List<Workmate> workmateList = new ArrayList<>();
-                    for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
-                        Workmate workmateFetched = documentSnapshot.toObject( Workmate.class );
-                        if (!Objects.requireNonNull( workmateFetched ).getPlaceId().equals( placeId )) {
-                            workmateList.add( workmateFetched );
-                        }
-                    }
-                    this.workmates.setValue( workmateList );
-                } );*/
     }
 
 }

@@ -17,7 +17,7 @@ import java.util.List;
 
 import fr.steve.leroy.go4lunch.R;
 import fr.steve.leroy.go4lunch.databinding.FragmentWorkmateBinding;
-import fr.steve.leroy.go4lunch.model.Workmate;
+import fr.steve.leroy.go4lunch.model.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,7 +27,7 @@ import fr.steve.leroy.go4lunch.model.Workmate;
 public class WorkmateFragment extends Fragment {
 
     private FragmentWorkmateBinding binding;
-    private List<Workmate> mUserList;
+    private List<User> workmateList;
     private WorkmateListAdapter adapter;
     private WorkmateViewModel viewModel;
 
@@ -58,27 +58,27 @@ public class WorkmateFragment extends Fragment {
     }
 
     private void setUpWorkmateList() {
-        viewModel.getWorkmates().observe( getViewLifecycleOwner(), this::initUserList );
+        viewModel.getWorkmateList().observe( getViewLifecycleOwner(), this::initWorkmateList );
     }
 
     private void configureRecycleView() {
-        mUserList = new ArrayList<>();
-        adapter = new WorkmateListAdapter( mUserList );
+        workmateList = new ArrayList<>();
+        adapter = new WorkmateListAdapter( workmateList );
         binding.fragmentWorkmatesRecyclerview.setLayoutManager( new LinearLayoutManager( getActivity() ) );
         binding.fragmentWorkmatesRecyclerview.setAdapter( adapter );
     }
 
-    private void initUserList(List<Workmate> workmateList) {
+    private void initWorkmateList(List<User> workmateList) {
         if (!workmateList.isEmpty()) {
-            this.mUserList = workmateList;
+            this.workmateList = workmateList;
         } else {
-            List<Workmate> noFriendsList = new ArrayList<>();
-            Workmate user = new Workmate();
-            user.setFirstName( getString( R.string.no_friends ) );
+            List<User> noFriendsList = new ArrayList<>();
+            User user = new User();
+            user.setUsername( getString( R.string.no_friends ) );
             noFriendsList.add( user );
-            this.mUserList = noFriendsList;
+            this.workmateList = noFriendsList;
         }
-        adapter.update( this.mUserList );
+        adapter.update( this.workmateList );
         binding.swipeRefreshLayout.setRefreshing( false );
     }
 

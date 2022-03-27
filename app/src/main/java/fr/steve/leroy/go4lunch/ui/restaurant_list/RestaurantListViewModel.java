@@ -17,8 +17,8 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import fr.steve.leroy.go4lunch.NearbySearch;
-import fr.steve.leroy.go4lunch.firebase.WorkmateHelper;
-import fr.steve.leroy.go4lunch.model.Workmate;
+import fr.steve.leroy.go4lunch.manager.UserManager;
+import fr.steve.leroy.go4lunch.model.User;
 
 /**
  * Created by Steve LEROY on 26/09/2021.
@@ -28,10 +28,11 @@ public class RestaurantListViewModel extends ViewModel {
     private Executor executor = Executors.newSingleThreadExecutor();
     private Executor mainExecutor = null;
 
+    private UserManager userManager = UserManager.getInstance();
 
-    private MutableLiveData<Pair<List<Workmate>, List<PlacesSearchResult>>> placesSearchResults = new MutableLiveData<>();
+    private MutableLiveData<Pair<List<User>, List<PlacesSearchResult>>> placesSearchResults = new MutableLiveData<>();
 
-    public LiveData<Pair<List<Workmate>, List<PlacesSearchResult>>> getPlacesSearchResults() {
+    public LiveData<Pair<List<User>, List<PlacesSearchResult>>> getPlacesSearchResults() {
         return placesSearchResults;
     }
 
@@ -45,12 +46,12 @@ public class RestaurantListViewModel extends ViewModel {
 
         String workmateId = "";
 
-        WorkmateHelper.getAllWorkmates()
+        userManager.getAllUsers()
                 .addOnSuccessListener( queryDocumentSnapshots -> {  //Callback
-                    List<Workmate> workmateList = new ArrayList<>();
+                    List<User> workmateList = new ArrayList<>();
                     for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
-                        Workmate workmateFetched = documentSnapshot.toObject( Workmate.class );
-                        if (!Objects.requireNonNull( workmateFetched ).getWorkmateId().equals( workmateId )) {
+                        User workmateFetched = documentSnapshot.toObject( User.class );
+                        if (!Objects.requireNonNull( workmateFetched ).getUid().equals( workmateId )) {
                             workmateList.add( workmateFetched );
                         }
                     }

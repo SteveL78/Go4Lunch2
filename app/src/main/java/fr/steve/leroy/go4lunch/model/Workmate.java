@@ -2,7 +2,7 @@ package fr.steve.leroy.go4lunch.model;
 
 import androidx.annotation.Nullable;
 
-import com.google.firebase.firestore.IgnoreExtraProperties;
+import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.io.Serializable;
 

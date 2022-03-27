@@ -11,6 +11,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import fr.steve.leroy.go4lunch.model.User;
 
@@ -73,19 +77,23 @@ public class UserRepository {
      ********************/
 
     // Get the Collection Reference
-    private CollectionReference getUsersCollection() {
+    public static CollectionReference getUsersCollection() {
         return FirebaseFirestore.getInstance().collection( COLLECTION_NAME );
     }
 
     // Create User in Firestore
     public void createUser() {
         FirebaseUser user = getCurrentUser();
+        String defaultUrlPicture = "https://unc.nc/wp-content/uploads/2020/07/Portrait_Placeholder-1.png";
         if (user != null) {
-            String urlPicture = (user.getPhotoUrl() != null) ? user.getPhotoUrl().toString() : null;
-            String username = user.getDisplayName();
             String uid = user.getUid();
+            String username = user.getDisplayName();
+            String urlPicture = (user.getPhotoUrl() != null) ? user.getPhotoUrl().toString() : defaultUrlPicture;
+            String placeId = "";
+            String restaurantName = "";
+            List<String> likedRestaurantList = new ArrayList<>();
 
-            User userToCreate = new User( uid, username, urlPicture );
+            User userToCreate = new User( uid, username, urlPicture, placeId, restaurantName, likedRestaurantList );
 
             Task<DocumentSnapshot> userData = getUserData();
             // If the user already exist in Firestore, we get his data (hasBooked)
@@ -106,6 +114,23 @@ public class UserRepository {
         } else {
             return null;
         }
+    }
+
+    // Get all Users
+    public Task<QuerySnapshot> getAllUsers() {
+        return UserRepository.getUsersCollection().get();
+    }
+
+
+    public static Task<DocumentSnapshot> getUser(String uid) {
+        return UserRepository.getUsersCollection().document( uid ).get();
+    }
+
+    // Get Users for each restaurant (placeId)
+    public static Task<DocumentSnapshot> getWorkmatesForRestaurant(String PLACE_ID_FIELD) {
+        //TODO : filtrer les workmates et vérifier lequel mange à ce restaurant
+        //return WorkmateHelper.getWorkmatesCollection().whereEqualTo( "restaurantId", placeId ).get();
+        return UserRepository.getUsersCollection().document( PLACE_ID_FIELD ).get();
     }
 
     // Update User Username

@@ -36,17 +36,19 @@ import fr.steve.leroy.go4lunch.FetchDetail;
 import fr.steve.leroy.go4lunch.R;
 import fr.steve.leroy.go4lunch.databinding.ActivityRestaurantDetailBinding;
 import fr.steve.leroy.go4lunch.firebase.RestaurantHelper;
-import fr.steve.leroy.go4lunch.firebase.WorkmateHelper;
-import fr.steve.leroy.go4lunch.model.Workmate;
-import fr.steve.leroy.go4lunch.ui.workmates_list.WorkmateListAdapter;
+import fr.steve.leroy.go4lunch.manager.UserManager;
+import fr.steve.leroy.go4lunch.model.User;
+import fr.steve.leroy.go4lunch.repositories.UserRepository;
 import fr.steve.leroy.go4lunch.utils.LikeButton;
 import io.reactivex.rxjava3.disposables.Disposable;
 
 public class RestaurantDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private UserManager userManager = UserManager.getInstance();
+
     private ActivityRestaurantDetailBinding binding;
     private RestaurantDetailAdapter adapter;
-    private List<Workmate> mWorkmateList = new ArrayList<>();
+    private List<User> userList = new ArrayList<>();
     private PlaceDetails mPlaceDetails;
 
     private Disposable disposable;
@@ -133,7 +135,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
     // CONFIGURE RECYCLER VIEW
     // ------------------------------------
     private void configureRecycleView() {
-        this.adapter = new RestaurantDetailAdapter( mWorkmateList );
+        this.adapter = new RestaurantDetailAdapter( userList );
         this.binding.activityDetailRestaurantRv.setAdapter( adapter );
         this.binding.activityDetailRestaurantRv.setLayoutManager( new LinearLayoutManager( this ) );
     }
@@ -156,55 +158,51 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
 
     @Nullable
     private FirebaseUser getCurrentUser() {
-        return WorkmateHelper.getCurrentWorkmate();
+        return userManager.getCurrentUser();
     }
 
-    private void checkBooked(String workmateId, String placeId, String restaurantName) {
-        RestaurantHelper.getBooking( workmateId, new Date() ).addOnCompleteListener( restaurantTask -> {
+    private void checkBooked(String uid, String placeId, String restaurantName) {
+        RestaurantHelper.getBooking( uid, new Date() ).addOnCompleteListener( restaurantTask -> {
             if (restaurantTask.isSuccessful()) {
                 if (restaurantTask.getResult().size() == 1) {
                     //QueryDocumentSnapshot = restaurantTask.getResult().getDocuments().get( 0 );
                     for (QueryDocumentSnapshot restaurant : restaurantTask.getResult()) {
                         if (Objects.equals( restaurant.getData().get( "placeId" ), placeId )) {
                             displayFloating( (R.drawable.ic_baseline_clear_orange_24) );
-                            deleteBooking( workmateId);
+                            deleteBooking( uid );
                             Toast.makeText( RestaurantDetailActivity.this, R.string.cancel_booking, Toast.LENGTH_SHORT ).show();
                         } else {
                             displayFloating( (R.drawable.ic_baseline_check_circle_green_24) );
-                            updateBooking( workmateId, placeId, restaurantName );
+                            updateBooking( uid, placeId, restaurantName );
                             Toast.makeText( RestaurantDetailActivity.this, R.string.modify_booking, Toast.LENGTH_SHORT ).show();
                         }
                     }
                 } else {
                     displayFloating( (R.drawable.ic_baseline_check_circle_green_24) );
-                    createBooking( workmateId, placeId, restaurantName);
+                    createBooking( uid, placeId, restaurantName );
                     Toast.makeText( RestaurantDetailActivity.this, R.string.new_booking, Toast.LENGTH_SHORT ).show();
                 }
             }
         } );
     }
 
-    private void updateBooking(String workmateId, String placeId, String restaurantName){
-        RestaurantHelper.updateBooking( workmateId, placeId, restaurantName );
+    private void updateBooking(String uid, String placeId, String restaurantName) {
+        RestaurantHelper.updateBooking( uid, placeId, restaurantName );
         displayFloating( (R.drawable.ic_baseline_clear_orange_24) );
         Update_Booking_RecyclerView( mPlaceDetails.placeId );
     }
 
-    private void createBooking (String workmateId, String placeId, String restaurantName){
-        RestaurantHelper.createBooking( workmateId, placeId, restaurantName ).addOnFailureListener( onFailureListener() );
+    private void createBooking(String uid, String placeId, String restaurantName) {
+        RestaurantHelper.createBooking( uid, placeId, restaurantName ).addOnFailureListener( onFailureListener() );
         displayFloating( (R.drawable.ic_baseline_clear_orange_24) );
         Update_Booking_RecyclerView( mPlaceDetails.placeId );
     }
 
-    private void deleteBooking (String workmateId){
-        RestaurantHelper.deleteBooking( workmateId );
+    private void deleteBooking(String uid) {
+        RestaurantHelper.deleteBooking( uid );
         displayFloating( (R.drawable.ic_baseline_check_circle_green_24) );
         Update_Booking_RecyclerView( mPlaceDetails.placeId );
     }
-
-
-
-
 
     private void displayFloating(int icon) {
         // int colorUnbooking = ContextCompat.getColor(this, R.color.colorError);
@@ -216,20 +214,20 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
 
     @SuppressLint("NotifyDataSetChanged")
     private void Update_Booking_RecyclerView(String placeId) {
-        mWorkmateList.clear();
+        userList.clear();
         RestaurantHelper.getTodayBooking( placeId, getTodayDate() ).addOnCompleteListener( restaurantTask -> {
             if (restaurantTask.isSuccessful()) {
                 if (restaurantTask.getResult().isEmpty()) {
                     adapter.notifyDataSetChanged();
                 } else {
                     for (QueryDocumentSnapshot restaurant : restaurantTask.getResult()) {
-                        WorkmateHelper.getWorkmate( Objects.requireNonNull( restaurant.getData().get( "userId" ) ).toString() ).addOnCompleteListener( workmateTask -> {
+                        UserRepository.getUser( Objects.requireNonNull( restaurant.getData().get( "userId" ) ).toString() ).addOnCompleteListener( workmateTask -> {
                             if (workmateTask.isSuccessful()) {
-                                String name = Objects.requireNonNull( Objects.requireNonNull( workmateTask.getResult().getData() ).get( "name" ) ).toString();
                                 String uid = Objects.requireNonNull( workmateTask.getResult().getData().get( "uid" ) ).toString();
+                                String name = Objects.requireNonNull( Objects.requireNonNull( workmateTask.getResult().getData() ).get( "name" ) ).toString();
                                 String urlPicture = Objects.requireNonNull( workmateTask.getResult().getData().get( "urlPicture" ) ).toString();
-                                Workmate workmateToAdd = new Workmate( uid, urlPicture, name );
-                                mWorkmateList.add( workmateToAdd );
+                                User workmateToAdd = new User( uid, urlPicture, name );
+                                userList.add( workmateToAdd );
                             }
                             adapter.notifyDataSetChanged();
                         } );
@@ -249,8 +247,8 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
     }
 
     private void initWorkmateList() {
-        mWorkmateList = new ArrayList<>();
-        adapter = new RestaurantDetailAdapter( mWorkmateList );
+        userList = new ArrayList<>();
+        adapter = new RestaurantDetailAdapter( userList );
         binding.activityDetailRestaurantRv.setLayoutManager( new LinearLayoutManager( this ) );
         binding.activityDetailRestaurantRv.setAdapter( adapter );
     }

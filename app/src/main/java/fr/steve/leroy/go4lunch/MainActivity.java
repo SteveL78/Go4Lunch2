@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.steve.leroy.go4lunch.databinding.ActivityMainBinding;
-import fr.steve.leroy.go4lunch.firebase.WorkmateHelper;
 import fr.steve.leroy.go4lunch.manager.UserManager;
 import fr.steve.leroy.go4lunch.ui.map.MapFragment;
 import fr.steve.leroy.go4lunch.ui.restaurant_details.RestaurantDetailActivity;
@@ -78,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Nullable
     private FirebaseUser getCurrentUser() {
-        return WorkmateHelper.getCurrentWorkmate();
+        return UserManager.getInstance().getCurrentUser();
     }
 
 

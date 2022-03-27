@@ -2,7 +2,6 @@ package fr.steve.leroy.go4lunch.authentication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +12,6 @@ import com.firebase.ui.auth.AuthMethodPickerLayout;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,7 +23,6 @@ import java.util.List;
 import fr.steve.leroy.go4lunch.MainActivity;
 import fr.steve.leroy.go4lunch.R;
 import fr.steve.leroy.go4lunch.databinding.ActivitySigninBinding;
-import fr.steve.leroy.go4lunch.firebase.WorkmateHelper;
 import fr.steve.leroy.go4lunch.manager.UserManager;
 
 public class SignInActivity extends AppCompatActivity {
@@ -69,41 +66,13 @@ public class SignInActivity extends AppCompatActivity {
 
 
     @Nullable
-    private FirebaseUser getCurrentUser() {
-        return FirebaseAuth.getInstance().getCurrentUser();
-    }
+    private FirebaseUser getCurrentUser() { return userManager.getCurrentUser(); }
 
     // Check if user is logged-in
     private void checkUserAlreadyLogged() {
         if (UserManager.getInstance().isCurrentUserLogged()) {
             startMainActivity();
         }
-    }
-
-    private void createWorkmate() {
-        if (getCurrentUser() != null) {
-            WorkmateHelper.getWorkmate( getCurrentUser().getUid() ).addOnCompleteListener( UserTask -> {
-                        if (UserTask.isSuccessful()) {
-                            if (!UserTask.getResult().exists()) {
-                                String urlPicture = (getCurrentUser().getPhotoUrl() != null) ? getCurrentUser().getPhotoUrl().toString() : null;
-                                if (getCurrentUser().getDisplayName() != null) {
-                                    String name = getCurrentUser().getDisplayName();
-                                    String uid = getCurrentUser().getUid();
-                                    WorkmateHelper.createWorkmate( uid, urlPicture, name ).addOnFailureListener( onFailureListener() );
-                                } else {
-                                    String name = getCurrentUser().getEmail();
-                                    String uid = getCurrentUser().getUid();
-                                    WorkmateHelper.createWorkmate( uid, urlPicture, name ).addOnFailureListener( onFailureListener() );
-                                }
-                            }
-                        }
-                    }
-            );
-        }
-    }
-
-    protected OnFailureListener onFailureListener() {
-        return e -> Toast.makeText( this, getString( R.string.error_unknown_error ), Toast.LENGTH_SHORT ).show();
     }
 
 
@@ -170,10 +139,11 @@ public class SignInActivity extends AppCompatActivity {
 
     // Method that handles response after SignIn Activity close
     private void handleResponseAfterSignIn(int requestCode, int resultCode, Intent data) {
+
+        IdpResponse response = IdpResponse.fromResultIntent( data );
+
         if (requestCode == RC_SIGN_IN) {
             // SUCCESS
-            IdpResponse response = IdpResponse.fromResultIntent( data );
-
             if (resultCode == RESULT_OK) {
                 userManager.createUser();
                 startMainActivity();
