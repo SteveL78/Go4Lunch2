@@ -35,6 +35,7 @@ import java.util.concurrent.Executors;
 import fr.steve.leroy.go4lunch.FetchDetail;
 import fr.steve.leroy.go4lunch.R;
 import fr.steve.leroy.go4lunch.databinding.ActivityRestaurantDetailBinding;
+import fr.steve.leroy.go4lunch.firebase.BookingHelper;
 import fr.steve.leroy.go4lunch.firebase.RestaurantHelper;
 import fr.steve.leroy.go4lunch.manager.UserManager;
 import fr.steve.leroy.go4lunch.model.User;
@@ -149,10 +150,11 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
     }
 
     private void bookThisRestaurant() {
-        String workmateId = Objects.requireNonNull( getCurrentUser() ).getUid();
+        String uid = Objects.requireNonNull( getCurrentUser() ).getUid();
+        String username = Objects.requireNonNull( getCurrentUser().getDisplayName() );
         String placeId = mPlaceDetails.placeId;
         String restaurantName = mPlaceDetails.name;
-        checkBooked( workmateId, placeId, restaurantName );
+        checkBooked( uid, username, placeId, restaurantName );
     }
 
 
@@ -161,8 +163,8 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
         return userManager.getCurrentUser();
     }
 
-    private void checkBooked(String uid, String placeId, String restaurantName) {
-        RestaurantHelper.getBooking( uid, new Date() ).addOnCompleteListener( restaurantTask -> {
+    private void checkBooked(String uid, String username, String placeId, String restaurantName) {
+        BookingHelper.getBooking( uid).addOnCompleteListener( restaurantTask -> {
             if (restaurantTask.isSuccessful()) {
                 if (restaurantTask.getResult().size() == 1) {
                     //QueryDocumentSnapshot = restaurantTask.getResult().getDocuments().get( 0 );
@@ -173,33 +175,33 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
                             Toast.makeText( RestaurantDetailActivity.this, R.string.cancel_booking, Toast.LENGTH_SHORT ).show();
                         } else {
                             displayFloating( (R.drawable.ic_baseline_check_circle_green_24) );
-                            updateBooking( uid, placeId, restaurantName );
+                            updateBooking( uid, username, placeId, restaurantName );
                             Toast.makeText( RestaurantDetailActivity.this, R.string.modify_booking, Toast.LENGTH_SHORT ).show();
                         }
                     }
                 } else {
                     displayFloating( (R.drawable.ic_baseline_check_circle_green_24) );
-                    createBooking( uid, placeId, restaurantName );
+                    createBooking( uid, username, placeId, restaurantName );
                     Toast.makeText( RestaurantDetailActivity.this, R.string.new_booking, Toast.LENGTH_SHORT ).show();
                 }
             }
         } );
     }
 
-    private void updateBooking(String uid, String placeId, String restaurantName) {
-        RestaurantHelper.updateBooking( uid, placeId, restaurantName );
+    private void updateBooking(String uid, String username, String placeId, String restaurantName) {
+        RestaurantHelper.updateBooking( uid, username, placeId, restaurantName );
         displayFloating( (R.drawable.ic_baseline_clear_orange_24) );
         Update_Booking_RecyclerView( mPlaceDetails.placeId );
     }
 
-    private void createBooking(String uid, String placeId, String restaurantName) {
-        RestaurantHelper.createBooking( uid, placeId, restaurantName ).addOnFailureListener( onFailureListener() );
+    private void createBooking(String uid, String username, String placeId, String restaurantName) {
+        BookingHelper.createBooking( uid, username, placeId, restaurantName ).addOnFailureListener( onFailureListener() );
         displayFloating( (R.drawable.ic_baseline_clear_orange_24) );
         Update_Booking_RecyclerView( mPlaceDetails.placeId );
     }
 
     private void deleteBooking(String uid) {
-        RestaurantHelper.deleteBooking( uid );
+        BookingHelper.updateBooking( uid );
         displayFloating( (R.drawable.ic_baseline_check_circle_green_24) );
         Update_Booking_RecyclerView( mPlaceDetails.placeId );
     }

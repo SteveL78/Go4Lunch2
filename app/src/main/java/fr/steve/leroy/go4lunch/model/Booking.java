@@ -10,15 +10,19 @@ import java.util.Date;
 public class Booking {
 
     private String uid;
+    private String username;
     private String placeId;
     private String restaurantName;
     private Date dateCreated;
+    private boolean hasBooked;
 
 
-    public Booking(String uid, String placeId, String restaurantName) {
+    public Booking(String uid, String username, String placeId, String restaurantName) {
         this.uid = uid;
+        this.username = username;
         this.placeId = placeId;
         this.restaurantName = restaurantName;
+        this.hasBooked = false;
     }
 
 
@@ -26,6 +30,10 @@ public class Booking {
 
     public String getUid() {
         return uid;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public String getPlaceId() {
@@ -46,6 +54,10 @@ public class Booking {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setPlaceId(String placeId) {

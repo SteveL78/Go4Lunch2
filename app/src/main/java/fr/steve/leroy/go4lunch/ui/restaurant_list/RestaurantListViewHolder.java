@@ -31,7 +31,7 @@ public class RestaurantListViewHolder extends RecyclerView.ViewHolder {
     private RestaurantItemBinding binding;
     private Context context;
     private Resources resources;
-    private int numberWorkmateEatingHere = 0;
+    private int numberOfUsersEatingHere = 0;
     public static final double MAX_STAR = 3;
     public static final double MAX_RATING = 5;
 
@@ -70,10 +70,10 @@ public class RestaurantListViewHolder extends RecyclerView.ViewHolder {
                 .addOnCompleteListener( task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : Objects.requireNonNull( task.getResult() )) {
-                            numberWorkmateEatingHere++;
+                            numberOfUsersEatingHere++;
                         }
-                        if (numberWorkmateEatingHere > 0) {
-                            String numberOfUsers = "(" + numberWorkmateEatingHere + ")";
+                        if (numberOfUsersEatingHere > 0) {
+                            String numberOfUsers = "(" + numberOfUsersEatingHere + ")";
                             binding.itemRestaurantListNumberWorkmatesTv.setText( numberOfUsers );
                         } else {
                             this.binding.personIcon.setVisibility( View.INVISIBLE );

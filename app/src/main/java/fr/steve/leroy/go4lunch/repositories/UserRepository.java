@@ -117,7 +117,7 @@ public class UserRepository {
     }
 
     // Get all Users
-    public Task<QuerySnapshot> getAllUsers() {
+    public Task<QuerySnapshot>  getAllUsers() {
         return UserRepository.getUsersCollection().get();
     }
 

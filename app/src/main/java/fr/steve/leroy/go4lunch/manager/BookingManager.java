@@ -26,4 +26,9 @@ public class BookingManager {
     }
 
 
+
+    public void createBooking() {
+        bookingRepository.createBooking();
+    }
+
 }

@@ -2,8 +2,6 @@ package fr.steve.leroy.go4lunch.model;
 
 import androidx.annotation.Nullable;
 
-import com.google.maps.model.PlaceDetails;
-
 import java.util.List;
 
 /**
@@ -22,7 +20,7 @@ public class User {
 
     public User() { /* Required empty public constructor for the recyclerView */ }
 
-    public User(String uid, String username, @Nullable String urlPicture, String placeId, String restaurantName,List<String> likedRestaurantList ) {
+    public User(String uid, String username, @Nullable String urlPicture, String placeId, String restaurantName, List<String> likedRestaurantList) {
         this.uid = uid;
         this.username = username;
         this.urlPicture = urlPicture;
@@ -70,6 +68,7 @@ public class User {
     public List<String> getLikedRestaurantList() {
         return likedRestaurantList;
     }
+
 
     // --- SETTERS ---
 

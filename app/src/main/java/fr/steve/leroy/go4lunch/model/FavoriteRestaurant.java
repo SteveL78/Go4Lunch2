@@ -1,5 +1,7 @@
 package fr.steve.leroy.go4lunch.model;
 
+import java.util.List;
+
 /**
  * Created by Steve LEROY on 20/03/2022.
  */
@@ -9,14 +11,16 @@ public class FavoriteRestaurant {
     private String username;
     private String placeId;
     private String restaurantName;
+    private List<String> likedRestaurantList;
 
     public FavoriteRestaurant() { /* Required empty public constructor for the recyclerView */ }
 
-    public FavoriteRestaurant(String uid, String username, String placeId, String restaurantName) {
+    public FavoriteRestaurant(String uid, String username, String placeId, String restaurantName, List<String> likedRestaurantList) {
         this.uid = uid;
         this.username = username;
         this.placeId = placeId;
         this.restaurantName = restaurantName;
+        this.likedRestaurantList = likedRestaurantList;
     }
 
 
@@ -38,6 +42,9 @@ public class FavoriteRestaurant {
         return restaurantName;
     }
 
+    public List<String> getLikedRestaurantList() {
+        return likedRestaurantList;
+    }
 
     // --- SETTERS ---
 
@@ -57,4 +64,7 @@ public class FavoriteRestaurant {
         this.restaurantName = restaurantName;
     }
 
+    public void setLikedRestaurantList(List<String> likedRestaurantList) {
+        this.likedRestaurantList = likedRestaurantList;
+    }
 }

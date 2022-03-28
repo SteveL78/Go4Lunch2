@@ -16,10 +16,10 @@ import fr.steve.leroy.go4lunch.model.User;
  */
 public class RestaurantDetailAdapter extends RecyclerView.Adapter<RestaurantDetailViewHolder> {
 
-    private List<User> listOfWorkmatesWhoChooseThisRestaurant;
+    private List<User> listOfWorkmatesWhoChoseThisRestaurant;
 
-    public RestaurantDetailAdapter(List<User> listOfWorkmatesWhoChooseThisRestaurant) {
-        this.listOfWorkmatesWhoChooseThisRestaurant = listOfWorkmatesWhoChooseThisRestaurant;
+    public RestaurantDetailAdapter(List<User> listOfWorkmatesWhoChoseThisRestaurant) {
+        this.listOfWorkmatesWhoChoseThisRestaurant = listOfWorkmatesWhoChoseThisRestaurant;
     }
 
     @NonNull
@@ -31,21 +31,20 @@ public class RestaurantDetailAdapter extends RecyclerView.Adapter<RestaurantDeta
 
     @Override
     public void onBindViewHolder(@NonNull RestaurantDetailViewHolder holder, int position) {
-        holder.updateWithData( this.listOfWorkmatesWhoChooseThisRestaurant.get( position ) );
-
+        holder.updateWithData( this.listOfWorkmatesWhoChoseThisRestaurant.get( position ) );
     }
 
     @Override
     public int getItemCount() {
         int itemCount = 0;
-        if (listOfWorkmatesWhoChooseThisRestaurant != null)
-            itemCount = (listOfWorkmatesWhoChooseThisRestaurant.size());
+        if (listOfWorkmatesWhoChoseThisRestaurant != null)
+            itemCount = (listOfWorkmatesWhoChoseThisRestaurant.size());
         return itemCount;
         //return mWorkmateList.size();
     }
 
     public void update(List<User> workmates) {
-        this.listOfWorkmatesWhoChooseThisRestaurant = workmates;
+        this.listOfWorkmatesWhoChoseThisRestaurant = workmates;
         notifyDataSetChanged();
     }
 

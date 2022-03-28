@@ -38,8 +38,6 @@ public class LikeButton {
             RestaurantHelper.deleteLike(placeDetails.placeId, FirebaseAuth.getInstance().getUid());
             textView.setText(like);
             Toast.makeText(context, disliked, Toast.LENGTH_SHORT).show();
-
-            // TODO : delete ce restaurant à la liste des restaurants likés du User
         } else {
             Toast.makeText(context, liked, Toast.LENGTH_SHORT).show();
         }

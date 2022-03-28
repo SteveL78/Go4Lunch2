@@ -38,8 +38,8 @@ public class BookingRepository {
 
 
     // --- CREATE ---
-    public static Task<Void> createBooking(String uid, String placeId, String restaurantName) {
-        Booking bookingToCreate = new Booking(uid, placeId, restaurantName);
+    public static Task<Void> createBooking(String uid, String username, String placeId, String restaurantName) {
+        Booking bookingToCreate = new Booking(uid, username, placeId, restaurantName);
         return RestaurantHelper.getBookingCollection().document(uid).set(bookingToCreate);
     }
 

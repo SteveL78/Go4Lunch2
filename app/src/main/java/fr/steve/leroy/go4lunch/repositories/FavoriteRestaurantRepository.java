@@ -1,16 +1,14 @@
 package fr.steve.leroy.go4lunch.repositories;
 
-import androidx.annotation.Nullable;
-
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
-import fr.steve.leroy.go4lunch.model.FavoriteRestaurant;
-import fr.steve.leroy.go4lunch.model.User;
+import java.util.HashMap;
+import java.util.Map;
+
+import fr.steve.leroy.go4lunch.firebase.RestaurantHelper;
 
 /**
  * Created by Steve LEROY on 20/03/2022.
@@ -40,18 +38,6 @@ public class FavoriteRestaurantRepository {
             }
             return instance;
         }
-    }
-
-
-    @Nullable
-    public FirebaseUser getCurrentUser() {
-        return FirebaseAuth.getInstance().getCurrentUser();
-    }
-
-    @Nullable
-    public String getCurrentUserUID() {
-        FirebaseUser user = getCurrentUser();
-        return (user != null) ? user.getUid() : null;
     }
 
 
