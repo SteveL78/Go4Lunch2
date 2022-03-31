@@ -171,7 +171,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
                     for (QueryDocumentSnapshot restaurant : restaurantTask.getResult()) {
                         if (Objects.equals( restaurant.getData().get( "placeId" ), placeId )) {
                             displayFloating( (R.drawable.ic_baseline_clear_orange_24) );
-                            deleteBooking( uid );
+                            deleteBooking( uid, username, placeId, restaurantName );
                             Toast.makeText( RestaurantDetailActivity.this, R.string.cancel_booking, Toast.LENGTH_SHORT ).show();
                         } else {
                             displayFloating( (R.drawable.ic_baseline_check_circle_green_24) );
@@ -182,14 +182,14 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
                 } else {
                     displayFloating( (R.drawable.ic_baseline_check_circle_green_24) );
                     createBooking( uid, username, placeId, restaurantName );
-                    Toast.makeText( RestaurantDetailActivity.this, R.string.new_booking, Toast.LENGTH_SHORT ).show();
+                    Toast.makeText( RestaurantDetailActivity.this, R.string.new_booking , Toast.LENGTH_SHORT ).show();
                 }
             }
         } );
     }
 
     private void updateBooking(String uid, String username, String placeId, String restaurantName) {
-        RestaurantHelper.updateBooking( uid, username, placeId, restaurantName );
+        BookingHelper.updateBooking( uid, username, placeId, restaurantName );
         displayFloating( (R.drawable.ic_baseline_clear_orange_24) );
         Update_Booking_RecyclerView( mPlaceDetails.placeId );
     }
@@ -200,8 +200,8 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
         Update_Booking_RecyclerView( mPlaceDetails.placeId );
     }
 
-    private void deleteBooking(String uid) {
-        BookingHelper.updateBooking( uid );
+    private void deleteBooking(String uid, String username, String placeId, String restaurantName) {
+        BookingHelper.updateBooking( uid, username, placeId, restaurantName );
         displayFloating( (R.drawable.ic_baseline_check_circle_green_24) );
         Update_Booking_RecyclerView( mPlaceDetails.placeId );
     }

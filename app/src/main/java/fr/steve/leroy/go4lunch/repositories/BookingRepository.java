@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import fr.steve.leroy.go4lunch.firebase.RestaurantHelper;
+import fr.steve.leroy.go4lunch.firebase.BookingHelper;
 import fr.steve.leroy.go4lunch.model.Booking;
 
 /**
@@ -33,39 +33,39 @@ public class BookingRepository {
 
     // --- COLLECTION REFERENCE ---
     public static CollectionReference getBookingCollection() {
-        return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
+        return FirebaseFirestore.getInstance().collection( COLLECTION_NAME );
     }
 
 
     // --- CREATE ---
     public static Task<Void> createBooking(String uid, String username, String placeId, String restaurantName) {
-        Booking bookingToCreate = new Booking(uid, username, placeId, restaurantName);
-        return RestaurantHelper.getBookingCollection().document(uid).set(bookingToCreate);
+        Booking bookingToCreate = new Booking( uid, username, placeId, restaurantName );
+        return BookingHelper.getBookingCollection().document( uid ).set( bookingToCreate );
     }
 
 
     // --- GET ---
     public static Task<QuerySnapshot> getBooking(String uid, Date date) {
-        return RestaurantHelper.getBookingCollection().whereEqualTo(USER_ID_FIELD, uid).whereEqualTo(DATE_CREATED_FIELD, date).get();
+        return BookingHelper.getBookingCollection().whereEqualTo( USER_ID_FIELD, uid ).whereEqualTo( DATE_CREATED_FIELD, date ).get();
     }
 
     public static Task<QuerySnapshot> getTodayBooking(String placeId, String bookingDate) {
-        return RestaurantHelper.getBookingCollection().whereEqualTo(PLACE_ID_FIELD, placeId).whereEqualTo(DATE_CREATED_FIELD, bookingDate).get();
+        return BookingHelper.getBookingCollection().whereEqualTo( PLACE_ID_FIELD, placeId ).whereEqualTo( DATE_CREATED_FIELD, bookingDate ).get();
     }
 
 
     // --- UPDATE ---
     public static Task<Void> updateBooking(String uid, String restaurantName, String placeId) {
         Map<String, Object> updatedData = new HashMap<>();
-        updatedData.put(RESTAURANT_NAME_FIELD, restaurantName);
+        updatedData.put( RESTAURANT_NAME_FIELD, restaurantName );
         updatedData.put( PLACE_ID_FIELD, placeId );
-        return RestaurantHelper.getBookingCollection().document(uid).update(updatedData);
+        return BookingHelper.getBookingCollection().document( uid ).update( updatedData );
     }
 
 
     // --- DELETE ---
     public static Task<Void> deleteBooking(String bookingId) {
-        return RestaurantHelper.getBookingCollection().document(bookingId).delete();
+        return BookingHelper.getBookingCollection().document( bookingId ).delete();
     }
 
 }

@@ -15,7 +15,7 @@ import fr.steve.leroy.go4lunch.model.Booking;
  */
 public class BookingHelper {
 
-    public static final String COLLECTION_BOOKING = "bookingRestaurant";
+    public static final String COLLECTION_BOOKING = "booking";
     private static final String USER_ID_FIELD = "uid";
     private static final String USERNAME_FIELD = "username";
     private static final String PLACE_ID_FIELD = "placeId";
@@ -29,7 +29,7 @@ public class BookingHelper {
     }
 
     // Create booking
-    public static Task<Void> createBooking(String uid,String username, String placeId, String restaurantName) {
+    public static Task<Void> createBooking(String uid, String username, String placeId, String restaurantName) {
         Booking bookingToCreate = new Booking( uid, username, placeId, restaurantName );
         return BookingHelper.getBookingCollection().document( uid ).set( bookingToCreate );
     }
@@ -41,11 +41,12 @@ public class BookingHelper {
     }
 
     // --- UPDATE ---
-    public static Task<Void> updateBooking(String uid) {
+    public static Task<Void> updateBooking(String uid, String username, String placeId, String restaurantName) {
         Map<String, Object> updatedData = new HashMap<>();
-        updatedData.put( "placeId", true );
-        updatedData.put( "restaurantName", true );
-        return BookingHelper.getBookingCollection().document( uid ).update( updatedData );
+        updatedData.put( "username", username );
+        updatedData.put( "placeId", placeId );
+        updatedData.put( "restaurantName", restaurantName );
+        return RestaurantHelper.getBookingCollection().document( uid ).update( updatedData );
     }
 
 
