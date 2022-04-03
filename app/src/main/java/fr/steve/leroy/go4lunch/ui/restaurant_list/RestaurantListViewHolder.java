@@ -31,7 +31,6 @@ public class RestaurantListViewHolder extends RecyclerView.ViewHolder {
     private RestaurantItemBinding binding;
     private Context context;
     private Resources resources;
-    private int numberOfUsersEatingHere = 0;
     public static final double MAX_STAR = 3;
     public static final double MAX_RATING = 5;
 
@@ -69,14 +68,18 @@ public class RestaurantListViewHolder extends RecyclerView.ViewHolder {
                 .get()
                 .addOnCompleteListener( task -> {
                     if (task.isSuccessful()) {
+                        int numberOfUsersEatingHere = 0;
                         for (QueryDocumentSnapshot document : Objects.requireNonNull( task.getResult() )) {
                             numberOfUsersEatingHere++;
                         }
                         if (numberOfUsersEatingHere > 0) {
                             String numberOfUsers = "(" + numberOfUsersEatingHere + ")";
                             binding.itemRestaurantListNumberWorkmatesTv.setText( numberOfUsers );
+                            this.binding.personIcon.setVisibility( View.VISIBLE );
+                            this.binding.itemRestaurantListNumberWorkmatesTv.setVisibility( View.VISIBLE );
                         } else {
                             this.binding.personIcon.setVisibility( View.INVISIBLE );
+                            this.binding.itemRestaurantListNumberWorkmatesTv.setVisibility( View.INVISIBLE );
                         }
                     } else {
                         Log.d( "updateWorkmateNumber", "Error getting documents: ", task.getException() );
