@@ -59,8 +59,13 @@ public class UserRepository {
     @Nullable
     public String getCurrentUserUID() {
         FirebaseUser user = getCurrentUser();
-        return (user != null) ? user.getUid() : null;
+        return (user != null) ? user.getUid() : USER_ID_FIELD;
     }
+
+
+    public static Task<DocumentSnapshot> getCurrentUserPlaceId(String placeId) {
+            return UserRepository.getUsersCollection().document( placeId ).get();
+        }
 
 
     public Task<Void> signOut(Context context) {
@@ -117,17 +122,17 @@ public class UserRepository {
     }
 
     // Get all Users
-    public Task<QuerySnapshot>  getAllUsers() {
+    public Task<QuerySnapshot> getAllUsers() {
         return UserRepository.getUsersCollection().get();
     }
 
-
+    // Get User ID
     public static Task<DocumentSnapshot> getUser(String uid) {
         return UserRepository.getUsersCollection().document( uid ).get();
     }
 
     // Get Users for each restaurant (placeId)
-    public static Task<DocumentSnapshot> getWorkmatesForRestaurant(String PLACE_ID_FIELD) {
+    public static Task<DocumentSnapshot> getWorkmatesForRestaurant(String placeId) {
         //TODO : filtrer les workmates et vérifier lequel mange à ce restaurant
         //return WorkmateHelper.getWorkmatesCollection().whereEqualTo( "restaurantId", placeId ).get();
         return UserRepository.getUsersCollection().document( PLACE_ID_FIELD ).get();
@@ -142,6 +147,40 @@ public class UserRepository {
             return null;
         }
     }
+
+
+    // Update User UrlPicture
+    public Task<Void> updateUrlPicture(String urlPicture) {
+        String uid = this.getCurrentUserUID();
+        if (uid != null) {
+            return this.getUsersCollection().document(uid).update(URL_PICTURE_FIELD, urlPicture);
+        } else {
+            return null;
+        }
+    }
+
+
+    // Update User placeId
+    public Task<Void> updateUserPlaceId(String placeId) {
+        String uid = this.getCurrentUserUID();
+        if (uid != null) {
+            return this.getUsersCollection().document(uid).update(PLACE_ID_FIELD, placeId);
+        } else {
+            return null;
+        }
+    }
+
+
+    // Update User restaurantName
+    public Task<Void> updateUserRestaurantName(String restaurantName) {
+        String uid = this.getCurrentUserUID();
+        if (uid != null) {
+            return this.getUsersCollection().document(uid).update(RESTAURANT_NAME_FIELD, restaurantName);
+        } else {
+            return null;
+        }
+    }
+
 
     // Update User hasBooked
     public void updateBooking(Boolean hasBooked) {

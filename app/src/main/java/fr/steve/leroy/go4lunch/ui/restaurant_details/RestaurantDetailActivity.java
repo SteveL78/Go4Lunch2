@@ -21,12 +21,14 @@ import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.maps.model.PlaceDetails;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Executor;
@@ -157,53 +159,56 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
         checkBooked( uid, username, placeId, restaurantName );
     }
 
-
     @Nullable
     private FirebaseUser getCurrentUser() {
         return userManager.getCurrentUser();
     }
 
+
     private void checkBooked(String uid, String username, String placeId, String restaurantName) {
-        BookingHelper.getBooking( uid).addOnCompleteListener( restaurantTask -> {
-            if (restaurantTask.isSuccessful()) {
-                if (restaurantTask.getResult().size() == 1) {
-                    //QueryDocumentSnapshot = restaurantTask.getResult().getDocuments().get( 0 );
-                    for (QueryDocumentSnapshot restaurant : restaurantTask.getResult()) {
-                        if (Objects.equals( restaurant.getData().get( "placeId" ), placeId )) {
-                            displayFloating( (R.drawable.ic_baseline_clear_orange_24) );
-                            deleteBooking( uid, username, placeId, restaurantName );
-                            Toast.makeText( RestaurantDetailActivity.this, R.string.cancel_booking, Toast.LENGTH_SHORT ).show();
-                        } else {
-                            displayFloating( (R.drawable.ic_baseline_check_circle_green_24) );
-                            updateBooking( uid, username, placeId, restaurantName );
-                            Toast.makeText( RestaurantDetailActivity.this, R.string.modify_booking, Toast.LENGTH_SHORT ).show();
-                        }
-                    }
-                } else {
-                    displayFloating( (R.drawable.ic_baseline_check_circle_green_24) );
+
+        userManager.getUserData().addOnSuccessListener( new OnSuccessListener<User>() {
+            @Override
+            public void onSuccess(User user) {
+                if (!placeId.equals( user.getPlaceId() )){
+                    updateUser( placeId, restaurantName );
+                    updateBooking( uid, username, placeId, restaurantName );
+                } else if (placeId.equals( user.getPlaceId() )){
+                    deleteBooking( placeId,restaurantName );
+                                    } else {
+                    updateUser( placeId, restaurantName );
                     createBooking( uid, username, placeId, restaurantName );
-                    Toast.makeText( RestaurantDetailActivity.this, R.string.new_booking , Toast.LENGTH_SHORT ).show();
                 }
             }
         } );
+    }
+
+
+    private void updateUser(String placeId, String restaurantName) {
+        userManager.updateUserPlaceId( placeId );
+        userManager.updateUserRestaurantName( restaurantName );
+        Update_Booking_RecyclerView( mPlaceDetails.placeId );
     }
 
     private void updateBooking(String uid, String username, String placeId, String restaurantName) {
         BookingHelper.updateBooking( uid, username, placeId, restaurantName );
         displayFloating( (R.drawable.ic_baseline_clear_orange_24) );
         Update_Booking_RecyclerView( mPlaceDetails.placeId );
+        Toast.makeText( RestaurantDetailActivity.this, R.string.modify_booking, Toast.LENGTH_SHORT ).show();
     }
 
     private void createBooking(String uid, String username, String placeId, String restaurantName) {
         BookingHelper.createBooking( uid, username, placeId, restaurantName ).addOnFailureListener( onFailureListener() );
         displayFloating( (R.drawable.ic_baseline_clear_orange_24) );
         Update_Booking_RecyclerView( mPlaceDetails.placeId );
+        Toast.makeText( RestaurantDetailActivity.this, R.string.new_booking, Toast.LENGTH_SHORT ).show();
     }
 
-    private void deleteBooking(String uid, String username, String placeId, String restaurantName) {
-        BookingHelper.updateBooking( uid, username, placeId, restaurantName );
+    private void deleteBooking( String placeId, String restaurantName) {
+        BookingHelper.deleteBooking( placeId, restaurantName );
         displayFloating( (R.drawable.ic_baseline_check_circle_green_24) );
         Update_Booking_RecyclerView( mPlaceDetails.placeId );
+        Toast.makeText( RestaurantDetailActivity.this, R.string.cancel_booking, Toast.LENGTH_SHORT ).show();
     }
 
     private void displayFloating(int icon) {
@@ -223,7 +228,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
                     adapter.notifyDataSetChanged();
                 } else {
                     for (QueryDocumentSnapshot restaurant : restaurantTask.getResult()) {
-                        UserRepository.getUser( Objects.requireNonNull( restaurant.getData().get( "userId" ) ).toString() ).addOnCompleteListener( workmateTask -> {
+                        UserRepository.getUser( Objects.requireNonNull( restaurant.getData().get( "uid" ) ).toString() ).addOnCompleteListener( workmateTask -> {
                             if (workmateTask.isSuccessful()) {
                                 String uid = Objects.requireNonNull( workmateTask.getResult().getData().get( "uid" ) ).toString();
                                 String name = Objects.requireNonNull( Objects.requireNonNull( workmateTask.getResult().getData() ).get( "name" ) ).toString();

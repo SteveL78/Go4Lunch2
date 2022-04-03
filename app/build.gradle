@@ -72,14 +72,14 @@ dependencies {
 
     // FIREBASE
     implementation platform('com.google.firebase:firebase-bom:28.3.0')
-    implementation 'com.google.firebase:firebase-firestore:24.0.2'
+    implementation 'com.google.firebase:firebase-firestore:24.1.0'
 
     // FIREBASE UI
-    implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
+    implementation 'com.firebaseui:firebase-ui-auth:8.0.0'
     implementation 'com.firebaseui:firebase-ui-storage:7.1.1'
 
     // FIREBASE UI LIBRARY
-    implementation 'com.firebaseui:firebase-ui-database:7.1.1'
+    implementation 'com.firebaseui:firebase-ui-database:8.0.0'
 
     // FACEBOOK LOGIN
     implementation 'com.facebook.android:facebook-android-sdk:[5,6)'

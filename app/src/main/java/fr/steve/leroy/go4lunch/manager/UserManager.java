@@ -65,6 +65,19 @@ public class UserManager {
         return userRepository.updateUsername( username );
     }
 
+    public Task<Void> updateUserPlaceId(String placeId) {
+        return userRepository.updateUserPlaceId( placeId );
+    }
+
+    public Task<Void> updateUserRestaurantName(String restaurantName) {
+        return userRepository.updateUserRestaurantName( restaurantName );
+    }
+
+    public Task<Void> updateUserUrlPicture(String urlPicture) {
+        return userRepository.updateUrlPicture( urlPicture );
+    }
+
+
     public void updateHasBooked(Boolean hasBooked) {
         userRepository.updateBooking( hasBooked );
     }
