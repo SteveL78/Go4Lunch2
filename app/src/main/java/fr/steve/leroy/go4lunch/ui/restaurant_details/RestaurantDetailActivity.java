@@ -169,23 +169,23 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
         userManager.getUserData().addOnSuccessListener( new OnSuccessListener<User>() {
             @Override
             public void onSuccess(User user) {
-                if (!placeId.equals( user.getPlaceId() )) {
+                if (user.getPlaceId().isEmpty()) {
+                    updateUser( placeId, restaurantName );
+                    createBooking( uid, username, placeId, restaurantName );
+                } else if (!placeId.equals( user.getPlaceId() )) {
                     updateUser( placeId, restaurantName );
                     updateBooking( uid, username, placeId, restaurantName );
-                } else if (placeId.equals( user.getPlaceId() )) {
+                } else {
                     userManager.updateUserPlaceId( "" );
                     userManager.updateUserRestaurantName( "" );
                     deleteBooking( uid );
-                } else {
-                    updateUser( placeId, restaurantName );
-                    createBooking( uid, username, placeId, restaurantName );
                 }
             }
         } );
     }
 
 
-    private void setButtonState(String placeId){
+    private void setButtonState(String placeId) {
         userManager.getUserData().addOnSuccessListener( new OnSuccessListener<User>() {
             @Override
             public void onSuccess(User user) {
