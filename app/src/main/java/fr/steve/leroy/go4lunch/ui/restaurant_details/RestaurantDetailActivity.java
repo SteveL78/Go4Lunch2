@@ -185,6 +185,21 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
     }
 
 
+    private void setButtonState(String placeId){
+        userManager.getUserData().addOnSuccessListener( new OnSuccessListener<User>() {
+            @Override
+            public void onSuccess(User user) {
+                if (placeId.equals( user.getPlaceId() )) {
+                    displayFloating( (R.drawable.ic_baseline_clear_orange_24) );
+                } else {
+                    displayFloating( (R.drawable.ic_baseline_check_circle_green_24) );
+                }
+            }
+        } );
+
+    }
+
+
     private void updateUser(String placeId, String restaurantName) {
         userManager.updateUserPlaceId( placeId );
         userManager.updateUserRestaurantName( restaurantName );
@@ -250,6 +265,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
             String placeId = getIntent().getStringExtra( RESTAURANT_PLACE_ID );
             getRestaurantDetail( placeId );
             initWorkmateList();
+            setButtonState( placeId );
         }
     }
 
