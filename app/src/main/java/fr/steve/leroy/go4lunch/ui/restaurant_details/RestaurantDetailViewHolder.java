@@ -15,7 +15,6 @@ import fr.steve.leroy.go4lunch.model.User;
  */
 public class RestaurantDetailViewHolder extends RecyclerView.ViewHolder {
 
-
     private WorkmatesJoiningItemBinding binding;
 
     public RestaurantDetailViewHolder(WorkmatesJoiningItemBinding itemView) {

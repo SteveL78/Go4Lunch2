@@ -61,12 +61,10 @@ public class BookingHelper {
 
 
     // --- DELETE ---
-    public static Task<Void> deleteBooking(String placeId, String restaurantName) {
-        Map<String, Object> updatedData = new HashMap<>();
-        updatedData.put( PLACE_ID_FIELD, FieldValue.delete() );
-        updatedData.put( RESTAURANT_NAME_FIELD, FieldValue.delete() );
+    public static Task<Void> deleteBooking(String uid ) {
 
-        return BookingHelper.getBookingCollection().document( placeId ).delete();
+
+        return BookingHelper.getBookingCollection().document( uid ).delete();
     }
 
 }

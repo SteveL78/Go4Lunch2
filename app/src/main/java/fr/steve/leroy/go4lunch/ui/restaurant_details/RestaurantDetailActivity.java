@@ -22,10 +22,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.maps.model.PlaceDetails;
 
 import java.util.ArrayList;
@@ -81,6 +79,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
         binding = ActivityRestaurantDetailBinding.inflate( getLayoutInflater() );
         setContentView( binding.getRoot() );
     }
+
 
     // ------------------------------------
     // CONFIGURE BUTTON CLICK LISTENER
@@ -170,12 +169,14 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
         userManager.getUserData().addOnSuccessListener( new OnSuccessListener<User>() {
             @Override
             public void onSuccess(User user) {
-                if (!placeId.equals( user.getPlaceId() )){
+                if (!placeId.equals( user.getPlaceId() )) {
                     updateUser( placeId, restaurantName );
                     updateBooking( uid, username, placeId, restaurantName );
-                } else if (placeId.equals( user.getPlaceId() )){
-                    deleteBooking( placeId,restaurantName );
-                                    } else {
+                } else if (placeId.equals( user.getPlaceId() )) {
+                    userManager.updateUserPlaceId( "" );
+                    userManager.updateUserRestaurantName( "" );
+                    deleteBooking( uid );
+                } else {
                     updateUser( placeId, restaurantName );
                     createBooking( uid, username, placeId, restaurantName );
                 }
@@ -204,15 +205,14 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
         Toast.makeText( RestaurantDetailActivity.this, R.string.new_booking, Toast.LENGTH_SHORT ).show();
     }
 
-    private void deleteBooking( String placeId, String restaurantName) {
-        BookingHelper.deleteBooking( placeId, restaurantName );
+    private void deleteBooking(String uid) {
+        BookingHelper.deleteBooking( uid );
         displayFloating( (R.drawable.ic_baseline_check_circle_green_24) );
         Update_Booking_RecyclerView( mPlaceDetails.placeId );
         Toast.makeText( RestaurantDetailActivity.this, R.string.cancel_booking, Toast.LENGTH_SHORT ).show();
     }
 
     private void displayFloating(int icon) {
-        // int colorUnbooking = ContextCompat.getColor(this, R.color.colorError);
         int color = ContextCompat.getColor( this, R.color.colorFab );
         Drawable mDrawable = Objects.requireNonNull( ContextCompat.getDrawable( getBaseContext(), icon ) ).mutate();
         binding.floatingActionButton.setImageDrawable( mDrawable );

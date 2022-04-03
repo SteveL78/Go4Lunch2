@@ -40,7 +40,6 @@ public class RestaurantDetailAdapter extends RecyclerView.Adapter<RestaurantDeta
         if (listOfWorkmatesWhoChoseThisRestaurant != null)
             itemCount = (listOfWorkmatesWhoChoseThisRestaurant.size());
         return itemCount;
-        //return mWorkmateList.size();
     }
 
     public void update(List<User> workmates) {
