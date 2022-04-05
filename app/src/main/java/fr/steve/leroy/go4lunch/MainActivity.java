@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +23,7 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.navigation.NavigationView;
@@ -31,9 +33,12 @@ import com.google.maps.model.PlaceDetails;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import fr.steve.leroy.go4lunch.databinding.ActivityMainBinding;
+import fr.steve.leroy.go4lunch.firebase.BookingHelper;
 import fr.steve.leroy.go4lunch.manager.UserManager;
+import fr.steve.leroy.go4lunch.model.User;
 import fr.steve.leroy.go4lunch.ui.map.MapFragment;
 import fr.steve.leroy.go4lunch.ui.restaurant_details.RestaurantDetailActivity;
 import fr.steve.leroy.go4lunch.ui.restaurant_list.ListViewFragment;
@@ -275,11 +280,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (item.getItemId()) {
             case R.id.drawer_menu_your_lunch_btn:
+                userManager.getUserData().addOnSuccessListener( new OnSuccessListener<User>() {
+                    @Override
+                    public void onSuccess(User user) {
+                        if (user.getPlaceId().isEmpty()) {
+                            Toast.makeText( MainActivity.this, "No restaurant reserved", Toast.LENGTH_SHORT ).show();
+                        } else {
+                            Toast.makeText( MainActivity.this, "You booked " , Toast.LENGTH_SHORT ).show();
+
+                           // BookingHelper.getBooking( Objects.requireNonNull(getCurrentUser()).getUid(), getTodayDate()).addOnCompleteListener(this::onComplete);
+                        }
+                    }
+                } );
+
+/*
                 // Intent utilisé temporairement pour tests
                 Intent intent = new Intent( this, RestaurantDetailActivity.class );
                 startActivity( intent );
                 break;
-
+*/
             case R.id.drawer_menu_settings_btn:
                 startActivity( new Intent( android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse( "package:" + BuildConfig.APPLICATION_ID ) ) );               // startActivityForResult( new Intent( Settings.ACTION_SETTINGS ), 0 );
                 break;

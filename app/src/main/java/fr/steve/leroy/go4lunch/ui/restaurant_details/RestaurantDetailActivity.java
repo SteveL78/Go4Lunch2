@@ -228,10 +228,10 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
     }
 
     private void displayFloating(int icon) {
-        int color = ContextCompat.getColor( this, R.color.colorFab );
+        //int color = ContextCompat.getColor( this, R.color.colorFab );
         Drawable mDrawable = Objects.requireNonNull( ContextCompat.getDrawable( getBaseContext(), icon ) ).mutate();
         binding.floatingActionButton.setImageDrawable( mDrawable );
-        binding.floatingActionButton.getDrawable().setColorFilter( color, PorterDuff.Mode.SRC_IN );
+        //binding.floatingActionButton.getDrawable().setColorFilter( color, PorterDuff.Mode.SRC_IN );
     }
 
     @SuppressLint("NotifyDataSetChanged")

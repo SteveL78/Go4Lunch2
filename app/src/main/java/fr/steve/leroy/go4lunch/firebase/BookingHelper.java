@@ -21,7 +21,7 @@ public class BookingHelper {
     private static final String USERNAME_FIELD = "username";
     private static final String PLACE_ID_FIELD = "placeId";
     private static final String RESTAURANT_NAME_FIELD = "restaurantName";
-    private static final String HAS_BOOKED_FIELD = "hasBooked";
+    private static final String DATE_CREATED_FIELD = "dateCreated";
 
     // --- COLLECTION REFERENCE ---
     public static CollectionReference getBookingCollection() {
@@ -37,8 +37,8 @@ public class BookingHelper {
 
 
     // --- GET ---
-    public static Task<QuerySnapshot> getBooking(String uid, String placeId) {
-        return BookingHelper.getBookingCollection().whereEqualTo( USER_ID_FIELD, uid ).whereEqualTo( PLACE_ID_FIELD, placeId ).get();
+    public static Task<QuerySnapshot> getBooking(String uid, String placeId, String bookingDateCreated ) {
+        return BookingHelper.getBookingCollection().whereEqualTo( USER_ID_FIELD, uid ).whereEqualTo( PLACE_ID_FIELD, placeId ).whereEqualTo( DATE_CREATED_FIELD, bookingDateCreated ).get();
     }
 
 

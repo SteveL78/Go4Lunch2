@@ -72,7 +72,6 @@
         android:clickable="true"
         android:contentDescription="@string/content_description_select_restaurant_fab"
         app:backgroundTint="@color/white"
-        android:src="@drawable/ic_baseline_check_circle_green_24"
         app:layout_constraintBottom_toBottomOf="@id/activity_detail_restaurant_img"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/activity_detail_restaurant_img" />

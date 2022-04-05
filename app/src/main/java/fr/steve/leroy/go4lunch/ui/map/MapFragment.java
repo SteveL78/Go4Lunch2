@@ -3,6 +3,9 @@ package fr.steve.leroy.go4lunch.ui.map;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,10 +15,14 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -26,6 +33,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -45,14 +54,13 @@ import fr.steve.leroy.go4lunch.databinding.FragmentMapBinding;
  */
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
-    private static final String TAG = "MapFragment";
     private FragmentMapBinding binding;
 
+    private static final String TAG = "MapFragment";
     private static final int ERROR_DIALOG_REQUEST = 9001;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
-
     private static final float DEFAULT_ZOOM = 15f;
 
     private final Executor executor = Executors.newSingleThreadExecutor();
@@ -64,7 +72,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentMapBinding.inflate( inflater, container, false );
@@ -143,7 +151,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         } catch (SecurityException e) {
             Log.e( TAG, "getDeviceLocation : SecurityException: " + e.getMessage() );
         }
-
     }
 
 
@@ -155,10 +162,25 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             MarkerOptions options = new MarkerOptions()
                     .position( latLng )
                     .title( title );
+
             mMap.addMarker( options );
         }
         hideSoftKeyboard();
+    }
 
+    /**
+     * Demonstrates converting a {@link Drawable} to a {@link BitmapDescriptor},
+     * for use as a marker icon.
+     */
+    private BitmapDescriptor vectorToBitmap(@DrawableRes int id, @ColorInt int color) {
+        Drawable vectorDrawable = ResourcesCompat.getDrawable( getResources(), id, null );
+        Bitmap bitmap = Bitmap.createBitmap( vectorDrawable.getIntrinsicWidth(),
+                vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888 );
+        Canvas canvas = new Canvas( bitmap );
+        vectorDrawable.setBounds( 0, 0, canvas.getWidth(), canvas.getHeight() );
+        DrawableCompat.setTint( vectorDrawable, color );
+        vectorDrawable.draw( canvas );
+        return BitmapDescriptorFactory.fromBitmap( bitmap );
     }
 
 
@@ -169,9 +191,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mMap = googleMap;
 
         googleMap.setMapType( GoogleMap.MAP_TYPE_NORMAL );
-        googleMap.addMarker( new MarkerOptions()
-                .position( new LatLng( 48.8566, 2.3522 ) )
-                .title( "You are here" ) );
 
         if (mLocationPermissionsGranted) {
             getDeviceLocation();
@@ -191,7 +210,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
 
         mMap.setMyLocationEnabled( true );
-        moveCamera( new LatLng( currentLocation.getLatitude(), currentLocation.getLongitude() ), "You are here" );
+        moveCamera( new LatLng( currentLocation.getLatitude(), currentLocation.getLongitude() ), "The boss is here" );
         mMap.getUiSettings().setMyLocationButtonEnabled( false );
 
         executor.execute( (() -> {
@@ -203,11 +222,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     double lat = placesSearchResults[i].geometry.location.lat;
                     double lng = placesSearchResults[i].geometry.location.lng;
 
-                    mMap.addMarker( new MarkerOptions().position( new LatLng( lat, lng ) ) );
+                    mMap.addMarker( new MarkerOptions().position( new LatLng( lat, lng ) )
+                            .icon( BitmapDescriptorFactory.fromResource( R.drawable.ic_booked_restaurant_green ) ) );
                 }
             }) );
         }) );
     }
+
 
     private void getLocationPermission() {
         Log.d( TAG, "getLocationPermission: getting location permissions" );
