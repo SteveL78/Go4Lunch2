@@ -33,10 +33,8 @@ import com.google.maps.model.PlaceDetails;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import fr.steve.leroy.go4lunch.databinding.ActivityMainBinding;
-import fr.steve.leroy.go4lunch.firebase.BookingHelper;
 import fr.steve.leroy.go4lunch.manager.UserManager;
 import fr.steve.leroy.go4lunch.model.User;
 import fr.steve.leroy.go4lunch.ui.map.MapFragment;
@@ -286,19 +284,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         if (user.getPlaceId().isEmpty()) {
                             Toast.makeText( MainActivity.this, "No restaurant reserved", Toast.LENGTH_SHORT ).show();
                         } else {
-                            Toast.makeText( MainActivity.this, "You booked " , Toast.LENGTH_SHORT ).show();
-
-                           // BookingHelper.getBooking( Objects.requireNonNull(getCurrentUser()).getUid(), getTodayDate()).addOnCompleteListener(this::onComplete);
+                            Toast.makeText( MainActivity.this, "You booked " + user.getRestaurantName(), Toast.LENGTH_SHORT ).show();
+                            Intent intent = new Intent( MainActivity.this, RestaurantDetailActivity.class );
+                            intent.putExtra( "placeId", user.getPlaceId() );
+                            startActivity( intent );
                         }
                     }
                 } );
-
-/*
-                // Intent utilisé temporairement pour tests
-                Intent intent = new Intent( this, RestaurantDetailActivity.class );
-                startActivity( intent );
                 break;
-*/
+
             case R.id.drawer_menu_settings_btn:
                 startActivity( new Intent( android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse( "package:" + BuildConfig.APPLICATION_ID ) ) );               // startActivityForResult( new Intent( Settings.ACTION_SETTINGS ), 0 );
                 break;

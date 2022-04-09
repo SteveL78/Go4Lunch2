@@ -222,8 +222,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     double lat = placesSearchResults[i].geometry.location.lat;
                     double lng = placesSearchResults[i].geometry.location.lng;
 
-                    mMap.addMarker( new MarkerOptions().position( new LatLng( lat, lng ) )
-                            .icon( BitmapDescriptorFactory.fromResource( R.drawable.ic_booked_restaurant_green ) ) );
+
+                    mMap.addMarker( new MarkerOptions()
+                            .position( new LatLng( lat, lng ) )
+                            .icon( BitmapDescriptorFactory.defaultMarker( BitmapDescriptorFactory.HUE_GREEN ) ) );
+
                 }
             }) );
         }) );
