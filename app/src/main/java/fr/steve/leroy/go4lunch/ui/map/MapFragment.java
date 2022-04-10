@@ -30,8 +30,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.maps.model.PlacesSearchResult;
 
+import java.util.Objects;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -40,6 +42,7 @@ import fr.steve.leroy.go4lunch.R;
 import fr.steve.leroy.go4lunch.databinding.FragmentMapBinding;
 import fr.steve.leroy.go4lunch.manager.UserManager;
 import fr.steve.leroy.go4lunch.model.User;
+import fr.steve.leroy.go4lunch.repositories.UserRepository;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -202,25 +205,32 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     double lat = placesSearchResults[i].geometry.location.lat;
                     double lng = placesSearchResults[i].geometry.location.lng;
 
-
                     PlacesSearchResult mPlacesSearchResults = placesSearchResults[i];
 
-                    UserManager.getInstance().getUserData().addOnSuccessListener( new OnSuccessListener<User>() {
-                        @Override
-                        public void onSuccess(User user) {
-                            if (user.getPlaceId().equals( mPlacesSearchResults.placeId )) {
-                                mMap.addMarker( new MarkerOptions()
-                                        .position( new LatLng( lat, lng ) )
-                                        .title( mPlacesSearchResults.name )
-                                        .icon( BitmapDescriptorFactory.fromResource( R.drawable.ic_booked_restaurant_green ) ) );
-                            } else {
-                                mMap.addMarker( new MarkerOptions()
-                                        .position( new LatLng( lat, lng ) )
-                                        .title( mPlacesSearchResults.name )
-                                        .icon( BitmapDescriptorFactory.fromResource( R.drawable.ic_unbooked_restaurant_orange ) ) );
-                            }
-                        }
-                    } );
+                    UserRepository.getUsersCollection()
+                            .whereEqualTo( "placeId", placesSearchResults[i].placeId )
+                            .get()
+                            .addOnCompleteListener( task -> {
+                                if (task.isSuccessful()) {
+                                    int numberOfUsersEatingHere = 0;
+                                    for (QueryDocumentSnapshot document : Objects.requireNonNull( task.getResult() )) {
+                                        numberOfUsersEatingHere++;
+                                    }
+                                    if (numberOfUsersEatingHere > 0) {
+                                        mMap.addMarker( new MarkerOptions()
+                                                .position( new LatLng( lat, lng ) )
+                                                .title( mPlacesSearchResults.name )
+                                                .icon( BitmapDescriptorFactory.fromResource( R.drawable.ic_booked_restaurant_green ) ) );
+                                    } else {
+                                        mMap.addMarker( new MarkerOptions()
+                                                .position( new LatLng( lat, lng ) )
+                                                .title( mPlacesSearchResults.name )
+                                                .icon( BitmapDescriptorFactory.fromResource( R.drawable.ic_unbooked_restaurant_orange ) ) );
+                                    }
+                                } else {
+                                    Log.d( "updateWorkmateNumber", "Error getting documents: ", task.getException() );
+                                }
+                            } );
 
 
                 }
