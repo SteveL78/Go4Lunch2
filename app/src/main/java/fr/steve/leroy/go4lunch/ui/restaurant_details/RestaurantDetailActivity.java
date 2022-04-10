@@ -1,10 +1,7 @@
 package fr.steve.leroy.go4lunch.ui.restaurant_details;
 
-import static fr.steve.leroy.go4lunch.utils.GetTodayDate.getTodayDate;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -36,7 +33,6 @@ import fr.steve.leroy.go4lunch.FetchDetail;
 import fr.steve.leroy.go4lunch.R;
 import fr.steve.leroy.go4lunch.databinding.ActivityRestaurantDetailBinding;
 import fr.steve.leroy.go4lunch.firebase.BookingHelper;
-import fr.steve.leroy.go4lunch.firebase.RestaurantHelper;
 import fr.steve.leroy.go4lunch.manager.UserManager;
 import fr.steve.leroy.go4lunch.model.User;
 import fr.steve.leroy.go4lunch.repositories.UserRepository;
@@ -49,7 +45,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
 
     private ActivityRestaurantDetailBinding binding;
     private RestaurantDetailAdapter adapter;
-    private List<User> userList = new ArrayList<>();
+    private List<User> workmatesEatingHere = new ArrayList<>();
     private PlaceDetails mPlaceDetails;
 
     private Disposable disposable;
@@ -137,7 +133,8 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
     // CONFIGURE RECYCLER VIEW
     // ------------------------------------
     private void configureRecycleView() {
-        this.adapter = new RestaurantDetailAdapter( userList );
+        this.workmatesEatingHere = new ArrayList<>();
+        this.adapter = new RestaurantDetailAdapter( workmatesEatingHere );
         this.binding.activityDetailRestaurantRv.setAdapter( adapter );
         this.binding.activityDetailRestaurantRv.setLayoutManager( new LinearLayoutManager( this ) );
     }
@@ -203,27 +200,27 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
     private void updateUser(String placeId, String restaurantName) {
         userManager.updateUserPlaceId( placeId );
         userManager.updateUserRestaurantName( restaurantName );
-        Update_Booking_RecyclerView( mPlaceDetails.placeId );
+        Update_Booking_RecyclerView( mPlaceDetails.placeId, mPlaceDetails.name );
     }
 
     private void updateBooking(String uid, String username, String placeId, String restaurantName) {
         BookingHelper.updateBooking( uid, username, placeId, restaurantName );
         displayFloating( (R.drawable.ic_baseline_clear_orange_24) );
-        Update_Booking_RecyclerView( mPlaceDetails.placeId );
+        Update_Booking_RecyclerView( mPlaceDetails.placeId, mPlaceDetails.name );
         Toast.makeText( RestaurantDetailActivity.this, R.string.modify_booking, Toast.LENGTH_SHORT ).show();
     }
 
     private void createBooking(String uid, String username, String placeId, String restaurantName) {
         BookingHelper.createBooking( uid, username, placeId, restaurantName ).addOnFailureListener( onFailureListener() );
         displayFloating( (R.drawable.ic_baseline_clear_orange_24) );
-        Update_Booking_RecyclerView( mPlaceDetails.placeId );
+        Update_Booking_RecyclerView( mPlaceDetails.placeId, mPlaceDetails.name );
         Toast.makeText( RestaurantDetailActivity.this, R.string.new_booking, Toast.LENGTH_SHORT ).show();
     }
 
     private void deleteBooking(String uid) {
         BookingHelper.deleteBooking( uid );
         displayFloating( (R.drawable.ic_baseline_check_circle_green_24) );
-        Update_Booking_RecyclerView( mPlaceDetails.placeId );
+        Update_Booking_RecyclerView( mPlaceDetails.placeId, mPlaceDetails.name );
         Toast.makeText( RestaurantDetailActivity.this, R.string.cancel_booking, Toast.LENGTH_SHORT ).show();
     }
 
@@ -235,21 +232,21 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private void Update_Booking_RecyclerView(String placeId) {
-        userList.clear();
-        RestaurantHelper.getTodayBooking( placeId, getTodayDate() ).addOnCompleteListener( restaurantTask -> {
-            if (restaurantTask.isSuccessful()) {
-                if (restaurantTask.getResult().isEmpty()) {
+    private void Update_Booking_RecyclerView(String placeId, String uid) {
+        workmatesEatingHere.clear();
+        BookingHelper.getBooking( placeId, uid ).addOnCompleteListener( bookingTask -> {
+            if (bookingTask.isSuccessful()) {
+                if (bookingTask.getResult().isEmpty()) {
                     adapter.notifyDataSetChanged();
                 } else {
-                    for (QueryDocumentSnapshot restaurant : restaurantTask.getResult()) {
-                        UserRepository.getUser( Objects.requireNonNull( restaurant.getData().get( "uid" ) ).toString() ).addOnCompleteListener( workmateTask -> {
-                            if (workmateTask.isSuccessful()) {
-                                String uid = Objects.requireNonNull( workmateTask.getResult().getData().get( "uid" ) ).toString();
-                                String name = Objects.requireNonNull( Objects.requireNonNull( workmateTask.getResult().getData() ).get( "name" ) ).toString();
-                                String urlPicture = Objects.requireNonNull( workmateTask.getResult().getData().get( "urlPicture" ) ).toString();
+                    for (QueryDocumentSnapshot restaurant : bookingTask.getResult()) {
+                        UserRepository.getUser( Objects.requireNonNull( restaurant.getData().get( "uid" ) ).toString() ).addOnCompleteListener( userTask -> {
+                            if (userTask.isSuccessful()) {
+                                //String uid = Objects.requireNonNull( userTask.getResult().getData().get( "uid" ) ).toString();
+                                String name = Objects.requireNonNull( Objects.requireNonNull( userTask.getResult().getData() ).get( "name" ) ).toString();
+                                String urlPicture = Objects.requireNonNull( userTask.getResult().getData().get( "urlPicture" ) ).toString();
                                 User workmateToAdd = new User( uid, urlPicture, name );
-                                userList.add( workmateToAdd );
+                                workmatesEatingHere.add( workmateToAdd );
                             }
                             adapter.notifyDataSetChanged();
                         } );
@@ -270,8 +267,8 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
     }
 
     private void initWorkmateList() {
-        userList = new ArrayList<>();
-        adapter = new RestaurantDetailAdapter( userList );
+        workmatesEatingHere = new ArrayList<>();
+        adapter = new RestaurantDetailAdapter( workmatesEatingHere );
         binding.activityDetailRestaurantRv.setLayoutManager( new LinearLayoutManager( this ) );
         binding.activityDetailRestaurantRv.setAdapter( adapter );
     }

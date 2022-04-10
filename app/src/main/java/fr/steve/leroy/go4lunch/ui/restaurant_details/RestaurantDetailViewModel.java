@@ -1,6 +1,24 @@
 package fr.steve.leroy.go4lunch.ui.restaurant_details;
 
+import android.util.Pair;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.maps.model.PlacesSearchResult;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
+import fr.steve.leroy.go4lunch.NearbySearch;
+import fr.steve.leroy.go4lunch.manager.UserManager;
+import fr.steve.leroy.go4lunch.model.User;
 
 /**
  * Created by Steve LEROY on 05/12/2021.

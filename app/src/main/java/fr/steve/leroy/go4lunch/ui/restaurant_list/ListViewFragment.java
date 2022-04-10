@@ -126,6 +126,7 @@ public class ListViewFragment extends Fragment implements RestaurantListRecycler
         viewModel = new ViewModelProvider( this ).get( RestaurantListViewModel.class );
         viewModel.init( ContextCompat.getMainExecutor( requireContext() ) );
         setUpRestaurantList();
+        setUpRestaurantList();
     }
 
 

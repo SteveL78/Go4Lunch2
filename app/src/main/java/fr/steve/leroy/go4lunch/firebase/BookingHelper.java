@@ -37,8 +37,8 @@ public class BookingHelper {
 
 
     // --- GET ---
-    public static Task<QuerySnapshot> getBooking(String uid, String placeId, String bookingDateCreated ) {
-        return BookingHelper.getBookingCollection().whereEqualTo( USER_ID_FIELD, uid ).whereEqualTo( PLACE_ID_FIELD, placeId ).whereEqualTo( DATE_CREATED_FIELD, bookingDateCreated ).get();
+    public static Task<QuerySnapshot> getBooking(String uid, String placeId ) {
+        return BookingHelper.getBookingCollection().whereEqualTo( USER_ID_FIELD, uid ).whereEqualTo( PLACE_ID_FIELD, placeId ).get();
     }
 
 

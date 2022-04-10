@@ -22,17 +22,20 @@ public class RestaurantDetailViewHolder extends RecyclerView.ViewHolder {
         this.binding = itemView;
     }
 
-    public void updateWithData(User result) {
+    public void updateWithUserData(User result) {
+
         RequestManager glide = Glide.with( itemView );
 
         if (!(result.getUrlPicture() == null)) {
             glide.load( result.getUrlPicture() )
                     .apply( RequestOptions.circleCropTransform() )
                     .into( binding.workmatesJoiningImg );
+
         } else {
             glide.load( R.drawable.ic_anon_user )
                     .apply( RequestOptions.circleCropTransform() )
                     .into( binding.workmatesJoiningImg );
+
         }
         binding.workmatesJoiningNameTv.setText( itemView.getResources().getString( R.string.text_workmate_joining, result.getUsername() ) );
     }

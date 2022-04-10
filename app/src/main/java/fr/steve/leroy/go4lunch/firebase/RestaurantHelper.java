@@ -2,7 +2,6 @@ package fr.steve.leroy.go4lunch.firebase;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -37,7 +36,7 @@ public class RestaurantHelper {
     // --- CREATE ---
 
     public static Task<Void> createBooking(String uid, String username, String placeId, String restaurantName) {
-        Booking bookingToCreate = new Booking( uid, username,  placeId, restaurantName );
+        Booking bookingToCreate = new Booking( uid, username, placeId, restaurantName );
         return RestaurantHelper.getBookingCollection().document( uid ).set( bookingToCreate );
     }
 
@@ -57,8 +56,8 @@ public class RestaurantHelper {
         return RestaurantHelper.getBookingCollection().whereEqualTo( "workmateId", userId ).whereEqualTo( "dateCreated", date ).get();
     }
 
-    public static Task<QuerySnapshot> getTodayBooking(String placeId, String bookingDate) {
-        return RestaurantHelper.getBookingCollection().whereEqualTo( "placeId", placeId ).whereEqualTo( "dateCreated", bookingDate ).get();
+    public static Task<QuerySnapshot> getTodayBooking(String placeId, String uid) {
+        return RestaurantHelper.getBookingCollection().whereEqualTo( "placeId", placeId ).whereEqualTo( "uid", uid ).get();
     }
 
     public static Task<DocumentSnapshot> getLikeForThisRestaurant(String placeId) {

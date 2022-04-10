@@ -3,9 +3,6 @@ package fr.steve.leroy.go4lunch.ui.map;
 import android.Manifest;
 import android.app.Dialog;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,14 +12,10 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import androidx.annotation.ColorInt;
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -33,7 +26,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -46,6 +38,8 @@ import java.util.concurrent.Executors;
 import fr.steve.leroy.go4lunch.NearbySearch;
 import fr.steve.leroy.go4lunch.R;
 import fr.steve.leroy.go4lunch.databinding.FragmentMapBinding;
+import fr.steve.leroy.go4lunch.manager.UserManager;
+import fr.steve.leroy.go4lunch.model.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -161,26 +155,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         if (!title.equals( "My location" )) {
             MarkerOptions options = new MarkerOptions()
                     .position( latLng )
-                    .title( title );
+                    .title( title )
+                    .icon( BitmapDescriptorFactory.defaultMarker( BitmapDescriptorFactory.HUE_RED ) );
 
             mMap.addMarker( options );
         }
         hideSoftKeyboard();
-    }
-
-    /**
-     * Demonstrates converting a {@link Drawable} to a {@link BitmapDescriptor},
-     * for use as a marker icon.
-     */
-    private BitmapDescriptor vectorToBitmap(@DrawableRes int id, @ColorInt int color) {
-        Drawable vectorDrawable = ResourcesCompat.getDrawable( getResources(), id, null );
-        Bitmap bitmap = Bitmap.createBitmap( vectorDrawable.getIntrinsicWidth(),
-                vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888 );
-        Canvas canvas = new Canvas( bitmap );
-        vectorDrawable.setBounds( 0, 0, canvas.getWidth(), canvas.getHeight() );
-        DrawableCompat.setTint( vectorDrawable, color );
-        vectorDrawable.draw( canvas );
-        return BitmapDescriptorFactory.fromBitmap( bitmap );
     }
 
 
@@ -210,28 +190,43 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
 
         mMap.setMyLocationEnabled( true );
-        moveCamera( new LatLng( currentLocation.getLatitude(), currentLocation.getLongitude() ), "The boss is here" );
+        moveCamera( new LatLng( currentLocation.getLatitude(), currentLocation.getLongitude() ), "You are here" );
         mMap.getUiSettings().setMyLocationButtonEnabled( false );
 
         executor.execute( (() -> {
             com.google.maps.model.LatLng latLng = new com.google.maps.model.LatLng( currentLocation.getLatitude(), currentLocation.getLongitude() );
             PlacesSearchResult[] placesSearchResults = new NearbySearch().run( latLng ).results;
-            mainExecutor.execute( (() -> {
+            mainExecutor.execute( () -> {
 
                 for (int i = 0; i < placesSearchResults.length; i++) {
                     double lat = placesSearchResults[i].geometry.location.lat;
                     double lng = placesSearchResults[i].geometry.location.lng;
 
 
-                    mMap.addMarker( new MarkerOptions()
-                            .position( new LatLng( lat, lng ) )
-                            .icon( BitmapDescriptorFactory.defaultMarker( BitmapDescriptorFactory.HUE_GREEN ) ) );
+                    PlacesSearchResult mPlacesSearchResults = placesSearchResults[i];
+
+                    UserManager.getInstance().getUserData().addOnSuccessListener( new OnSuccessListener<User>() {
+                        @Override
+                        public void onSuccess(User user) {
+                            if (user.getPlaceId().equals( mPlacesSearchResults.placeId )) {
+                                mMap.addMarker( new MarkerOptions()
+                                        .position( new LatLng( lat, lng ) )
+                                        .title( mPlacesSearchResults.name )
+                                        .icon( BitmapDescriptorFactory.fromResource( R.drawable.ic_booked_restaurant_green ) ) );
+                            } else {
+                                mMap.addMarker( new MarkerOptions()
+                                        .position( new LatLng( lat, lng ) )
+                                        .title( mPlacesSearchResults.name )
+                                        .icon( BitmapDescriptorFactory.fromResource( R.drawable.ic_unbooked_restaurant_orange ) ) );
+                            }
+                        }
+                    } );
+
 
                 }
-            }) );
+            } );
         }) );
     }
-
 
     private void getLocationPermission() {
         Log.d( TAG, "getLocationPermission: getting location permissions" );

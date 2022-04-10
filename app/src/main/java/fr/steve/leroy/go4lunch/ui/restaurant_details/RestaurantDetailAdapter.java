@@ -16,10 +16,12 @@ import fr.steve.leroy.go4lunch.model.User;
  */
 public class RestaurantDetailAdapter extends RecyclerView.Adapter<RestaurantDetailViewHolder> {
 
-    private List<User> listOfWorkmatesWhoChoseThisRestaurant;
+    // FOR DATA
+    private List<User> workmatesEatingHere;
 
-    public RestaurantDetailAdapter(List<User> listOfWorkmatesWhoChoseThisRestaurant) {
-        this.listOfWorkmatesWhoChoseThisRestaurant = listOfWorkmatesWhoChoseThisRestaurant;
+    // CONSTRUCTOR
+    public RestaurantDetailAdapter(List<User> workmatesEatingHere) {
+        this.workmatesEatingHere = workmatesEatingHere;
     }
 
     @NonNull
@@ -29,21 +31,22 @@ public class RestaurantDetailAdapter extends RecyclerView.Adapter<RestaurantDeta
         return new RestaurantDetailViewHolder( view );
     }
 
+    // UPDATE HOLDER WITH USERS
     @Override
     public void onBindViewHolder(@NonNull RestaurantDetailViewHolder holder, int position) {
-        holder.updateWithData( this.listOfWorkmatesWhoChoseThisRestaurant.get( position ) );
+        holder.updateWithUserData( this.workmatesEatingHere.get( position ) );
     }
 
     @Override
     public int getItemCount() {
         int itemCount = 0;
-        if (listOfWorkmatesWhoChoseThisRestaurant != null)
-            itemCount = (listOfWorkmatesWhoChoseThisRestaurant.size());
+        if (workmatesEatingHere != null)
+            itemCount = (workmatesEatingHere.size());
         return itemCount;
     }
 
     public void update(List<User> workmates) {
-        this.listOfWorkmatesWhoChoseThisRestaurant = workmates;
+        this.workmatesEatingHere = workmates;
         notifyDataSetChanged();
     }
 
