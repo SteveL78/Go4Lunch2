@@ -2,7 +2,6 @@ package fr.steve.leroy.go4lunch.firebase;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -37,7 +36,7 @@ public class BookingHelper {
 
 
     // --- GET ---
-    public static Task<QuerySnapshot> getBooking(String uid, String placeId ) {
+    public static Task<QuerySnapshot> getBooking(String uid, String placeId) {
         return BookingHelper.getBookingCollection().whereEqualTo( USER_ID_FIELD, uid ).whereEqualTo( PLACE_ID_FIELD, placeId ).get();
     }
 
@@ -48,7 +47,7 @@ public class BookingHelper {
         updatedData.put( USERNAME_FIELD, username );
         updatedData.put( PLACE_ID_FIELD, placeId );
         updatedData.put( RESTAURANT_NAME_FIELD, restaurantName );
-        return RestaurantHelper.getBookingCollection().document( uid ).update( updatedData );
+        return BookingHelper.getBookingCollection().document( uid ).update( updatedData );
     }
 
     public static Task<Void> updateUser(String uid, String username, String placeId, String restaurantName) {
@@ -56,12 +55,12 @@ public class BookingHelper {
         updatedData.put( USERNAME_FIELD, username );
         updatedData.put( PLACE_ID_FIELD, placeId );
         updatedData.put( RESTAURANT_NAME_FIELD, restaurantName );
-        return RestaurantHelper.getBookingCollection().document( uid ).update( updatedData );
+        return BookingHelper.getBookingCollection().document( uid ).update( updatedData );
     }
 
 
     // --- DELETE ---
-    public static Task<Void> deleteBooking(String uid ) {
+    public static Task<Void> deleteBooking(String uid) {
 
 
         return BookingHelper.getBookingCollection().document( uid ).delete();

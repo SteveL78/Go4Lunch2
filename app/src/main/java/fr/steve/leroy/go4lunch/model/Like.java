@@ -1,26 +1,25 @@
 package fr.steve.leroy.go4lunch.model;
 
-import java.util.List;
-
 /**
  * Created by Steve LEROY on 20/03/2022.
  */
-public class FavoriteRestaurant {
+public class Like {
 
     private String uid;
     private String username;
     private String placeId;
     private String restaurantName;
-    private List<String> likedRestaurantList;
+    private boolean isLiked;
 
-    public FavoriteRestaurant() { /* Required empty public constructor for the recyclerView */ }
 
-    public FavoriteRestaurant(String uid, String username, String placeId, String restaurantName, List<String> likedRestaurantList) {
+    public Like() { /* Required empty public constructor for the recyclerView */ }
+
+    public Like(String uid, String username, String placeId, String restaurantName) {
         this.uid = uid;
         this.username = username;
         this.placeId = placeId;
         this.restaurantName = restaurantName;
-        this.likedRestaurantList = likedRestaurantList;
+        this.isLiked = false;
     }
 
 
@@ -42,9 +41,8 @@ public class FavoriteRestaurant {
         return restaurantName;
     }
 
-    public List<String> getLikedRestaurantList() {
-        return likedRestaurantList;
-    }
+    public boolean isLiked() { return isLiked; }
+
 
     // --- SETTERS ---
 
@@ -60,11 +58,5 @@ public class FavoriteRestaurant {
         this.placeId = placeId;
     }
 
-    public void setRestaurantName(String restaurantName) {
-        this.restaurantName = restaurantName;
-    }
-
-    public void setLikedRestaurantList(List<String> likedRestaurantList) {
-        this.likedRestaurantList = likedRestaurantList;
-    }
+    public void setLiked(boolean liked) { isLiked = liked; }
 }

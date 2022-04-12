@@ -14,7 +14,6 @@ public class Booking {
     private String placeId;
     private String restaurantName;
     private Date dateCreated;
-    private boolean hasBooked;
 
 
     public Booking(String uid, String username, String placeId, String restaurantName) {
@@ -22,7 +21,6 @@ public class Booking {
         this.username = username;
         this.placeId = placeId;
         this.restaurantName = restaurantName;
-        this.hasBooked = false;
     }
 
 
@@ -52,23 +50,10 @@ public class Booking {
 
     // ------- SETTERS -------
 
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    public void setUsername(String username) { this.username = username; }
 
     public void setPlaceId(String placeId) {
         this.placeId = placeId;
     }
 
-    public void setRestaurantName(String restaurantName) {
-        this.restaurantName = restaurantName;
-    }
-
-    public void setDateCreated(Date dateCreated) {
-        this.dateCreated = dateCreated;
-    }
 }
