@@ -1,19 +1,28 @@
 package fr.steve.leroy.go4lunch.firebase;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import fr.steve.leroy.go4lunch.model.Booking;
 import fr.steve.leroy.go4lunch.model.User;
+import fr.steve.leroy.go4lunch.repositories.UserRepository;
 
 /**
  * Created by Steve LEROY on 21/01/2022.
@@ -27,6 +36,7 @@ public class LikeHelper {
     private static final String RESTAURANT_NAME_FIELD = "restaurantName";
     private static final String IS_LIKED_FIELD = "isLiked";
 
+    private static final String TAG = "LikeHelper";
 
     // --- COLLECTION REFERENCE ---
 
@@ -74,8 +84,36 @@ public class LikeHelper {
 
     // --- DELETE ---
 
-    // TODO : delete pas le document mais la collection
-    public static Boolean deleteLike(String placeId, String uid) {
+    public static void deleteLike(String placeId, String uid) {
+        FirebaseFirestore.getInstance().collection( COLLECTION_LIKED_RESTAURANT )
+                .whereEqualTo( PLACE_ID_FIELD, placeId )
+                .whereEqualTo( USER_ID_FIELD, uid )
+                .get()
+                .addOnCompleteListener( bookingTask -> {
+                    if (bookingTask.isSuccessful()) {
+                        for (QueryDocumentSnapshot restaurant : bookingTask.getResult()) {
+                            FirebaseFirestore.getInstance().collection( COLLECTION_LIKED_RESTAURANT ).document( restaurant.getId() )
+                                    .delete()
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.w(TAG, "Error deleting document", e);
+                                        }
+                                    });
+                        }
+                    }
+                } );
+
+    }
+
+
+        /*
         LikeHelper.getLikeForThisRestaurant( placeId ).addOnCompleteListener( restaurantTask -> {
             if (restaurantTask.isSuccessful()) {
                 Map<String, Object> update = new HashMap<>();
@@ -85,6 +123,8 @@ public class LikeHelper {
         } );
         return true;
     }
+
+         */
 
 
 }

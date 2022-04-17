@@ -24,12 +24,12 @@ public class RestaurantDetailViewModel extends ViewModel {
 
     private UserManager userManager = UserManager.getInstance();
 
-    private MutableLiveData<Boolean> favorite = new MutableLiveData<>();
+    private MutableLiveData<Boolean> like = new MutableLiveData<>();
 
     private MutableLiveData<List<User>> userlist = new MutableLiveData<>();
 
-    public LiveData<Boolean> getFavorite() {
-        return favorite;
+    public LiveData<Boolean> getLike() {
+        return like;
     }
 
     public LiveData<List<User>> getUserList() {
@@ -47,9 +47,9 @@ public class RestaurantDetailViewModel extends ViewModel {
                 .addOnSuccessListener( queryDocumentSnapshots -> {  //Callback
                     List<Like> likeList = new ArrayList<>();
                     if (queryDocumentSnapshots.getDocuments().size() >= 1) {
-                        this.favorite.setValue( true );
+                        this.like.setValue( true );
                     } else {
-                        this.favorite.setValue( false );
+                        this.like.setValue( false );
                     }
 
 
