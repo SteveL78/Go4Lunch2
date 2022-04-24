@@ -1,11 +1,18 @@
 package fr.steve.leroy.go4lunch.utils;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.maps.model.PlaceDetails;
 
 import fr.steve.leroy.go4lunch.firebase.LikeHelper;
@@ -15,6 +22,8 @@ import fr.steve.leroy.go4lunch.model.Like;
  * Created by Steve LEROY on 21/01/2022.
  */
 public class LikeButton {
+
+    private static final String TAG = "LikeButton";
 
     private Like like;
 
@@ -39,5 +48,16 @@ public class LikeButton {
         } else {
             Toast.makeText( context, liked, Toast.LENGTH_SHORT ).show();
         }
+    }
+
+    // Todo : call this onCreate
+    public static void checkLikeRestaurant(String placeId, String uid) {
+        LikeHelper.getAllLikeByUserId( placeId, uid )
+                .addOnCompleteListener( checkTask -> {
+                    if (checkTask.isSuccessful() && checkTask.getResult().size() != 0) {
+                        // TODO : Display like
+                    }
+                } );
+
     }
 }

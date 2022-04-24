@@ -42,30 +42,23 @@ public class LikeHelper {
 
     // --- CREATE ---
     public static Task<Void> createLike(String placeId, String restaurantName, String uid, String username) {
-       // Like likeToCreate = new Like( uid, username, placeId, restaurantName );
-        //return LikeHelper.getLikeCollection().document( uid ).set( likeToCreate );
         Map<String, Object> like = new HashMap<>();
         like.put( PLACE_ID_FIELD, placeId );
-       // like.put( RESTAURANT_NAME_FIELD, restaurantName );
-       // like.put( USER_ID_FIELD, uid );
-       // like.put( USERNAME_FIELD, username );
+        like.put( RESTAURANT_NAME_FIELD, restaurantName );
+        like.put( USER_ID_FIELD, uid );
+        like.put( USERNAME_FIELD, username );
         return LikeHelper.getLikeCollection().document( placeId + restaurantName + uid + username ).set( like, SetOptions.merge() );
-
-
     }
 
 
     // --- GET ---
-    public static Task<DocumentSnapshot> getLikeForThisRestaurant(String placeId) {
-        return LikeHelper.getLikeCollection().document( placeId ).get();
-    }
 
     public static Task<QuerySnapshot> getWorkmatesWhoHaveSameChoice(String placeId) {
         return getLikeCollection().whereEqualTo(PLACE_ID_FIELD, placeId).get();
     }
 
-    public static Task<QuerySnapshot> getAllLikeByUserId(String uid) {
-        return LikeHelper.getLikeCollection().whereEqualTo( uid, true ).get();
+    public static Task<QuerySnapshot> getAllLikeByUserId(String uid, String placeId) {
+        return LikeHelper.getLikeCollection().whereEqualTo( "uid", uid ).whereEqualTo( "placeId", placeId ).get();
     }
 
 

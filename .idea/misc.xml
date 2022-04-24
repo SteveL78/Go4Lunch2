@@ -5,6 +5,7 @@
       <map>
         <entry key="../../../../../layout/custom_preview.xml" value="0.2777777777777778" />
         <entry key="../../../Library/Android/sdk/platforms/android-31/data/res/drawable/btn_plus.xml" value="0.25555555555555554" />
+        <entry key="../gradle/caches/transforms-3/25f13c4726addd7a9bb9b740b6cce230/transformed/jetified-places-2.6.0/res/layout/places_autocomplete_impl_search_bar.xml" value="0.22447916666666667" />
         <entry key="app/src/main/res/drawable-v24/ic_black_list_view_bottom_nav.xml" value="0.2388888888888889" />
         <entry key="app/src/main/res/drawable-v24/ic_black_map_bottom_nav.xml" value="0.2388888888888889" />
         <entry key="app/src/main/res/drawable-v24/ic_black_person_bottom_nav.xml" value="0.2388888888888889" />
@@ -73,6 +74,7 @@
         <entry key="app/src/main/res/layout/fragment_workmates.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_workmates_item.xml" value="0.1" />
         <entry key="app/src/main/res/layout/list_view_item.xml" value="0.2989583333333333" />
+        <entry key="app/src/main/res/layout/place_row.xml" value="0.22447916666666667" />
         <entry key="app/src/main/res/layout/place_row_layout.xml" value="0.335" />
         <entry key="app/src/main/res/layout/progress_bar.xml" value="0.1" />
         <entry key="app/src/main/res/layout/restaurant_item.xml" value="0.375" />

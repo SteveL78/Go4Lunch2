@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Calendar calendar = Calendar.getInstance();
         // If user hasn't chosen lunch spot before noon, set alarm for day after
-        //if (calendar.get(Calendar.HOUR_OF_DAY) > 12 ) calendar.add(Calendar.DATE, 1);
+        //if (calendar.get(Calendar.HOUR_OF_DAY) > 1 ) calendar.add(Calendar.DATE, 1);
         // The next alarm will therefore be at 12:00 the next day
         calendar.set( Calendar.HOUR_OF_DAY, 8 );
         calendar.set( Calendar.MINUTE, 15 );

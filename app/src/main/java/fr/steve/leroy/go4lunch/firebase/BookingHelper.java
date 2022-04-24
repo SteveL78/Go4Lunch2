@@ -65,8 +65,6 @@ public class BookingHelper {
 
     // --- DELETE ---
     public static Task<Void> deleteBooking(String uid) {
-
-
         return BookingHelper.getBookingCollection().document( uid ).delete();
     }
 

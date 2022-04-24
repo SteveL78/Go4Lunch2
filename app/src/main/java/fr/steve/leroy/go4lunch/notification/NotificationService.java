@@ -72,23 +72,23 @@ public class NotificationService extends BroadcastReceiver {
                     for (DocumentSnapshot documentSnapshot : listOfUsersEatingHereToo) {
                         User workmateTemp = documentSnapshot.toObject( User.class );
                         if (workmateTemp != null && !user.getUid().equals( workmateTemp.getUid() )) {
-                            usersEatingHere.add( documentSnapshot.toObject( User.class ) );
+                            usersEatingHere.add( workmateTemp );
                         }
                     }
                 }
             }
             if (usersEatingHere.size() != 0) {
-                StringBuilder builder = new StringBuilder();
+                StringBuilder builder = new StringBuilder( R.string.notification_text );
                 int i = 0;
                 do {
                     if (i == usersEatingHere.size() - 1) {
-                        builder.append( usersEatingHere.get( i ).getUsername() ).append( "." );
+                        builder.append( usersEatingHere.get( i ).getUsername() ).append( "." ).toString();
                     } else {
-                        builder.append( usersEatingHere.get( i ).getUsername() ).append( ", " );
+                        builder.append( usersEatingHere.get( i ).getUsername() ).append( ", " ).toString();
                     }
                     i++;
                 } while (i != usersEatingHere.size());
-                notificationBody = context.getString( R.string.notification_text_with ) + user.getRestaurantName() + " as " + usersEatingHere.get( i ).getUsername().toString();
+                notificationBody = context.getString( R.string.notification_text_with ) + user.getRestaurantName() + " as " + builder;
             } else {
                 notificationBody = context.getString( R.string.notification_text ) + user.getRestaurantName();
             }
@@ -127,6 +127,27 @@ public class NotificationService extends BroadcastReceiver {
 
         // Show notification
         notificationManager.notify( NOTIFICATION_TAG, NOTIFICATION_ID, notificationBuilder.build() );
-    }
 
+        // Delete the booking once the notification has been sent
+        BookingHelper.deleteBooking( userManager.getCurrentUser().getUid() );
+
+    }
 }
+
+/*
+            StringBuilder builder = new StringBuilder( context.getString( R.string.notification_text_workmates ) );
+            int i;
+            for (i = 0; i <= usersEatingHere.size(); i++) {
+                if (i == usersEatingHere.size() - 1) {
+                    notificationBody = builder.append( usersEatingHere.get( i ).getUsername() ).append( "." );
+                } else {
+                    builder.append( usersEatingHere.get( i ).getUsername() ).append( ", " );
+                }
+                i++;
+            }
+            this.sendVisualNotification( context );
+        } );
+
+
+    }
+ */

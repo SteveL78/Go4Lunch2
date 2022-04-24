@@ -11,6 +11,7 @@ import java.io.IOException;
  * Created by Steve LEROY on 19/12/2021.
  */
 public class FetchDetail {
+
     public PlaceDetails run(String placeId) {
         PlaceDetails request = new PlaceDetails();
         GeoApiContext context = new GeoApiContext.Builder()
