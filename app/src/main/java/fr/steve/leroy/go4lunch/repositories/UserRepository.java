@@ -64,8 +64,8 @@ public class UserRepository {
 
 
     public static Task<DocumentSnapshot> getCurrentUserPlaceId(String placeId) {
-            return UserRepository.getUsersCollection().document( placeId ).get();
-        }
+        return UserRepository.getUsersCollection().document( placeId ).get();
+    }
 
 
     public Task<Void> signOut(Context context) {
@@ -132,11 +132,13 @@ public class UserRepository {
     }
 
     // Get Users for each restaurant (placeId)
-    public static Task<DocumentSnapshot> getWorkmatesForRestaurant(String placeId) {
-        //TODO : filtrer les workmates et vérifier lequel mange à ce restaurant
-        //return WorkmateHelper.getWorkmatesCollection().whereEqualTo( "restaurantId", placeId ).get();
+    /*
+    public static Task<DocumentSnapshot> getUsersWhoLikeThisRestaurant(String placeId) {
         return UserRepository.getUsersCollection().document( PLACE_ID_FIELD ).get();
     }
+
+     */
+
 
     // Update User Username
     public Task<Void> updateUsername(String username) {
@@ -153,7 +155,7 @@ public class UserRepository {
     public Task<Void> updateUrlPicture(String urlPicture) {
         String uid = this.getCurrentUserUID();
         if (uid != null) {
-            return this.getUsersCollection().document(uid).update(URL_PICTURE_FIELD, urlPicture);
+            return this.getUsersCollection().document( uid ).update( URL_PICTURE_FIELD, urlPicture );
         } else {
             return null;
         }
@@ -164,7 +166,7 @@ public class UserRepository {
     public Task<Void> updateUserPlaceId(String placeId) {
         String uid = this.getCurrentUserUID();
         if (uid != null) {
-            return this.getUsersCollection().document(uid).update(PLACE_ID_FIELD, placeId);
+            return this.getUsersCollection().document( uid ).update( PLACE_ID_FIELD, placeId );
         } else {
             return null;
         }
@@ -175,7 +177,7 @@ public class UserRepository {
     public Task<Void> updateUserRestaurantName(String restaurantName) {
         String uid = this.getCurrentUserUID();
         if (uid != null) {
-            return this.getUsersCollection().document(uid).update(RESTAURANT_NAME_FIELD, restaurantName);
+            return this.getUsersCollection().document( uid ).update( RESTAURANT_NAME_FIELD, restaurantName );
         } else {
             return null;
         }

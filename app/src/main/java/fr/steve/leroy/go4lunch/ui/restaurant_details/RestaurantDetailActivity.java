@@ -2,6 +2,7 @@ package fr.steve.leroy.go4lunch.ui.restaurant_details;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -46,6 +47,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
     private ActivityRestaurantDetailBinding binding;
     private RestaurantDetailAdapter adapter;
     private List<User> workmatesEatingHere = new ArrayList<>();
+    private List<String> likedRestaurantList = new ArrayList<>();
     private PlaceDetails mPlaceDetails;
 
     private Disposable disposable;
@@ -193,7 +195,6 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
                 }
             }
         } );
-
     }
 
 
@@ -225,10 +226,10 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
     }
 
     private void displayFloating(int icon) {
-        //int color = ContextCompat.getColor( this, R.color.colorFab );
+        int color = ContextCompat.getColor( this, R.color.colorFab );
         Drawable mDrawable = Objects.requireNonNull( ContextCompat.getDrawable( getBaseContext(), icon ) ).mutate();
         binding.floatingActionButton.setImageDrawable( mDrawable );
-        //binding.floatingActionButton.getDrawable().setColorFilter( color, PorterDuff.Mode.SRC_IN );
+        binding.floatingActionButton.getDrawable().setColorFilter( color, PorterDuff.Mode.SRC_IN );
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -324,17 +325,13 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
         return e -> Toast.makeText( getApplicationContext(), getString( R.string.error_unknown_error ), Toast.LENGTH_LONG ).show();
     }
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
         this.disposeWhenDestroy();
     }
 
-
     private void disposeWhenDestroy() {
         if (this.disposable != null && !this.disposable.isDisposed()) this.disposable.dispose();
     }
-
-
 }

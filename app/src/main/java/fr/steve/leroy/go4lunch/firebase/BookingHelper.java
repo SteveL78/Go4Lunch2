@@ -40,6 +40,10 @@ public class BookingHelper {
         return BookingHelper.getBookingCollection().whereEqualTo( USER_ID_FIELD, uid ).whereEqualTo( PLACE_ID_FIELD, placeId ).get();
     }
 
+    public static Task<QuerySnapshot> getWorkmatesEatingHere(String placeId) {
+        return getBookingCollection().whereEqualTo(PLACE_ID_FIELD, placeId).get();
+    }
+
 
     // --- UPDATE ---
     public static Task<Void> updateBooking(String uid, String username, String placeId, String restaurantName) {

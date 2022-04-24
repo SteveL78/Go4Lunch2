@@ -9,20 +9,16 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import fr.steve.leroy.go4lunch.model.Booking;
-import fr.steve.leroy.go4lunch.model.User;
-import fr.steve.leroy.go4lunch.repositories.UserRepository;
+import fr.steve.leroy.go4lunch.model.Like;
 
 /**
  * Created by Steve LEROY on 21/01/2022.
@@ -39,30 +35,33 @@ public class LikeHelper {
     private static final String TAG = "LikeHelper";
 
     // --- COLLECTION REFERENCE ---
-
     public static CollectionReference getLikeCollection() {
         return FirebaseFirestore.getInstance().collection( COLLECTION_LIKED_RESTAURANT );
     }
 
 
-
     // --- CREATE ---
-
     public static Task<Void> createLike(String placeId, String restaurantName, String uid, String username) {
+       // Like likeToCreate = new Like( uid, username, placeId, restaurantName );
+        //return LikeHelper.getLikeCollection().document( uid ).set( likeToCreate );
         Map<String, Object> like = new HashMap<>();
         like.put( PLACE_ID_FIELD, placeId );
-        like.put( RESTAURANT_NAME_FIELD, restaurantName );
-        like.put( USER_ID_FIELD, uid );
-        like.put( USERNAME_FIELD, username );
+       // like.put( RESTAURANT_NAME_FIELD, restaurantName );
+       // like.put( USER_ID_FIELD, uid );
+       // like.put( USERNAME_FIELD, username );
         return LikeHelper.getLikeCollection().document( placeId + restaurantName + uid + username ).set( like, SetOptions.merge() );
+
+
     }
 
 
     // --- GET ---
-
     public static Task<DocumentSnapshot> getLikeForThisRestaurant(String placeId) {
-        //TODO : changer la façon de récupérer le like
         return LikeHelper.getLikeCollection().document( placeId ).get();
+    }
+
+    public static Task<QuerySnapshot> getWorkmatesWhoHaveSameChoice(String placeId) {
+        return getLikeCollection().whereEqualTo(PLACE_ID_FIELD, placeId).get();
     }
 
     public static Task<QuerySnapshot> getAllLikeByUserId(String uid) {
@@ -70,9 +69,7 @@ public class LikeHelper {
     }
 
 
-
     // --- UPDATE ---
-
     public static Task<Void> updateLikeList(String uid, String username, String placeId, String restaurantName) {
         Map<String, Object> updatedData = new HashMap<>();
         updatedData.put( USERNAME_FIELD, username );
@@ -83,7 +80,6 @@ public class LikeHelper {
 
 
     // --- DELETE ---
-
     public static void deleteLike(String placeId, String uid) {
         FirebaseFirestore.getInstance().collection( COLLECTION_LIKED_RESTAURANT )
                 .whereEqualTo( PLACE_ID_FIELD, placeId )
@@ -94,37 +90,20 @@ public class LikeHelper {
                         for (QueryDocumentSnapshot restaurant : bookingTask.getResult()) {
                             FirebaseFirestore.getInstance().collection( COLLECTION_LIKED_RESTAURANT ).document( restaurant.getId() )
                                     .delete()
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    .addOnSuccessListener( new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
-                                            Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                                            Log.d( TAG, "DocumentSnapshot successfully deleted!" );
                                         }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
+                                    } )
+                                    .addOnFailureListener( new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
-                                            Log.w(TAG, "Error deleting document", e);
+                                            Log.w( TAG, "Error deleting document", e );
                                         }
-                                    });
+                                    } );
                         }
                     }
                 } );
-
     }
-
-
-        /*
-        LikeHelper.getLikeForThisRestaurant( placeId ).addOnCompleteListener( restaurantTask -> {
-            if (restaurantTask.isSuccessful()) {
-                Map<String, Object> update = new HashMap<>();
-                update.put( uid, FieldValue.delete() );
-                LikeHelper.getLikeCollection().document( placeId ).update( update );
-            }
-        } );
-        return true;
-    }
-
-         */
-
-
 }

@@ -43,6 +43,8 @@ public class UserManager {
         return userRepository.getAllUsers();
     }
 
+
+
     public Boolean isCurrentUserLogged() {
         return (this.getCurrentUser() != null);
     }
@@ -50,7 +52,6 @@ public class UserManager {
     public Task<Void> signOut(Context context) {
         return userRepository.signOut( context );
     }
-
 
     public void createUser() {
         userRepository.createUser();

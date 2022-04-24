@@ -24,7 +24,6 @@ public class LikeButton {
                 if (likeTask.isSuccessful()) {
                     textView.setText( unlike );
                     Toast.makeText( context, liked, Toast.LENGTH_SHORT ).show();
-                    // TODO : ajouter ce restaurant à la liste des restaurants likés du User
                 }
             } );
         } else {

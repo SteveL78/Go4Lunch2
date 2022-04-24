@@ -1,6 +1,9 @@
 package fr.steve.leroy.go4lunch;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,11 +35,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.maps.model.PlaceDetails;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import fr.steve.leroy.go4lunch.databinding.ActivityMainBinding;
 import fr.steve.leroy.go4lunch.manager.UserManager;
 import fr.steve.leroy.go4lunch.model.User;
+import fr.steve.leroy.go4lunch.notification.NotificationService;
 import fr.steve.leroy.go4lunch.ui.map.MapFragment;
 import fr.steve.leroy.go4lunch.ui.restaurant_details.RestaurantDetailActivity;
 import fr.steve.leroy.go4lunch.ui.restaurant_list.ListViewFragment;
@@ -44,14 +49,17 @@ import fr.steve.leroy.go4lunch.ui.workmates_list.WorkmateFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final int NOTIFICATION_REMINDER_NIGHT = 123;
     private UserManager userManager = UserManager.getInstance();
 
     private ActivityMainBinding binding;
     private FirebaseAuth mAuth;
     private List<PlaceDetails> placeDetailList = new ArrayList<>();
     private static int AUTOCOMPLETE_REQUEST_CODE = 1;
+    public static final int NOTIFICATION_ID = 007;
 
     private PlacesClient placesClient;
+    private Context context;
 
     private ImageView profileImageView;
     private TextView usernameEditText;
@@ -75,6 +83,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         initPlaceApiClient();
 
+        setDailyNotification();
+
+    }
+
+    private void setDailyNotification() {
+
+
+        Calendar calendar = Calendar.getInstance();
+        // If user hasn't chosen lunch spot before noon, set alarm for day after
+        //if (calendar.get(Calendar.HOUR_OF_DAY) > 12 ) calendar.add(Calendar.DATE, 1);
+        // The next alarm will therefore be at 12:00 the next day
+        calendar.set( Calendar.HOUR_OF_DAY, 8 );
+        calendar.set( Calendar.MINUTE, 15 );
+        calendar.set( Calendar.SECOND, 0 );
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService( Context.ALARM_SERVICE );
+        Intent alarmIntent = new Intent( this, NotificationService.class );
+        PendingIntent pendingIntent = PendingIntent.getBroadcast( this, 0, alarmIntent, PendingIntent.FLAG_ONE_SHOT );
+        assert alarmManager != null;
+        alarmManager.setInexactRepeating( AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent );
     }
 
 
@@ -318,6 +346,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.binding.activityMainDrawerLayout.closeDrawer( GravityCompat.START );
         return true;
     }
-
-
 }
