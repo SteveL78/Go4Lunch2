@@ -54,11 +54,16 @@ public class LikeHelper {
     // --- GET ---
 
     public static Task<QuerySnapshot> getWorkmatesWhoHaveSameChoice(String placeId) {
-        return getLikeCollection().whereEqualTo(PLACE_ID_FIELD, placeId).get();
+        return getLikeCollection()
+                .whereEqualTo(PLACE_ID_FIELD, placeId)
+                .get();
     }
 
     public static Task<QuerySnapshot> getAllLikeByUserId(String uid, String placeId) {
-        return LikeHelper.getLikeCollection().whereEqualTo( "uid", uid ).whereEqualTo( "placeId", placeId ).get();
+        return LikeHelper.getLikeCollection()
+                .whereEqualTo( "uid", uid )
+                .whereEqualTo( "placeId", placeId )
+                .get();
     }
 
 

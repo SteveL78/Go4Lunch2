@@ -289,13 +289,13 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
 
         // Restaurant image
         if (mPlaceDetails.photos != null && mPlaceDetails.photos.length > 0) {
-            String imageurl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="
+            String imageUrl = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="
                     + mPlaceDetails.photos[0].photoReference
                     + "&key="
                     + this.getString( R.string.google_maps_API_key );
 
             Glide.with( this )
-                    .load( imageurl )
+                    .load( imageUrl )
                     .centerCrop()
                     .into( binding.activityDetailRestaurantImg );
 

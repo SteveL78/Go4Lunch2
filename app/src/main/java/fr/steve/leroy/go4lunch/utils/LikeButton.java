@@ -25,8 +25,6 @@ public class LikeButton {
 
     private static final String TAG = "LikeButton";
 
-    private Like like;
-
     public static void likeRestaurant(PlaceDetails placeDetails, Context context, TextView textView, String unlike, String liked) {
         if (placeDetails != null && FirebaseAuth.getInstance().getCurrentUser() != null) {
             LikeHelper.createLike( placeDetails.placeId, placeDetails.name, FirebaseAuth.getInstance().getCurrentUser().getUid(), FirebaseAuth.getInstance().getCurrentUser().getDisplayName() ).addOnCompleteListener( (Task<Void> likeTask) -> {

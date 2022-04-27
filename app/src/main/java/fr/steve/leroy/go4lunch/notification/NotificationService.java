@@ -8,11 +8,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.os.Build;
+import android.text.TextUtils;
 
 import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.awt.font.TextAttribute;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +80,7 @@ public class NotificationService extends BroadcastReceiver {
                 }
             }
             if (usersEatingHere.size() != 0) {
-                StringBuilder builder = new StringBuilder( R.string.notification_text );
+                StringBuilder builder = new StringBuilder();
                 int i = 0;
                 do {
                     if (i == usersEatingHere.size() - 1) {
@@ -94,6 +96,27 @@ public class NotificationService extends BroadcastReceiver {
             }
             this.sendVisualNotification( context );
         } );
+
+            /*
+            if (usersEatingHere.size() != 0) {
+                StringBuilder builder = new StringBuilder();
+                int i = 0;
+                do {
+                    if (i == usersEatingHere.size() - 1) {
+                        builder.append( usersEatingHere.get( i ).getUsername() ).append( "." ).toString();
+                    } else {
+                        builder.append( usersEatingHere.get( i ).getUsername() ).append( ", " ).toString();
+                    }
+                    i++;
+                } while (i != usersEatingHere.size());
+                notificationBody = context.getString( R.string.notification_text_with ) + user.getRestaurantName() + " as " + builder;
+            } else {
+                notificationBody = context.getString( R.string.notification_text ) + user.getRestaurantName();
+            }
+            this.sendVisualNotification( context );
+        } );
+
+             */
     }
 
 
@@ -129,7 +152,7 @@ public class NotificationService extends BroadcastReceiver {
         notificationManager.notify( NOTIFICATION_TAG, NOTIFICATION_ID, notificationBuilder.build() );
 
         // Delete the booking once the notification has been sent
-        BookingHelper.deleteBooking( userManager.getCurrentUser().getUid() );
+        //BookingHelper.deleteBooking( userManager.getCurrentUser().getUid() );
 
     }
 }
