@@ -1,29 +1,24 @@
 package fr.steve.leroy.go4lunch.utils;
 
 import android.content.Context;
-import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.maps.model.PlaceDetails;
 
+import fr.steve.leroy.go4lunch.R;
 import fr.steve.leroy.go4lunch.firebase.LikeHelper;
-import fr.steve.leroy.go4lunch.model.Like;
 
 /**
  * Created by Steve LEROY on 21/01/2022.
  */
-public class LikeButton {
-
-    private static final String TAG = "LikeButton";
+public class LikeButton extends AppCompatActivity {
 
     public static void likeRestaurant(PlaceDetails placeDetails, Context context, TextView textView, String unlike, String liked) {
         if (placeDetails != null && FirebaseAuth.getInstance().getCurrentUser() != null) {
@@ -49,13 +44,16 @@ public class LikeButton {
     }
 
     // Todo : call this onCreate
-    public static void checkLikeRestaurant(String placeId, String uid) {
-        LikeHelper.getAllLikeByUserId( placeId, uid )
+    public static void checkLikeRestaurant(String uid, String placeId, View view) {
+        LikeHelper.getAllLikeByUserId( uid, placeId )
                 .addOnCompleteListener( checkTask -> {
                     if (checkTask.isSuccessful() && checkTask.getResult().size() != 0) {
                         // TODO : Display like
+                        Button likeBtn = view.findViewById( R.id.like_btn );
+                        likeBtn.setText( R.string.detail_restaurant_unlike );
+                        //likeBtn.setCompoundDrawablesWithIntrinsicBounds( null, getResources().getDrawable( ic_baseline_star_orange_24 ), null, null );
+
                     }
                 } );
-
     }
 }

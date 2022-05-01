@@ -62,33 +62,12 @@ public class UserManager {
         return userRepository.getUserData().continueWith( task -> task.getResult().toObject( User.class ) );
     }
 
-    public Task<Void> updateUsername(String username) {
-        return userRepository.updateUsername( username );
-    }
-
     public Task<Void> updateUserPlaceId(String placeId) {
         return userRepository.updateUserPlaceId( placeId );
     }
 
     public Task<Void> updateUserRestaurantName(String restaurantName) {
         return userRepository.updateUserRestaurantName( restaurantName );
-    }
-
-    public Task<Void> updateUserUrlPicture(String urlPicture) {
-        return userRepository.updateUrlPicture( urlPicture );
-    }
-
-
-    public void updateHasBooked(Boolean hasBooked) {
-        userRepository.updateBooking( hasBooked );
-    }
-
-    public Task<Void> deleteUser(Context context) {
-        // Delete the user account from the Auth
-        return userRepository.deleteUser( context ).addOnCompleteListener( task -> {
-            // Once done, delete the user datas from Firestore
-            userRepository.deleteUserFromFirestore();
-        } );
     }
 
 }

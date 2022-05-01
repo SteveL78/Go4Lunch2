@@ -13,8 +13,6 @@ import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.OAuthProvider;
 
 import java.util.Arrays;
@@ -45,7 +43,7 @@ public class SignInActivity extends AppCompatActivity {
         setupListeners();
 
         FacebookSdk.sdkInitialize( getApplicationContext() );
-        AppEventsLogger.activateApp( this );
+        AppEventsLogger.activateApp( getApplication() );
 
         OAuthProvider.Builder provider = OAuthProvider.newBuilder( "twitter.com" );
         // Target specific email with login hint.
@@ -64,9 +62,6 @@ public class SignInActivity extends AppCompatActivity {
         binding.loginButton.setText( userManager.isCurrentUserLogged() ? getString( R.string.authentication_sign_out_btn ) : getString( R.string.button_login_text_not_logged ) );
     }
 
-
-    @Nullable
-    private FirebaseUser getCurrentUser() { return userManager.getCurrentUser(); }
 
     // Check if user is logged-in
     private void checkUserAlreadyLogged() {
@@ -176,12 +171,10 @@ public class SignInActivity extends AppCompatActivity {
 
 
     // ------------------------------------------------------------------------
-    // SNACKBAR
+    // SNACK BAR
     // ------------------------------------------------------------------------
 
     private void showSnackBar(String message) {
         Snackbar.make( binding.activitySignInCoordinatorLayout, message, Snackbar.LENGTH_SHORT ).show();
     }
-
-
 }

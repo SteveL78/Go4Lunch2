@@ -28,10 +28,8 @@
     <!-- NOTIFICATION SERVICE -->
     <string name="need_permission_msg">This application needs permission to run</string>
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
-    <string name="notification_text">"You\'ve selected "</string>
-    <string name="notification_text_workmates">You\'re lunching at </string>
-    <string name="notification_text_with">You\'ve selected </string>
     <string name="notification_content">Hey it\'s time to eat!</string>
+    <string name="notification_text_workmates">You will have lunch </string>
 
     <!-- activity_main.xml -->
     <string name="error_not_connected">You must log in !</string>

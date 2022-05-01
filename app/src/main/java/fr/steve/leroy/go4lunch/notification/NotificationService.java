@@ -6,15 +6,12 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.media.RingtoneManager;
 import android.os.Build;
-import android.text.TextUtils;
 
 import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 
-import java.awt.font.TextAttribute;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +27,6 @@ import fr.steve.leroy.go4lunch.repositories.UserRepository;
  */
 public class NotificationService extends BroadcastReceiver {
 
-    private Context context;
     private final UserManager userManager = UserManager.getInstance();
     private User user;
 
@@ -46,6 +42,7 @@ public class NotificationService extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction() != null && intent.getAction().equals( "android.intent.action.BOOT_COMPLETED" )) {
             Intent serviceIntent = new Intent( context, MainActivity.class );
+            serviceIntent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
             context.startService( serviceIntent );
         } else {
             fetchUserData( context );
@@ -84,39 +81,18 @@ public class NotificationService extends BroadcastReceiver {
                 int i = 0;
                 do {
                     if (i == usersEatingHere.size() - 1) {
-                        builder.append( usersEatingHere.get( i ).getUsername() ).append( "." ).toString();
+                        builder.append( usersEatingHere.get( i ).getUsername() ).append( "." );
                     } else {
-                        builder.append( usersEatingHere.get( i ).getUsername() ).append( ", " ).toString();
+                        builder.append( usersEatingHere.get( i ).getUsername() ).append( ", " );
                     }
                     i++;
                 } while (i != usersEatingHere.size());
-                notificationBody = context.getString( R.string.notification_text_with ) + user.getRestaurantName() + " as " + builder;
+                notificationBody = context.getString( R.string.notification_text_workmates ) + " at " + user.getRestaurantName() + " with " + builder;
             } else {
-                notificationBody = context.getString( R.string.notification_text ) + user.getRestaurantName();
+                notificationBody = context.getString( R.string.notification_text_workmates ) + " alone at " + user.getRestaurantName() + ".";
             }
             this.sendVisualNotification( context );
         } );
-
-            /*
-            if (usersEatingHere.size() != 0) {
-                StringBuilder builder = new StringBuilder();
-                int i = 0;
-                do {
-                    if (i == usersEatingHere.size() - 1) {
-                        builder.append( usersEatingHere.get( i ).getUsername() ).append( "." ).toString();
-                    } else {
-                        builder.append( usersEatingHere.get( i ).getUsername() ).append( ", " ).toString();
-                    }
-                    i++;
-                } while (i != usersEatingHere.size());
-                notificationBody = context.getString( R.string.notification_text_with ) + user.getRestaurantName() + " as " + builder;
-            } else {
-                notificationBody = context.getString( R.string.notification_text ) + user.getRestaurantName();
-            }
-            this.sendVisualNotification( context );
-        } );
-
-             */
     }
 
 
@@ -131,10 +107,8 @@ public class NotificationService extends BroadcastReceiver {
                 .setContentTitle( context.getString( R.string.notification_content ) )
                 .setAutoCancel( true )
                 .setPriority( NotificationCompat.PRIORITY_HIGH )
-                .setSound( RingtoneManager.getDefaultUri( RingtoneManager.TYPE_NOTIFICATION ) )
                 .setContentIntent( pendingIntent )
                 .setContentText( notificationBody );
-
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService( Context.NOTIFICATION_SERVICE );
 
@@ -152,25 +126,7 @@ public class NotificationService extends BroadcastReceiver {
         notificationManager.notify( NOTIFICATION_TAG, NOTIFICATION_ID, notificationBuilder.build() );
 
         // Delete the booking once the notification has been sent
-        //BookingHelper.deleteBooking( userManager.getCurrentUser().getUid() );
+        BookingHelper.deleteBooking( userManager.getCurrentUser().getUid() );
 
     }
 }
-
-/*
-            StringBuilder builder = new StringBuilder( context.getString( R.string.notification_text_workmates ) );
-            int i;
-            for (i = 0; i <= usersEatingHere.size(); i++) {
-                if (i == usersEatingHere.size() - 1) {
-                    notificationBody = builder.append( usersEatingHere.get( i ).getUsername() ).append( "." );
-                } else {
-                    builder.append( usersEatingHere.get( i ).getUsername() ).append( ", " );
-                }
-                i++;
-            }
-            this.sendVisualNotification( context );
-        } );
-
-
-    }
- */

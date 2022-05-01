@@ -21,6 +21,7 @@ import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.maps.model.PlaceDetails;
 
@@ -37,23 +38,26 @@ import fr.steve.leroy.go4lunch.firebase.BookingHelper;
 import fr.steve.leroy.go4lunch.manager.UserManager;
 import fr.steve.leroy.go4lunch.model.User;
 import fr.steve.leroy.go4lunch.repositories.UserRepository;
+import fr.steve.leroy.go4lunch.ui.workmates_list.WorkmateListAdapter;
 import fr.steve.leroy.go4lunch.utils.LikeButton;
 import io.reactivex.rxjava3.disposables.Disposable;
 
 public class RestaurantDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private UserManager userManager = UserManager.getInstance();
+    private final UserManager userManager = UserManager.getInstance();
 
     private ActivityRestaurantDetailBinding binding;
     private RestaurantDetailAdapter adapter;
+    private RestaurantDetailViewModel viewModel;
     private List<User> workmatesEatingHere = new ArrayList<>();
-    private List<String> likedRestaurantList = new ArrayList<>();
     private PlaceDetails mPlaceDetails;
+    //private WorkmateListAdapter adapter;
 
     private Disposable disposable;
 
     private static final String RESTAURANT_PLACE_ID = "placeId";
-    private Executor executor = Executors.newSingleThreadExecutor();
+    private static final String USER_ID = "uid";
+    private final Executor executor = Executors.newSingleThreadExecutor();
     private Executor mainExecutor = null;
 
 
@@ -64,11 +68,12 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
         initView();
         configureButtonClickListener();
         configureRecycleView();
-        getRestaurantPlaceId();
+        getInfoRestaurant();
         setFabListener();
 
         this.mainExecutor = ContextCompat.getMainExecutor( this );
     }
+
 
     // ------------------------------------
     // INIT VIEW
@@ -136,9 +141,9 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
     // ------------------------------------
     private void configureRecycleView() {
         this.workmatesEatingHere = new ArrayList<>();
-        this.adapter = new RestaurantDetailAdapter( workmatesEatingHere );
-        this.binding.activityDetailRestaurantRv.setAdapter( adapter );
-        this.binding.activityDetailRestaurantRv.setLayoutManager( new LinearLayoutManager( this ) );
+        this.adapter = new RestaurantDetailAdapter( this.workmatesEatingHere );
+        binding.activityDetailRestaurantRv.setLayoutManager( new LinearLayoutManager( this ) );
+        binding.activityDetailRestaurantRv.setAdapter( adapter );
     }
 
 
@@ -257,22 +262,34 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
         } );
     }
 
-
-    private void getRestaurantPlaceId() {
+    // Get all the information of the restaurant according to its placeId
+    private void getInfoRestaurant() {
         if (getIntent().hasExtra( RESTAURANT_PLACE_ID )) {
             String placeId = getIntent().getStringExtra( RESTAURANT_PLACE_ID );
             getRestaurantDetail( placeId );
-            initWorkmateList();
+            initWorkmateList(placeId);
             setButtonState( placeId );
         }
     }
 
-    private void initWorkmateList() {
-        workmatesEatingHere = new ArrayList<>();
-        adapter = new RestaurantDetailAdapter( workmatesEatingHere );
-        binding.activityDetailRestaurantRv.setLayoutManager( new LinearLayoutManager( this ) );
-        binding.activityDetailRestaurantRv.setAdapter( adapter );
+    private void initWorkmateList(String placeId) {
+
+        // TODO : récupéerer les users plutot que les bookings (un user contient un champ placeId)
+       //BookingHelper.getWorkmatesEatingHere( placeId )
+       //        .addOnSuccessListener(queryDocumentSnapshots -> {
+       //            List<User> usersList = new ArrayList<>();
+       //            for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
+       //                User userFetched = documentSnapshot.toObject(User.class);
+       //                assert userFetched != null;
+       //                if (!userFetched.getId().equals(userId)) {
+       //                    usersList.add(userFetched);
+       //                }
+       //            }
+       //            usersEatingHere.setValue(usersList);
+       //        });
     }
+
+
 
     private void getRestaurantDetail(String placeId) {
         executor.execute( (() -> {

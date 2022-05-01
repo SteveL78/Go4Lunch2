@@ -23,40 +23,5 @@ public class Like {
     }
 
 
-    // --- GETTERS ---
 
-    public String getUid() {
-        return uid;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPlaceId() {
-        return placeId;
-    }
-
-    public String getRestaurantName() {
-        return restaurantName;
-    }
-
-    public boolean isLiked() { return isLiked; }
-
-
-    // --- SETTERS ---
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPlaceId(String placeId) {
-        this.placeId = placeId;
-    }
-
-    public void setLiked(boolean liked) { isLiked = liked; }
 }

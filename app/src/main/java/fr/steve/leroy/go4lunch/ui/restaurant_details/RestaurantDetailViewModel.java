@@ -4,11 +4,15 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import fr.steve.leroy.go4lunch.firebase.BookingHelper;
 import fr.steve.leroy.go4lunch.manager.UserManager;
 import fr.steve.leroy.go4lunch.model.Like;
 import fr.steve.leroy.go4lunch.model.User;
@@ -25,15 +29,13 @@ public class RestaurantDetailViewModel extends ViewModel {
     private UserManager userManager = UserManager.getInstance();
 
     private MutableLiveData<Boolean> like = new MutableLiveData<>();
-
-    private MutableLiveData<List<User>> userlist = new MutableLiveData<>();
+    private MutableLiveData<List<User>> userList = new MutableLiveData<>();
 
     public LiveData<Boolean> getLike() {
         return like;
     }
-
     public LiveData<List<User>> getUserList() {
-        return userlist;
+        return userList;
     }
 
     public void init(Executor mainExecutor) {
@@ -41,7 +43,7 @@ public class RestaurantDetailViewModel extends ViewModel {
     }
 
 
-    public void getAllLikes(String uid, String placeId) {
+    public void getLike(String uid, String placeId) {
 
         LikeRestaurantRepository.getLike( uid, placeId )
                 .addOnSuccessListener( queryDocumentSnapshots -> {  //Callback

@@ -20,7 +20,6 @@ public class BookingHelper {
     private static final String USERNAME_FIELD = "username";
     private static final String PLACE_ID_FIELD = "placeId";
     private static final String RESTAURANT_NAME_FIELD = "restaurantName";
-    private static final String DATE_CREATED_FIELD = "dateCreated";
 
     // --- COLLECTION REFERENCE ---
     public static CollectionReference getBookingCollection() {
@@ -54,18 +53,9 @@ public class BookingHelper {
         return BookingHelper.getBookingCollection().document( uid ).update( updatedData );
     }
 
-    public static Task<Void> updateUser(String uid, String username, String placeId, String restaurantName) {
-        Map<String, Object> updatedData = new HashMap<>();
-        updatedData.put( USERNAME_FIELD, username );
-        updatedData.put( PLACE_ID_FIELD, placeId );
-        updatedData.put( RESTAURANT_NAME_FIELD, restaurantName );
-        return BookingHelper.getBookingCollection().document( uid ).update( updatedData );
-    }
-
 
     // --- DELETE ---
     public static Task<Void> deleteBooking(String uid) {
         return BookingHelper.getBookingCollection().document( uid ).delete();
     }
-
 }

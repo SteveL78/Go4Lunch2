@@ -19,11 +19,9 @@
 
     <application
         android:allowBackup="true"
-        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
@@ -54,7 +52,8 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"/>
 
         <activity
             android:name=".authentication.SplashScreenActivity"

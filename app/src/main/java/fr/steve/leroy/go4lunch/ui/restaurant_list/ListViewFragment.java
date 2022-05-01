@@ -30,7 +30,6 @@ import java.util.List;
 
 import fr.steve.leroy.go4lunch.R;
 import fr.steve.leroy.go4lunch.databinding.FragmentListViewBinding;
-import fr.steve.leroy.go4lunch.manager.UserManager;
 import fr.steve.leroy.go4lunch.model.User;
 import fr.steve.leroy.go4lunch.ui.restaurant_details.RestaurantDetailActivity;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -43,11 +42,8 @@ import io.reactivex.rxjava3.disposables.Disposable;
 
 public class ListViewFragment extends Fragment implements RestaurantListRecyclerViewAdapter.OnRestaurantClickListener {
 
-    private UserManager userManager = UserManager.getInstance();
-
     private FragmentListViewBinding binding;
     private static final String TAG = ListViewFragment.class.getSimpleName();
-    private final int REQUEST_FINE_LOCATION = 1234;
 
     private Disposable disposable;
     private List<PlacesSearchResult> placeSearchResult;
@@ -82,14 +78,11 @@ public class ListViewFragment extends Fragment implements RestaurantListRecycler
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated( view, savedInstanceState );
-
         configureRecycleView();
-
         updateGPS();
     }
 
     private void updateGPS() {
-
         fusedLocationClient = LocationServices.getFusedLocationProviderClient( getActivity() );
 
         if (ActivityCompat.checkSelfPermission( getActivity(), Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED

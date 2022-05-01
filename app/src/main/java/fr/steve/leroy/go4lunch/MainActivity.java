@@ -8,14 +8,15 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,11 +33,8 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.maps.model.PlaceDetails;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import fr.steve.leroy.go4lunch.databinding.ActivityMainBinding;
 import fr.steve.leroy.go4lunch.manager.UserManager;
@@ -46,20 +44,14 @@ import fr.steve.leroy.go4lunch.ui.map.MapFragment;
 import fr.steve.leroy.go4lunch.ui.restaurant_details.RestaurantDetailActivity;
 import fr.steve.leroy.go4lunch.ui.restaurant_list.ListViewFragment;
 import fr.steve.leroy.go4lunch.ui.workmates_list.WorkmateFragment;
+import fr.steve.leroy.go4lunch.ui.workmates_list.WorkmateListAdapter;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final int NOTIFICATION_REMINDER_NIGHT = 123;
-    private UserManager userManager = UserManager.getInstance();
+    private final UserManager userManager = UserManager.getInstance();
 
     private ActivityMainBinding binding;
-    private FirebaseAuth mAuth;
-    private List<PlaceDetails> placeDetailList = new ArrayList<>();
-    private static int AUTOCOMPLETE_REQUEST_CODE = 1;
-    public static final int NOTIFICATION_ID = 007;
-
-    private PlacesClient placesClient;
-    private Context context;
+    WorkmateListAdapter workmateListAdapter;
 
     private ImageView profileImageView;
     private TextView usernameEditText;
@@ -67,8 +59,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     //FOR DESIGN
     private Toolbar toolbar;
-    private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
 
 
     @Override
@@ -85,37 +75,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setDailyNotification();
 
+        checkLikeButtonState();
+
+    }
+
+
+    public void checkLikeButtonState() {
+
+
     }
 
     private void setDailyNotification() {
 
-
         Calendar calendar = Calendar.getInstance();
-        // If user hasn't chosen lunch spot before noon, set alarm for day after
-        //if (calendar.get(Calendar.HOUR_OF_DAY) > 1 ) calendar.add(Calendar.DATE, 1);
-        // The next alarm will therefore be at 12:00 the next day
-        calendar.set( Calendar.HOUR_OF_DAY, 8 );
-        calendar.set( Calendar.MINUTE, 15 );
+        calendar.set( Calendar.HOUR_OF_DAY, 12 );
+        calendar.set( Calendar.MINUTE, 0 );
         calendar.set( Calendar.SECOND, 0 );
+        // If user hasn't chosen lunch spot before noon, set alarm for day after
+        if (calendar.get(Calendar.HOUR_OF_DAY) > 1 ) calendar.add(Calendar.DATE, 1);
+        // The next alarm will therefore be at 12:00 the next day
 
+
+        Intent resultIntent = new Intent( this, NotificationService.class );
+        @SuppressLint("UnspecifiedImmutableFlag")
+        PendingIntent pendingIntent = PendingIntent.getBroadcast( this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT );
         AlarmManager alarmManager = (AlarmManager) getSystemService( Context.ALARM_SERVICE );
-        Intent alarmIntent = new Intent( this, NotificationService.class );
-        PendingIntent pendingIntent = PendingIntent.getBroadcast( this, 0, alarmIntent, PendingIntent.FLAG_ONE_SHOT );
-        assert alarmManager != null;
-        alarmManager.setInexactRepeating( AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent );
-    }
-
-
-    @Nullable
-    private FirebaseUser getCurrentUser() {
-        return UserManager.getInstance().getCurrentUser();
+        if (alarmManager != null) {
+            alarmManager.setRepeating( AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent );
+        }
     }
 
 
     private void initPlaceApiClient() {
         if (!Places.isInitialized())
             Places.initialize( getApplicationContext(), BuildConfig.ApiPlaceKey );
-        placesClient = Places.createClient( this );
+        PlacesClient placesClient = Places.createClient( this );
     }
 
 
@@ -160,18 +154,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate( R.menu.toolbar_search_menu, menu );
+  /*      MenuItem item = menu.findItem( R.id.search_menu );
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setOnQueryTextListener( new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                workmateListAdapter = new WorkmateListAdapter(  );
+                workmateListAdapter.getFilter().filter( newText );
+                return false;
+            }
+        } );
+        return true;
+    }*/
+
         return true;
     }
 
+
+
     /**
      * Handle actions on menu items.
-     *
      * @param item Item selected.
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.search_menu:
+
 
                 // placeDetailList.clear();
                 //List<Place.Field> fields = Arrays.asList( Place.Field.ID, Place.Field.NAME );
@@ -243,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private void configureDrawerLayout() {
-        this.drawerLayout = binding.activityMainDrawerLayout;
+        DrawerLayout drawerLayout = binding.activityMainDrawerLayout;
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle( this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close );
         drawerLayout.addDrawerListener( toggle );
         toggle.syncState();
@@ -275,7 +289,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .getDrawable( R.drawable.ic_anon_user ) );
             }
             setTextUserData( user );
+
+            // TODO : update username if changed user account
+
+
         }
+
+
     }
 
 

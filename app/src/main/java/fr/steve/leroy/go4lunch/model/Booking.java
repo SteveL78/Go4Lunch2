@@ -13,7 +13,6 @@ public class Booking {
     private String username;
     private String placeId;
     private String restaurantName;
-    private Date dateCreated;
 
 
     public Booking(String uid, String username, String placeId, String restaurantName) {
@@ -22,38 +21,4 @@ public class Booking {
         this.placeId = placeId;
         this.restaurantName = restaurantName;
     }
-
-
-    // ------- GETTERS -------
-
-    public String getUid() {
-        return uid;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPlaceId() {
-        return placeId;
-    }
-
-    public String getRestaurantName() {
-        return restaurantName;
-    }
-
-    @ServerTimestamp
-    public Date getDateCreated() {
-        return dateCreated;
-    }
-
-
-    // ------- SETTERS -------
-
-    public void setUsername(String username) { this.username = username; }
-
-    public void setPlaceId(String placeId) {
-        this.placeId = placeId;
-    }
-
 }

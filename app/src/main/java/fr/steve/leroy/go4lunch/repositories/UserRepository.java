@@ -103,10 +103,10 @@ public class UserRepository {
             Task<DocumentSnapshot> userData = getUserData();
             // If the user already exist in Firestore, we get his data
             userData.addOnSuccessListener( documentSnapshot -> {
-                if (documentSnapshot.contains( RESTAURANT_NAME_FIELD)){
+                if (documentSnapshot.contains( RESTAURANT_NAME_FIELD )) {
                     userToCreate.setRestaurantName( (String) documentSnapshot.get( RESTAURANT_NAME_FIELD ) );
                 }
-                if (documentSnapshot.contains( PLACE_ID_FIELD)){
+                if (documentSnapshot.contains( PLACE_ID_FIELD )) {
                     userToCreate.setPlaceId( (String) documentSnapshot.get( PLACE_ID_FIELD ) );
                 }
                 this.getUsersCollection().document( uid ).set( userToCreate );
@@ -134,36 +134,6 @@ public class UserRepository {
         return UserRepository.getUsersCollection().document( uid ).get();
     }
 
-    // Get Users for each restaurant (placeId)
-    /*
-    public static Task<DocumentSnapshot> getUsersWhoLikeThisRestaurant(String placeId) {
-        return UserRepository.getUsersCollection().document( PLACE_ID_FIELD ).get();
-    }
-
-     */
-
-
-    // Update User Username
-    public Task<Void> updateUsername(String username) {
-        String uid = this.getCurrentUserUID();
-        if (uid != null) {
-            return this.getUsersCollection().document( uid ).update( USERNAME_FIELD, username );
-        } else {
-            return null;
-        }
-    }
-
-
-    // Update User UrlPicture
-    public Task<Void> updateUrlPicture(String urlPicture) {
-        String uid = this.getCurrentUserUID();
-        if (uid != null) {
-            return this.getUsersCollection().document( uid ).update( URL_PICTURE_FIELD, urlPicture );
-        } else {
-            return null;
-        }
-    }
-
 
     // Update User placeId
     public Task<Void> updateUserPlaceId(String placeId) {
@@ -185,22 +155,4 @@ public class UserRepository {
             return null;
         }
     }
-
-
-    // Update User hasBooked
-    public void updateBooking(Boolean hasBooked) {
-        String uid = this.getCurrentUserUID();
-        if (uid != null) {
-            this.getUsersCollection().document( uid ).update( HAS_BOOKED_FIELD, hasBooked );
-        }
-    }
-
-    // Delete the User from Firestore
-    public void deleteUserFromFirestore() {
-        String uid = this.getCurrentUserUID();
-        if (uid != null) {
-            this.getUsersCollection().document( uid ).delete();
-        }
-    }
-
 }

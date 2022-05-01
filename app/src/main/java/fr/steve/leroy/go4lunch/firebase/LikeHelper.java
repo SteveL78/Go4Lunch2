@@ -8,7 +8,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -16,9 +15,6 @@ import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import fr.steve.leroy.go4lunch.model.Booking;
-import fr.steve.leroy.go4lunch.model.Like;
 
 /**
  * Created by Steve LEROY on 21/01/2022.
@@ -30,9 +26,9 @@ public class LikeHelper {
     private static final String USERNAME_FIELD = "username";
     private static final String PLACE_ID_FIELD = "placeId";
     private static final String RESTAURANT_NAME_FIELD = "restaurantName";
-    private static final String IS_LIKED_FIELD = "isLiked";
 
     private static final String TAG = "LikeHelper";
+
 
     // --- COLLECTION REFERENCE ---
     public static CollectionReference getLikeCollection() {
@@ -53,27 +49,11 @@ public class LikeHelper {
 
     // --- GET ---
 
-    public static Task<QuerySnapshot> getWorkmatesWhoHaveSameChoice(String placeId) {
-        return getLikeCollection()
-                .whereEqualTo(PLACE_ID_FIELD, placeId)
-                .get();
-    }
-
     public static Task<QuerySnapshot> getAllLikeByUserId(String uid, String placeId) {
         return LikeHelper.getLikeCollection()
                 .whereEqualTo( "uid", uid )
                 .whereEqualTo( "placeId", placeId )
                 .get();
-    }
-
-
-    // --- UPDATE ---
-    public static Task<Void> updateLikeList(String uid, String username, String placeId, String restaurantName) {
-        Map<String, Object> updatedData = new HashMap<>();
-        updatedData.put( USERNAME_FIELD, username );
-        updatedData.put( PLACE_ID_FIELD, placeId );
-        updatedData.put( RESTAURANT_NAME_FIELD, restaurantName );
-        return LikeHelper.getLikeCollection().document( uid ).update( updatedData );
     }
 
 
