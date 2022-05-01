@@ -101,10 +101,13 @@ public class UserRepository {
             User userToCreate = new User( uid, username, urlPicture, placeId, restaurantName, likedRestaurantList );
 
             Task<DocumentSnapshot> userData = getUserData();
-            // If the user already exist in Firestore, we get his data (hasBooked)
+            // If the user already exist in Firestore, we get his data
             userData.addOnSuccessListener( documentSnapshot -> {
-                if (documentSnapshot.contains( HAS_BOOKED_FIELD )) {
-                    userToCreate.setHasBooked( (Boolean) documentSnapshot.get( HAS_BOOKED_FIELD ) );
+                if (documentSnapshot.contains( RESTAURANT_NAME_FIELD)){
+                    userToCreate.setRestaurantName( (String) documentSnapshot.get( RESTAURANT_NAME_FIELD ) );
+                }
+                if (documentSnapshot.contains( PLACE_ID_FIELD)){
+                    userToCreate.setPlaceId( (String) documentSnapshot.get( PLACE_ID_FIELD ) );
                 }
                 this.getUsersCollection().document( uid ).set( userToCreate );
             } );
