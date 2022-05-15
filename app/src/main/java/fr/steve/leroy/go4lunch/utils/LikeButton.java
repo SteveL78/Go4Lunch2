@@ -1,24 +1,29 @@
 package fr.steve.leroy.go4lunch.utils;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.maps.model.PlaceDetails;
+
+import java.util.Objects;
 
 import fr.steve.leroy.go4lunch.R;
 import fr.steve.leroy.go4lunch.firebase.LikeHelper;
+import fr.steve.leroy.go4lunch.manager.UserManager;
 
 /**
  * Created by Steve LEROY on 21/01/2022.
  */
-public class LikeButton extends AppCompatActivity {
+public class LikeButton {
 
     public static void likeRestaurant(PlaceDetails placeDetails, Context context, TextView textView, String unlike, String liked) {
         if (placeDetails != null && FirebaseAuth.getInstance().getCurrentUser() != null) {
@@ -43,17 +48,4 @@ public class LikeButton extends AppCompatActivity {
         }
     }
 
-    // Todo : call this onCreate
-    public static void checkLikeRestaurant(String uid, String placeId, View view) {
-        LikeHelper.getAllLikeByUserId( uid, placeId )
-                .addOnCompleteListener( checkTask -> {
-                    if (checkTask.isSuccessful() && checkTask.getResult().size() != 0) {
-                        // TODO : Display like
-                        Button likeBtn = view.findViewById( R.id.like_btn );
-                        likeBtn.setText( R.string.detail_restaurant_unlike );
-                        //likeBtn.setCompoundDrawablesWithIntrinsicBounds( null, getResources().getDrawable( ic_baseline_star_orange_24 ), null, null );
-
-                    }
-                } );
-    }
 }

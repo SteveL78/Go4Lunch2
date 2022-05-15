@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -21,7 +22,6 @@ import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.maps.model.PlaceDetails;
 
@@ -35,10 +35,10 @@ import fr.steve.leroy.go4lunch.FetchDetail;
 import fr.steve.leroy.go4lunch.R;
 import fr.steve.leroy.go4lunch.databinding.ActivityRestaurantDetailBinding;
 import fr.steve.leroy.go4lunch.firebase.BookingHelper;
+import fr.steve.leroy.go4lunch.firebase.LikeHelper;
 import fr.steve.leroy.go4lunch.manager.UserManager;
 import fr.steve.leroy.go4lunch.model.User;
 import fr.steve.leroy.go4lunch.repositories.UserRepository;
-import fr.steve.leroy.go4lunch.ui.workmates_list.WorkmateListAdapter;
 import fr.steve.leroy.go4lunch.utils.LikeButton;
 import io.reactivex.rxjava3.disposables.Disposable;
 
@@ -115,10 +115,10 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
             // Update "Like" button display
         } else if (id == R.id.like_btn) {
             if (binding.likeBtn.getText().equals( getResources().getString( R.string.detail_restaurant_like ) )) {
-                binding.likeBtn.setCompoundDrawablesWithIntrinsicBounds( null, getResources().getDrawable( R.drawable.ic_baseline_star_orange_24 ), null, null );
+                binding.likeBtn.setCompoundDrawablesWithIntrinsicBounds( null, AppCompatResources.getDrawable( this, R.drawable.ic_baseline_star_orange_24 ), null, null );
                 LikeButton.likeRestaurant( mPlaceDetails, this, binding.likeBtn, getResources().getString( R.string.detail_restaurant_unlike ), getResources().getString( R.string.detail_restaurant_like ) );
             } else {
-                binding.likeBtn.setCompoundDrawablesWithIntrinsicBounds( null, getResources().getDrawable( R.drawable.ic_baseline_star_border_orange_24 ), null, null );
+                binding.likeBtn.setCompoundDrawablesWithIntrinsicBounds( null, AppCompatResources.getDrawable( this, R.drawable.ic_baseline_star_border_orange_24 ), null, null );
                 LikeButton.dislikeRestaurant( mPlaceDetails, this, binding.likeBtn, getResources().getString( R.string.detail_restaurant_like ), getResources().getString( R.string.detail_restaurant_unlike ), getResources().getString( R.string.detail_restaurant_like ) );
                 Toast.makeText( RestaurantDetailActivity.this, "Unlike this restaurant", Toast.LENGTH_SHORT ).show();
             }
@@ -189,7 +189,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
     }
 
 
-    private void setButtonState(String placeId) {
+    private void displayBookedButtonState(String placeId) {
         userManager.getUserData().addOnSuccessListener( new OnSuccessListener<User>() {
             @Override
             public void onSuccess(User user) {
@@ -200,6 +200,19 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
                 }
             }
         } );
+    }
+
+    public void displayLikedRestaurantButtonState(String uid, String placeId) {
+        LikeHelper.getAllLikeByUserId( uid, placeId )
+                .addOnCompleteListener( task -> {
+                    if (task.isSuccessful() && task.getResult().size() != 0) {
+                        binding.likeBtn.setText( R.string.detail_restaurant_unlike );
+                        binding.likeBtn.setCompoundDrawablesWithIntrinsicBounds( null, AppCompatResources.getDrawable( this, R.drawable.ic_baseline_star_orange_24 ), null, null );
+                    } else {
+                        binding.likeBtn.setText( R.string.detail_restaurant_like );
+                        binding.likeBtn.setCompoundDrawablesWithIntrinsicBounds( null, AppCompatResources.getDrawable( this, R.drawable.ic_baseline_star_border_orange_24 ), null, null );
+                    }
+                } );
     }
 
 
@@ -267,28 +280,28 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
         if (getIntent().hasExtra( RESTAURANT_PLACE_ID )) {
             String placeId = getIntent().getStringExtra( RESTAURANT_PLACE_ID );
             getRestaurantDetail( placeId );
-            initWorkmateList(placeId);
-            setButtonState( placeId );
+            initWorkmateList( placeId );
+            displayBookedButtonState( placeId );
+            displayLikedRestaurantButtonState( getCurrentUser().getUid(), placeId);
         }
     }
 
     private void initWorkmateList(String placeId) {
 
-        // TODO : récupéerer les users plutot que les bookings (un user contient un champ placeId)
-       //BookingHelper.getWorkmatesEatingHere( placeId )
-       //        .addOnSuccessListener(queryDocumentSnapshots -> {
-       //            List<User> usersList = new ArrayList<>();
-       //            for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
-       //                User userFetched = documentSnapshot.toObject(User.class);
-       //                assert userFetched != null;
-       //                if (!userFetched.getId().equals(userId)) {
-       //                    usersList.add(userFetched);
-       //                }
-       //            }
-       //            usersEatingHere.setValue(usersList);
-       //        });
+        // TODO : récupérer les users plutôt que les bookings (un user contient un champ placeId)
+      //userManager.getUserData()
+      //        .addOnSuccessListener(queryDocumentSnapshots -> {
+      //            List<User> usersList = new ArrayList<>();
+      //            for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getPlaceId()) {
+      //                User userFetched = documentSnapshot.toObject(User.class);
+      //                assert userFetched != null;
+      //                if (!userFetched.getPlaceId().equals(userId)) {
+      //                    usersList.add(userFetched);
+      //                }
+      //            }
+      //            usersEatingHere.setValue(usersList);
+      //        });
     }
-
 
 
     private void getRestaurantDetail(String placeId) {

@@ -8,11 +8,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +29,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Calendar;
@@ -75,15 +72,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setDailyNotification();
 
-        checkLikeButtonState();
-
     }
 
-
-    public void checkLikeButtonState() {
-
-
-    }
 
     private void setDailyNotification() {
 
@@ -92,9 +82,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         calendar.set( Calendar.MINUTE, 0 );
         calendar.set( Calendar.SECOND, 0 );
         // If user hasn't chosen lunch spot before noon, set alarm for day after
-        if (calendar.get(Calendar.HOUR_OF_DAY) > 1 ) calendar.add(Calendar.DATE, 1);
+        // if (calendar.get(Calendar.HOUR_OF_DAY) > 1 ) calendar.add(Calendar.DATE, 1);
         // The next alarm will therefore be at 12:00 the next day
-
 
         Intent resultIntent = new Intent( this, NotificationService.class );
         @SuppressLint("UnspecifiedImmutableFlag")
@@ -176,9 +165,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-
     /**
      * Handle actions on menu items.
+     *
      * @param item Item selected.
      */
     @Override
