@@ -41,14 +41,14 @@ import fr.steve.leroy.go4lunch.ui.map.MapFragment;
 import fr.steve.leroy.go4lunch.ui.restaurant_details.RestaurantDetailActivity;
 import fr.steve.leroy.go4lunch.ui.restaurant_list.ListViewFragment;
 import fr.steve.leroy.go4lunch.ui.workmates_list.WorkmateFragment;
-import fr.steve.leroy.go4lunch.ui.workmates_list.WorkmateListAdapter;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private final UserManager userManager = UserManager.getInstance();
-
     private ActivityMainBinding binding;
-    WorkmateListAdapter workmateListAdapter;
+
+    private enum allFragments {MAPVIEW, LISTVIEW, WORKMATES};
+    private allFragments currentView = allFragments.MAPVIEW;
 
     private ImageView profileImageView;
     private TextView usernameEditText;
@@ -78,11 +78,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void setDailyNotification() {
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set( Calendar.HOUR_OF_DAY, 12 );
+        calendar.set( Calendar.HOUR_OF_DAY, 8 );
         calendar.set( Calendar.MINUTE, 0 );
         calendar.set( Calendar.SECOND, 0 );
         // If user hasn't chosen lunch spot before noon, set alarm for day after
-        // if (calendar.get(Calendar.HOUR_OF_DAY) > 1 ) calendar.add(Calendar.DATE, 1);
+        if (calendar.get( Calendar.HOUR_OF_DAY ) > 1) calendar.add( Calendar.DATE, 1 );
         // The next alarm will therefore be at 12:00 the next day
 
         Intent resultIntent = new Intent( this, NotificationService.class );
@@ -143,23 +143,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate( R.menu.toolbar_search_menu, menu );
-  /*      MenuItem item = menu.findItem( R.id.search_menu );
-        SearchView searchView = (SearchView) item.getActionView();
-        searchView.setOnQueryTextListener( new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
+ /* MenuItem item = menu.findItem( R.id.search_menu );
+ SearchView searchView = (SearchView) item.getActionView();
+ searchView.setOnQueryTextListener( new SearchView.OnQueryTextListener() {
+ @Override
+ public boolean onQueryTextSubmit(String query) {
+ return false;
+ }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                workmateListAdapter = new WorkmateListAdapter(  );
-                workmateListAdapter.getFilter().filter( newText );
-                return false;
-            }
-        } );
-        return true;
-    }*/
+ @Override
+ public boolean onQueryTextChange(String newText) {
+ workmateListAdapter = new WorkmateListAdapter( );
+ workmateListAdapter.getFilter().filter( newText );
+ return false;
+ }
+ } );
+ return true;
+ }*/
 
         return true;
     }
@@ -206,14 +206,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Fragment selectedFragment = null;
         switch (itemId) {
             case R.id.map_view_item:
+                currentView = allFragments.MAPVIEW;
                 updateToolbarTitle( true );
                 selectedFragment = new MapFragment();
                 break;
             case R.id.list_view_item:
+                currentView = allFragments.LISTVIEW;
                 updateToolbarTitle( true );
                 selectedFragment = new ListViewFragment();
                 break;
             case R.id.workmates_item:
+                currentView = allFragments.WORKMATES;
                 updateToolbarTitle( false );
                 selectedFragment = new WorkmateFragment();
                 break;
@@ -331,7 +334,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.drawer_menu_settings_btn:
-                startActivity( new Intent( android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse( "package:" + BuildConfig.APPLICATION_ID ) ) );               // startActivityForResult( new Intent( Settings.ACTION_SETTINGS ), 0 );
+                startActivity( new Intent( android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse( "package:" + BuildConfig.APPLICATION_ID ) ) ); // startActivityForResult( new Intent( Settings.ACTION_SETTINGS ), 0 );
                 break;
 
             case R.id.drawer_menu_logout_btn:
