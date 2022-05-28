@@ -32,6 +32,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import fr.steve.leroy.go4lunch.FetchDetail;
+import fr.steve.leroy.go4lunch.MainActivity;
 import fr.steve.leroy.go4lunch.R;
 import fr.steve.leroy.go4lunch.databinding.ActivityRestaurantDetailBinding;
 import fr.steve.leroy.go4lunch.firebase.BookingHelper;
@@ -183,6 +184,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
                     userManager.updateUserPlaceId( "" );
                     userManager.updateUserRestaurantName( "" );
                     deleteBooking( uid );
+                    updateUser( "", "" );
                 }
             }
         } );
@@ -282,25 +284,25 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
             getRestaurantDetail( placeId );
             initWorkmateList( placeId );
             displayBookedButtonState( placeId );
-            displayLikedRestaurantButtonState( getCurrentUser().getUid(), placeId);
+            displayLikedRestaurantButtonState( getCurrentUser().getUid(), placeId );
         }
     }
 
     private void initWorkmateList(String placeId) {
 
         // TODO : récupérer les users plutôt que les bookings (un user contient un champ placeId)
-      //userManager.getUserData()
-      //        .addOnSuccessListener(queryDocumentSnapshots -> {
-      //            List<User> usersList = new ArrayList<>();
-      //            for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getPlaceId()) {
-      //                User userFetched = documentSnapshot.toObject(User.class);
-      //                assert userFetched != null;
-      //                if (!userFetched.getPlaceId().equals(userId)) {
-      //                    usersList.add(userFetched);
-      //                }
-      //            }
-      //            usersEatingHere.setValue(usersList);
-      //        });
+        //userManager.getUserData()
+        //        .addOnSuccessListener(queryDocumentSnapshots -> {
+        //            List<User> usersList = new ArrayList<>();
+        //            for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getPlaceId()) {
+        //                User userFetched = documentSnapshot.toObject(User.class);
+        //                assert userFetched != null;
+        //                if (!userFetched.getPlaceId().equals(userId)) {
+        //                    usersList.add(userFetched);
+        //                }
+        //            }
+        //            usersEatingHere.setValue(usersList);
+        //        });
     }
 
 

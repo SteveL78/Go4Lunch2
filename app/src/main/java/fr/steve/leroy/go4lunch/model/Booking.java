@@ -48,4 +48,9 @@ public class Booking {
     }
 
 
+    // ------- SETTERS -------
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
 }
