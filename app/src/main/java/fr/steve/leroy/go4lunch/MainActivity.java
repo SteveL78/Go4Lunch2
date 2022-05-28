@@ -47,7 +47,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private final UserManager userManager = UserManager.getInstance();
     private ActivityMainBinding binding;
 
-    private enum allFragments {MAPVIEW, LISTVIEW, WORKMATES};
+    private enum allFragments {MAPVIEW, LISTVIEW, WORKMATES}
+
+    ;
     private allFragments currentView = allFragments.MAPVIEW;
 
     private ImageView profileImageView;
@@ -78,11 +80,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void setDailyNotification() {
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set( Calendar.HOUR_OF_DAY, 8 );
-        calendar.set( Calendar.MINUTE, 0 );
+        calendar.set( Calendar.HOUR_OF_DAY, 19 );
+        calendar.set( Calendar.MINUTE, 45 );
         calendar.set( Calendar.SECOND, 0 );
         // If user hasn't chosen lunch spot before noon, set alarm for day after
-        if (calendar.get( Calendar.HOUR_OF_DAY ) > 1) calendar.add( Calendar.DATE, 1 );
+        //if (calendar.get( Calendar.HOUR_OF_DAY ) > 1) calendar.add( Calendar.DATE, 1 );
         // The next alarm will therefore be at 12:00 the next day
 
         Intent resultIntent = new Intent( this, NotificationService.class );

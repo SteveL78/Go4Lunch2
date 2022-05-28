@@ -90,6 +90,7 @@ public class NotificationService extends BroadcastReceiver {
                 notificationBody = context.getString( R.string.notification_text_workmates ) + " at " + user.getRestaurantName() + " with " + builder;
             } else {
                 notificationBody = context.getString( R.string.notification_text_workmates ) + " alone at " + user.getRestaurantName() + ".";
+
             }
             this.sendVisualNotification( context );
         } );
@@ -127,6 +128,8 @@ public class NotificationService extends BroadcastReceiver {
 
         // Delete the booking once the notification has been sent
         BookingHelper.deleteBooking( userManager.getCurrentUser().getUid() );
+        userManager.updateUserPlaceId( "" );
+        userManager.updateUserRestaurantName( "" );
 
     }
 }

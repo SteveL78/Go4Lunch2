@@ -32,7 +32,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import fr.steve.leroy.go4lunch.FetchDetail;
-import fr.steve.leroy.go4lunch.MainActivity;
 import fr.steve.leroy.go4lunch.R;
 import fr.steve.leroy.go4lunch.databinding.ActivityRestaurantDetailBinding;
 import fr.steve.leroy.go4lunch.firebase.BookingHelper;
