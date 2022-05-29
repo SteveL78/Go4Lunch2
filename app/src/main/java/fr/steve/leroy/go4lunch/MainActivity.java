@@ -8,13 +8,16 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,13 +28,21 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 import fr.steve.leroy.go4lunch.databinding.ActivityMainBinding;
 import fr.steve.leroy.go4lunch.manager.UserManager;
@@ -44,17 +55,20 @@ import fr.steve.leroy.go4lunch.ui.workmates_list.WorkmateFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private final UserManager userManager = UserManager.getInstance();
     private ActivityMainBinding binding;
+    private final UserManager userManager = UserManager.getInstance();
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final int AUTOCOMPLETE_REQUEST_CODE = 100;
 
-    private enum allFragments {MAPVIEW, LISTVIEW, WORKMATES}
-
-    ;
-    private allFragments currentView = allFragments.MAPVIEW;
+    private enum ALL_FRAGMENTS {MAPVIEW, LISTVIEW, WORKMATES}
+    private ALL_FRAGMENTS currentView = ALL_FRAGMENTS.MAPVIEW;
 
     private ImageView profileImageView;
     private TextView usernameEditText;
     private TextView emailTextView;
+
+    private androidx.appcompat.widget.SearchView searchView;
+    private MenuItem mMenuItem;
 
     //FOR DESIGN
     private Toolbar toolbar;
@@ -80,11 +94,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void setDailyNotification() {
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set( Calendar.HOUR_OF_DAY, 19 );
-        calendar.set( Calendar.MINUTE, 45 );
+        calendar.set( Calendar.HOUR_OF_DAY, 10 );
+        calendar.set( Calendar.MINUTE, 14 );
         calendar.set( Calendar.SECOND, 0 );
         // If user hasn't chosen lunch spot before noon, set alarm for day after
-        //if (calendar.get( Calendar.HOUR_OF_DAY ) > 1) calendar.add( Calendar.DATE, 1 );
+        if (calendar.get( Calendar.HOUR_OF_DAY ) > 2) calendar.add( Calendar.DATE, 1 );
         // The next alarm will therefore be at 12:00 the next day
 
         Intent resultIntent = new Intent( this, NotificationService.class );
@@ -145,24 +159,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate( R.menu.toolbar_search_menu, menu );
- /* MenuItem item = menu.findItem( R.id.search_menu );
- SearchView searchView = (SearchView) item.getActionView();
- searchView.setOnQueryTextListener( new SearchView.OnQueryTextListener() {
- @Override
- public boolean onQueryTextSubmit(String query) {
- return false;
- }
 
- @Override
- public boolean onQueryTextChange(String newText) {
- workmateListAdapter = new WorkmateListAdapter( );
- workmateListAdapter.getFilter().filter( newText );
- return false;
- }
- } );
- return true;
- }*/
+        mMenuItem = menu.findItem( R.id.search_menu );
+        searchView = (androidx.appcompat.widget.SearchView) mMenuItem.getActionView();
+        searchView.setOnQueryTextListener( new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        } );
         return true;
     }
 
@@ -177,15 +187,59 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.search_menu:
 
-
-                // placeDetailList.clear();
-                //List<Place.Field> fields = Arrays.asList( Place.Field.ID, Place.Field.NAME );
-
+                // TODO : use enum and switch
+                //switch (ALL_FRAGMENTS) {
+                configureAutocomplete();
                 return true;
+
             default:
                 return super.onOptionsItemSelected( item );
         }
     }
+
+    public void configureAutocomplete() {
+/*
+        // Create a new token for the autocomplete session. Pass this to FindAutocompletePredictionsRequest,
+        // and once again when the user makes a selection (for example when calling fetchPlace()).
+ AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
+        // Create a RectangularBounds object.
+        RectangularBounds bounds = RectangularBounds.newInstance(
+                new LatLng(  )
+                new LatLng(  )
+        )*/
+
+        // Initialize place field list
+        List<Place.Field> fieldList = Arrays.asList( Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME );
+        // Create intent
+        Intent autocompleteIntent = new Autocomplete.IntentBuilder(
+                AutocompleteActivityMode.OVERLAY, fieldList )
+                .setTypeFilter( TypeFilter.ESTABLISHMENT )
+                .setCountry( "FR" )
+                .build( MainActivity.this );
+        // Start activity result
+        startActivityForResult( autocompleteIntent, AUTOCOMPLETE_REQUEST_CODE );
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        searchView.setIconified( true );
+        mMenuItem.collapseActionView();
+        if (requestCode == 100) {
+            if (resultCode == RESULT_OK) {
+                Place place = Autocomplete.getPlaceFromIntent( data );
+                Log.i( TAG, "Place: " + place.getName() + ", " + place.getId() );
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                // TODO: Handle the error.
+                Status status = Autocomplete.getStatusFromIntent( data );
+                Log.i( TAG, status.getStatusMessage() );
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
+            return;
+        }
+        super.onActivityResult( requestCode, resultCode, data );
+    }
+
 
     private void updateToolbarTitle(boolean status) {
         String title;
@@ -208,17 +262,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Fragment selectedFragment = null;
         switch (itemId) {
             case R.id.map_view_item:
-                currentView = allFragments.MAPVIEW;
+                currentView = ALL_FRAGMENTS.MAPVIEW;
                 updateToolbarTitle( true );
                 selectedFragment = new MapFragment();
                 break;
             case R.id.list_view_item:
-                currentView = allFragments.LISTVIEW;
+                currentView = ALL_FRAGMENTS.LISTVIEW;
                 updateToolbarTitle( true );
                 selectedFragment = new ListViewFragment();
                 break;
             case R.id.workmates_item:
-                currentView = allFragments.WORKMATES;
+                currentView = ALL_FRAGMENTS.WORKMATES;
                 updateToolbarTitle( false );
                 selectedFragment = new WorkmateFragment();
                 break;

@@ -22,6 +22,7 @@ import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.maps.model.PlaceDetails;
 
@@ -51,7 +52,6 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
     private RestaurantDetailViewModel viewModel;
     private List<User> workmatesEatingHere = new ArrayList<>();
     private PlaceDetails mPlaceDetails;
-    //private WorkmateListAdapter adapter;
 
     private Disposable disposable;
 
@@ -290,18 +290,21 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
     private void initWorkmateList(String placeId) {
 
         // TODO : récupérer les users plutôt que les bookings (un user contient un champ placeId)
-        //userManager.getUserData()
-        //        .addOnSuccessListener(queryDocumentSnapshots -> {
-        //            List<User> usersList = new ArrayList<>();
-        //            for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getPlaceId()) {
-        //                User userFetched = documentSnapshot.toObject(User.class);
-        //                assert userFetched != null;
-        //                if (!userFetched.getPlaceId().equals(userId)) {
-        //                    usersList.add(userFetched);
-        //                }
-        //            }
-        //            usersEatingHere.setValue(usersList);
-        //        });
+
+        workmatesEatingHere.clear();
+
+        userManager.getAllUsers()
+                .addOnSuccessListener( queryDocumentSnapshots -> {  //Callback
+                    List<User> workmatesList = new ArrayList<>();
+                    for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
+                        User workmateFetched = documentSnapshot.toObject( User.class );
+                        if (workmateFetched.getPlaceId().equals( placeId )) {
+                            workmatesList.add( workmateFetched );
+                        }
+                    }
+                   workmatesEatingHere.addAll( workmatesList );
+                } );
+
     }
 
 

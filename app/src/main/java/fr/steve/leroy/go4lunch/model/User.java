@@ -15,26 +15,21 @@ public class User {
     private String urlPicture;
     private String placeId;
     private String restaurantName;
-    private boolean hasBooked;
-    private List<String> likedRestaurantList;
 
     public User() { /* Required empty public constructor for the recyclerView */ }
 
-    public User(String uid, String username, @Nullable String urlPicture, String placeId, String restaurantName, List<String> likedRestaurantList) {
+    public User(String uid, String username, @Nullable String urlPicture, String placeId, String restaurantName) {
         this.uid = uid;
         this.username = username;
         this.urlPicture = urlPicture;
         this.placeId = placeId;
         this.restaurantName = restaurantName;
-        this.likedRestaurantList = likedRestaurantList;
-        this.hasBooked = false;
     }
 
     public User(String uid, String username, @Nullable String urlPicture) {
         this.uid = uid;
         this.username = username;
         this.urlPicture = urlPicture;
-        this.hasBooked = false;
     }
 
 
@@ -61,14 +56,6 @@ public class User {
         return urlPicture;
     }
 
-    public boolean isHasBooked() {
-        return hasBooked;
-    }
-
-    public List<String> getLikedRestaurantList() {
-        return likedRestaurantList;
-    }
-
 
     // --- SETTERS ---
 
@@ -90,14 +77,6 @@ public class User {
 
     public void setUrlPicture(@Nullable String urlPicture) {
         this.urlPicture = urlPicture;
-    }
-
-    public void setHasBooked(boolean hasBooked) {
-        this.hasBooked = hasBooked;
-    }
-
-    public void setLikedRestaurantList(List<String> likedRestaurantList) {
-        this.likedRestaurantList = likedRestaurantList;
     }
 
 }

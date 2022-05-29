@@ -29,7 +29,7 @@ public class UserRepository {
     private static final String PLACE_ID_FIELD = "placeId";
     private static final String URL_PICTURE_FIELD = "urlPicture";
     private static final String RESTAURANT_NAME_FIELD = "restaurantName";
-    private static final String HAS_BOOKED_FIELD = "hasBooked";
+
 
 
     private static volatile UserRepository instance;
@@ -96,9 +96,8 @@ public class UserRepository {
             String urlPicture = (user.getPhotoUrl() != null) ? user.getPhotoUrl().toString() : defaultUrlPicture;
             String placeId = "";
             String restaurantName = "";
-            List<String> likedRestaurantList = new ArrayList<>();
 
-            User userToCreate = new User( uid, username, urlPicture, placeId, restaurantName, likedRestaurantList );
+            User userToCreate = new User( uid, username, urlPicture, placeId, restaurantName );
 
             Task<DocumentSnapshot> userData = getUserData();
             // If the user already exist in Firestore, we get his data
