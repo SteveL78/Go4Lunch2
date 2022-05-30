@@ -176,9 +176,11 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
                 if (user.getPlaceId().isEmpty()) {
                     updateUser( placeId, restaurantName );
                     createBooking( uid, username, placeId, restaurantName );
+
                 } else if (!placeId.equals( user.getPlaceId() )) {
                     updateUser( placeId, restaurantName );
                     updateBooking( uid, username, placeId, restaurantName );
+
                 } else {
                     userManager.updateUserPlaceId( "" );
                     userManager.updateUserRestaurantName( "" );

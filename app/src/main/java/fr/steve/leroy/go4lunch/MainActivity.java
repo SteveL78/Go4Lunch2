@@ -188,8 +188,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.search_menu:
 
                 // TODO : use enum and switch
-                //switch (ALL_FRAGMENTS) {
-                configureAutocomplete();
+                switch (currentView) {
+                    case MAPVIEW:
+                        configureAutocomplete();
+                        break;
+                    case LISTVIEW:
+                        break;
+                    case WORKMATES:
+                        break;
+                }
                 return true;
 
             default:
@@ -198,15 +205,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void configureAutocomplete() {
-/*
-        // Create a new token for the autocomplete session. Pass this to FindAutocompletePredictionsRequest,
-        // and once again when the user makes a selection (for example when calling fetchPlace()).
- AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
-        // Create a RectangularBounds object.
-        RectangularBounds bounds = RectangularBounds.newInstance(
-                new LatLng(  )
-                new LatLng(  )
-        )*/
 
         // Initialize place field list
         List<Place.Field> fieldList = Arrays.asList( Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME );
@@ -215,6 +213,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 AutocompleteActivityMode.OVERLAY, fieldList )
                 .setTypeFilter( TypeFilter.ESTABLISHMENT )
                 .setCountry( "FR" )
+                //.setLocationBias(  )
                 .build( MainActivity.this );
         // Start activity result
         startActivityForResult( autocompleteIntent, AUTOCOMPLETE_REQUEST_CODE );
