@@ -300,7 +300,7 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
                     List<User> workmatesList = new ArrayList<>();
                     for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
                         User workmateFetched = documentSnapshot.toObject( User.class );
-                        if (workmateFetched.getPlaceId().equals( placeId )) {
+                        if (workmateFetched.getPlaceId() != null && workmateFetched.getPlaceId().equals( placeId )) {
                             workmatesList.add( workmateFetched );
                         }
                     }

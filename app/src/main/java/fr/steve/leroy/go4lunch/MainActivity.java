@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,14 +27,26 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.AutocompletePrediction;
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.api.model.TypeFilter;
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseUser;
@@ -59,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private final UserManager userManager = UserManager.getInstance();
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int AUTOCOMPLETE_REQUEST_CODE = 100;
+    private PlacesClient placesClient;
 
     private enum ALL_FRAGMENTS {MAPVIEW, LISTVIEW, WORKMATES}
     private ALL_FRAGMENTS currentView = ALL_FRAGMENTS.MAPVIEW;
@@ -88,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setDailyNotification();
 
+
     }
 
 
@@ -114,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void initPlaceApiClient() {
         if (!Places.isInitialized())
             Places.initialize( getApplicationContext(), BuildConfig.ApiPlaceKey );
-        PlacesClient placesClient = Places.createClient( this );
+        placesClient = Places.createClient( this );
     }
 
 
@@ -168,8 +181,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return false;
             }
 
+
             @Override
             public boolean onQueryTextChange(String newText) {
+
+
                 return false;
             }
         } );
@@ -193,6 +209,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         configureAutocomplete();
                         break;
                     case LISTVIEW:
+                        //No filtering
                         break;
                     case WORKMATES:
                         break;
@@ -205,10 +222,47 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void configureAutocomplete() {
+/*
+        // Create a new token for the autocomplete session. Pass this to FindAutocompletePredictionsRequest,
+        // and once again when the user makes a selection (for example when calling fetchPlace()).
+        AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
+        // Create a RectangularBounds object.
+        RectangularBounds bounds = RectangularBounds.newInstance(
+                new LatLng(-33.880490, 151.184363), //dummy lat/lng
+                new LatLng(-33.858754, 151.229596));
+        // Use the builder to create a FindAutocompletePredictionsRequest.
+        FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
+                // Call either setLocationBias() OR setLocationRestriction().
+                .setLocationBias(bounds)
+                .setLocationRestriction(bounds)
+                .setOrigin(new LatLng(-33.8749937,151.2041382))
+                .setCountry("FR")
+                .setTypeFilter(TypeFilter.ESTABLISHMENT)
+                .setSessionToken(token)
+                //.setQuery(queryText.getText().toString())
+                .build();
+
+        placesClient.findAutocompletePredictions(request).addOnSuccessListener((response) -> {
+            for (AutocompletePrediction prediction : response.getAutocompletePredictions()) {
+                Log.i(TAG, prediction.getPlaceId());
+                Log.i(TAG, prediction.getPrimaryText(null).toString());
+            }
+        }).addOnFailureListener((exception) -> {
+            if (exception instanceof ApiException) {
+                ApiException apiException = (ApiException) exception;
+                Log.e(TAG, "Place not found: " + apiException.getStatusCode());
+            }
+        });
+
+
+ */
+
+
+
 
         // Initialize place field list
-        List<Place.Field> fieldList = Arrays.asList( Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME );
-        // Create intent
+        List<Place.Field> fieldList = Arrays.asList( Place.Field.ID,Place.Field.NAME );
+        // Start the autocomplete intent.
         Intent autocompleteIntent = new Autocomplete.IntentBuilder(
                 AutocompleteActivityMode.OVERLAY, fieldList )
                 .setTypeFilter( TypeFilter.ESTABLISHMENT )
@@ -217,28 +271,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .build( MainActivity.this );
         // Start activity result
         startActivityForResult( autocompleteIntent, AUTOCOMPLETE_REQUEST_CODE );
+
+
+
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         searchView.setIconified( true );
         mMenuItem.collapseActionView();
-        if (requestCode == 100) {
+        if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = Autocomplete.getPlaceFromIntent( data );
-                Log.i( TAG, "Place: " + place.getName() + ", " + place.getId() );
+                Intent intent = new Intent( MainActivity.this, RestaurantDetailActivity.class );
+                intent.putExtra( "placeId", place.getId() );
+                startActivity( intent );
+
+                Log.i( TAG, "PlaceSelected: " + place.getName() + ", " + place.getId() );
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
                 // TODO: Handle the error.
                 Status status = Autocomplete.getStatusFromIntent( data );
                 Log.i( TAG, status.getStatusMessage() );
             } else if (resultCode == RESULT_CANCELED) {
                 // The user canceled the operation.
+                Toast.makeText( this,"Search canceled", Toast.LENGTH_SHORT ).show() ;
             }
             return;
         }
         super.onActivityResult( requestCode, resultCode, data );
     }
-
 
     private void updateToolbarTitle(boolean status) {
         String title;
@@ -336,13 +397,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .getDrawable( R.drawable.ic_anon_user ) );
             }
             setTextUserData( user );
-
-            // TODO : update username if changed user account
-
-
         }
-
-
     }
 
 
