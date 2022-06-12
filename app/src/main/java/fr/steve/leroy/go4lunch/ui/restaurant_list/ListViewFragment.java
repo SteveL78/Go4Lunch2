@@ -32,7 +32,7 @@ import fr.steve.leroy.go4lunch.R;
 import fr.steve.leroy.go4lunch.databinding.FragmentListViewBinding;
 import fr.steve.leroy.go4lunch.model.User;
 import fr.steve.leroy.go4lunch.ui.restaurant_details.RestaurantDetailActivity;
-import io.reactivex.rxjava3.disposables.Disposable;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,7 +45,6 @@ public class ListViewFragment extends Fragment implements RestaurantListRecycler
     private FragmentListViewBinding binding;
     private static final String TAG = ListViewFragment.class.getSimpleName();
 
-    private Disposable disposable;
     private List<PlacesSearchResult> placeSearchResult;
     private RestaurantListRecyclerViewAdapter adapter;
     private RestaurantListViewModel viewModel;
@@ -154,17 +153,6 @@ public class ListViewFragment extends Fragment implements RestaurantListRecycler
         Intent intent = new Intent( getContext(), RestaurantDetailActivity.class );
         intent.putExtra( "placeId", result.placeId );
         startActivity( intent );
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        this.disposeWhenDestroy();
-    }
-
-    private void disposeWhenDestroy() {
-        if (this.disposable != null && !this.disposable.isDisposed())
-            this.disposable.dispose();
     }
 
 }

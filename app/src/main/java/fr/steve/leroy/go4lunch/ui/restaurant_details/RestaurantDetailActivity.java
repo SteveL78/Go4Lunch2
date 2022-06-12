@@ -20,7 +20,6 @@ import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -41,7 +40,6 @@ import fr.steve.leroy.go4lunch.manager.UserManager;
 import fr.steve.leroy.go4lunch.model.User;
 import fr.steve.leroy.go4lunch.repositories.UserRepository;
 import fr.steve.leroy.go4lunch.utils.LikeButton;
-import io.reactivex.rxjava3.disposables.Disposable;
 
 public class RestaurantDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -49,11 +47,8 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
 
     private ActivityRestaurantDetailBinding binding;
     private RestaurantDetailAdapter adapter;
-    private RestaurantDetailViewModel viewModel;
     private List<User> workmatesEatingHere = new ArrayList<>();
     private PlaceDetails mPlaceDetails;
-
-    private Disposable disposable;
 
     private static final String RESTAURANT_PLACE_ID = "placeId";
     private static final String USER_ID = "uid";
@@ -170,37 +165,31 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
 
     private void checkBooked(String uid, String username, String placeId, String restaurantName) {
 
-        userManager.getUserData().addOnSuccessListener( new OnSuccessListener<User>() {
-            @Override
-            public void onSuccess(User user) {
-                if (user.getPlaceId().isEmpty()) {
-                    updateUser( placeId, restaurantName );
-                    createBooking( uid, username, placeId, restaurantName );
+        userManager.getUserData().addOnSuccessListener( user -> {
+            if (user.getPlaceId().isEmpty()) {
+                updateUser( placeId, restaurantName );
+                createBooking( uid, username, placeId, restaurantName );
 
-                } else if (!placeId.equals( user.getPlaceId() )) {
-                    updateUser( placeId, restaurantName );
-                    updateBooking( uid, username, placeId, restaurantName );
+            } else if (!placeId.equals( user.getPlaceId() )) {
+                updateUser( placeId, restaurantName );
+                updateBooking( uid, username, placeId, restaurantName );
 
-                } else {
-                    userManager.updateUserPlaceId( "" );
-                    userManager.updateUserRestaurantName( "" );
-                    deleteBooking( uid );
-                    updateUser( "", "" );
-                }
+            } else {
+                userManager.updateUserPlaceId( "" );
+                userManager.updateUserRestaurantName( "" );
+                deleteBooking( uid );
+                updateUser( "", "" );
             }
         } );
     }
 
 
     private void displayBookedButtonState(String placeId) {
-        userManager.getUserData().addOnSuccessListener( new OnSuccessListener<User>() {
-            @Override
-            public void onSuccess(User user) {
-                if (placeId.equals( user.getPlaceId() )) {
-                    displayFloating( (R.drawable.ic_baseline_clear_orange_24) );
-                } else {
-                    displayFloating( (R.drawable.ic_baseline_check_circle_green_24) );
-                }
+        userManager.getUserData().addOnSuccessListener( user -> {
+            if (placeId.equals( user.getPlaceId() )) {
+                displayFloating( (R.drawable.ic_baseline_clear_orange_24) );
+            } else {
+                displayFloating( (R.drawable.ic_baseline_check_circle_green_24) );
             }
         } );
     }
@@ -300,7 +289,8 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
                     List<User> workmatesList = new ArrayList<>();
                     for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
                         User workmateFetched = documentSnapshot.toObject( User.class );
-                        if (workmateFetched.getPlaceId() != null && workmateFetched.getPlaceId().equals( placeId )) {
+                        String workmatePlaceId = workmateFetched.getPlaceId();
+                        if (workmatePlaceId != null && workmatePlaceId.equals( placeId )) {
                             workmatesList.add( workmateFetched );
                         }
                     }
@@ -361,13 +351,4 @@ public class RestaurantDetailActivity extends AppCompatActivity implements View.
         return e -> Toast.makeText( getApplicationContext(), getString( R.string.error_unknown_error ), Toast.LENGTH_LONG ).show();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        this.disposeWhenDestroy();
-    }
-
-    private void disposeWhenDestroy() {
-        if (this.disposable != null && !this.disposable.isDisposed()) this.disposable.dispose();
-    }
 }
